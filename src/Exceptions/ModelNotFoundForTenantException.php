@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class ModelNotFoundForTenantException extends ModelNotFoundException
 {
     /**
-     * @param string $model
+     * @param string    $model
      * @param int|array $ids
      *
      * @return $this

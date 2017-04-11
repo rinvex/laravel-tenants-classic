@@ -99,7 +99,7 @@ trait Tenantable
     {
         static::addGlobalScope('tenant', function (Builder $builder) {
             if ($tenant = config('rinvex.tenantable.tenant')) {
-                $builder->whereHas('tenants', function (Builder $builder) use($tenant) {
+                $builder->whereHas('tenants', function (Builder $builder) use ($tenant) {
                     $key = $tenant instanceof Model ? $tenant->getKeyName() : (is_int($tenant) ? 'id' : 'slug');
                     $value = $tenant instanceof Model ? $tenant->$key : $tenant;
                     $builder->where($key, $value);
@@ -279,8 +279,8 @@ trait Tenantable
      * a more useful exception. Otherwise it can be very confusing
      * why queries don't work because of tenant scoping issues.
      *
-     * @param  mixed $id
-     * @param  array $columns
+     * @param mixed $id
+     * @param array $columns
      *
      * @throws \Rinvex\Tenantable\Exceptions\ModelNotFoundForTenantException
      *
