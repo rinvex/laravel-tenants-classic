@@ -96,7 +96,7 @@ class Tenant extends Model implements Sortable
             'name' => 'required|string',
             'description' => 'nullable|string',
             'slug' => 'required|alpha_dash|unique:'.config('rinvex.tenantable.tables.tenants').',slug',
-            'owner_id' => 'required|integer|exists:'.config('rinvex.fort.tables.users').',id',
+            'owner_id' => 'required|integer',
             'email' => 'required|email',
             'phone' => 'nullable|string',
             'language_code' => 'required|integer|size:2',

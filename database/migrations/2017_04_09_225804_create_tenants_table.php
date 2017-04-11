@@ -40,8 +40,6 @@ class CreateTenantsTable extends Migration
 
             // Indexes
             $table->unique('slug');
-            $table->foreign('owner_id')->references('id')->on(config('rinvex.fort.tables.users'))
-                  ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
