@@ -159,6 +159,11 @@ $product = \App\Product::find(1);
 // or collection of instances, same signature as $model->sync()
 $product->attachTenants([1, 2]);
 
+// Alternatively you can pass tenants as an attribute to the model
+$product->fill([
+    'tenants' => [1, 2],
+])->save();
+
 // Detach given tenants from the model
 // accepts tenant id, instance, array of ids,
 // or collection of instances, same signature as $model->sync()
