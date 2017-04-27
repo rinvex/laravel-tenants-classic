@@ -211,4 +211,28 @@ class Tenant extends Model implements Sortable
 
         return static::query()->where("name->{$locale}", $name)->first();
     }
+
+    /**
+     * Get the tenant's country.
+     *
+     * @param string $countryCode
+     *
+     * @return \Rinvex\Country\Country
+     */
+    public function getCountryAttribute(string $countryCode)
+    {
+        return country($countryCode);
+    }
+
+    /**
+     * Get the tenant's language.
+     *
+     * @param string $languageCode
+     *
+     * @return \Rinvex\Language\Language
+     */
+    public function getLanguageAttribute(string $languageCode)
+    {
+        return language($languageCode);
+    }
 }
