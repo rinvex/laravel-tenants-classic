@@ -31,7 +31,6 @@ class CreateTenantsTable extends Migration
             $table->string('address')->nullable();
             $table->string('postal_code')->nullable();
             $table->boolean('active')->default(true);
-            $table->integer('order')->default(0);
             $table->string('group')->nullable();
             $table->timestamps();
             $table->softDeletes();

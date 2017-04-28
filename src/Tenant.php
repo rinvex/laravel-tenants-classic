@@ -6,13 +6,11 @@ namespace Rinvex\Tenantable;
 
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
-use Spatie\EloquentSortable\Sortable;
 use Watson\Validating\ValidatingTrait;
 use Illuminate\Database\Eloquent\Model;
 use Rinvex\Cacheable\CacheableEloquent;
 use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Builder;
-use Spatie\EloquentSortable\SortableTrait;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
@@ -35,14 +33,12 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string                         $postal_code
  * @property string                         $launch_date
  * @property bool                           $active
- * @property int                            $order
  * @property string                         $group
  * @property \Carbon\Carbon                 $created_at
  * @property \Carbon\Carbon                 $updated_at
  * @property string                         $deleted_at
  * @property-read \Rinvex\Country\Country   $country
  * @property-read \Rinvex\Language\Language $language
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant ordered($direction = 'asc')
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereActive($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereAddress($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereCity($value)
@@ -57,7 +53,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereLanguageCode($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereLaunchDate($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereOrder($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereOwnerId($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant wherePhone($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant wherePhoneVerified($value)
@@ -68,10 +63,9 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant withGroup($group = null)
  * @mixin \Eloquent
  */
-class Tenant extends Model implements Sortable
+class Tenant extends Model
 {
     use HasSlug;
-    use SortableTrait;
     use HasTranslations;
     use ValidatingTrait;
     use CacheableEloquent;
@@ -93,7 +87,6 @@ class Tenant extends Model implements Sortable
         'address',
         'postal_code',
         'active',
-        'order',
         'group',
     ];
 
@@ -111,13 +104,6 @@ class Tenant extends Model implements Sortable
         'name',
         'description',
     ];
-
-    /**
-     * The sortable settings.
-     *
-     * @var array
-     */
-    public $sortable = ['order_column_name' => 'order'];
 
     /**
      * The default rules that the model will validate against.
@@ -268,13 +254,11 @@ class Tenant extends Model implements Sortable
     /**
      * Get the tenant's country.
      *
-     * @param string $countryCode
-     *
      * @return \Rinvex\Country\Country
      */
-    public function getCountryAttribute(string $countryCode)
+    public function getCountryAttribute()
     {
-        return country($countryCode);
+        return country($this->country_code);
     }
 
     /**
