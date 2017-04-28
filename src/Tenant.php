@@ -280,12 +280,22 @@ class Tenant extends Model implements Sortable
     /**
      * Get the tenant's language.
      *
-     * @param string $languageCode
-     *
      * @return \Rinvex\Language\Language
      */
-    public function getLanguageAttribute(string $languageCode)
+    public function getLanguageAttribute()
     {
-        return language($languageCode);
+        return language($this->language_code);
+    }
+
+    /**
+     * A tenant always belongs to an owner.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function owner()
+    {
+        $userModel = config('auth.providers.'.config('auth.guards.'.config('auth.defaults.guard').'.provider').'.model');
+
+        return $this->belongsTo($userModel, 'owner_id', 'id');
     }
 }
