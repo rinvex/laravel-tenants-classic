@@ -150,8 +150,8 @@ class Tenant extends Model implements Sortable
             'owner_id' => 'required|integer',
             'email' => 'required|email',
             'phone' => 'nullable|string',
-            'language_code' => 'required|integer|size:2',
-            'country_code' => 'required|integer|size:2',
+            'language_code' => 'required|string|size:2',
+            'country_code' => 'required|string|size:2',
         ]);
     }
 
