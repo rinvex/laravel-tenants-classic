@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
- * Rinvex\Tenantable\Tenant
+ * Rinvex\Tenantable\Tenant.
  *
  * @property int                            $id
  * @property string                         $slug
@@ -39,6 +39,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string                         $deleted_at
  * @property-read \Rinvex\Country\Country   $country
  * @property-read \Rinvex\Language\Language $language
+ *
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereActive($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereAddress($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereCity($value)
