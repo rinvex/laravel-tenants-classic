@@ -30,6 +30,13 @@ class CreateTenantsTable extends Migration
             $table->string('city')->nullable();
             $table->string('address')->nullable();
             $table->string('postal_code')->nullable();
+            $table->date('launch_date')->nullable();
+            $table->string('website')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('linkedin')->nullable();
+            $table->string('google_plus')->nullable();
+            $table->string('skype')->nullable();
             $table->boolean('active')->default(true);
             $table->string('group')->nullable();
             $table->timestamps();
