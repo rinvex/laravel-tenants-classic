@@ -2,7 +2,6 @@
     "name": "rinvex/tenantable",
     "description": "Rinvex Tenantable is a contextually intelligent polymorphic Laravel package, for single db multi-tenancy. You can completely isolate tenants data with ease using the same database, with full power and control over what data to be centrally shared, and what to be tenant related and therefore isolated from others.",
     "keywords": [
-        "tag",
         "model",
         "tenant",
         "laravel",
@@ -12,7 +11,8 @@
         "polymorphic",
         "sluggable",
         "tenancy",
-        "rinvex"
+        "rinvex",
+        "multi"
     ],
     "license": "MIT",
     "homepage": "https://rinvex.com",
