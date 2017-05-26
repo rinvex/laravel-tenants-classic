@@ -21,7 +21,7 @@ class CreateTenantsTable extends Migration
             $table->string('slug');
             $table->{$this->jsonable()}('name');
             $table->{$this->jsonable()}('description')->nullable();
-            $table->unsignedInteger('owner_id');
+            $table->integer('owner_id')->unsigned();
             $table->string('email');
             $table->string('phone')->nullable();
             $table->string('language_code', 2);
