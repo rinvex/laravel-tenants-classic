@@ -37,8 +37,8 @@ class CreateTenantsTable extends Migration
             $table->string('linkedin')->nullable();
             $table->string('google_plus')->nullable();
             $table->string('skype')->nullable();
-            $table->boolean('active')->default(true);
             $table->string('group')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
 

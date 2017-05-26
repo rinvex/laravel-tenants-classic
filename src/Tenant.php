@@ -36,8 +36,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string                         $linkedin
  * @property string                         $google_plus
  * @property string                         $skype
- * @property bool                           $active
  * @property string                         $group
+ * @property bool                           $is_active
  * @property \Carbon\Carbon                 $created_at
  * @property \Carbon\Carbon                 $updated_at
  * @property \Carbon\Carbon                 $deleted_at
@@ -45,7 +45,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property-read \Rinvex\Language\Language $language
  * @property-read \Cortex\Fort\Models\User  $owner
  *
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereActive($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereAddress($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereCity($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereCountryCode($value)
@@ -57,6 +56,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereGooglePlus($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereGroup($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereIsActive($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereLanguageCode($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereLaunchDate($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereLinkedin($value)
@@ -111,8 +111,8 @@ class Tenant extends Model
         'linkedin',
         'google_plus',
         'skype',
-        'active',
         'group',
+        'is_active',
     ];
 
     /**
