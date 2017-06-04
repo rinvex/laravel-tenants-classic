@@ -24,7 +24,7 @@ class CreateTenantablesTable extends Migration
 
             // Indexes
             $table->unique(['tenant_id', 'tenantable_id', 'tenantable_type'], 'tenantables_ids_type_unique');
-            $table->foreign('tenant_id')->references('id')->on('tenants')
+            $table->foreign('tenant_id')->references('id')->on(config('rinvex.tenantable.tables.tenants'))
                   ->onDelete('cascade')->onUpdate('cascade');
         });
     }
