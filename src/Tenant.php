@@ -138,7 +138,8 @@ class Tenant extends Model
     protected $rules = [];
 
     /**
-     * Whether the model should throw a ValidationException if it fails validation.
+     * Whether the model should throw a
+     * ValidationException if it fails validation.
      *
      * @var bool
      */
@@ -175,12 +176,12 @@ class Tenant extends Model
 
         if (isset(static::$dispatcher)) {
             // Early auto generate slugs before validation
-            static::$dispatcher->listen('eloquent.validating: '.static::class, function ($model, $event) {
+            static::$dispatcher->listen('eloquent.validating: '.static::class, function (self $model) {
                 if (! $model->slug) {
                     if ($model->exists) {
-                        $model->generateSlugOnCreate();
-                    } else {
                         $model->generateSlugOnUpdate();
+                    } else {
+                        $model->generateSlugOnCreate();
                     }
                 }
             });
