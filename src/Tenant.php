@@ -160,7 +160,7 @@ class Tenant extends Model
             'description' => 'nullable|string',
             'slug' => 'required|alpha_dash|max:250|unique:'.config('rinvex.tenantable.tables.tenants').',slug',
             'owner_id' => 'required|integer',
-            'email' => 'required|email|max:250|exists:'.config('rinvex.tenantable.tables.tenants').',email',
+            'email' => 'required|email|min:3|max:250|exists:'.config('rinvex.tenantable.tables.tenants').',email',
             'phone' => 'nullable|string',
             'language_code' => 'required|string|size:2',
             'country_code' => 'required|string|size:2',
