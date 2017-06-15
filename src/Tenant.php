@@ -179,7 +179,7 @@ class Tenant extends Model
             if (! $tenant->slug) {
                 if ($tenant->exists && $tenant->getSlugOptions()->generateSlugsOnUpdate) {
                     $tenant->generateSlugOnUpdate();
-                } else if (! $tenant->exists && $tenant->getSlugOptions()->generateSlugsOnCreate) {
+                } elseif (! $tenant->exists && $tenant->getSlugOptions()->generateSlugsOnCreate) {
                     $tenant->generateSlugOnCreate();
                 }
             }
