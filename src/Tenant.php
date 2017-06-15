@@ -174,18 +174,16 @@ class Tenant extends Model
     {
         parent::boot();
 
-        if (isset(static::$dispatcher)) {
-            // Early auto generate slugs before validation
-            static::$dispatcher->listen('eloquent.validating: '.static::class, function (self $model) {
-                if (! $model->slug) {
-                    if ($model->exists) {
-                        $model->generateSlugOnUpdate();
-                    } else {
-                        $model->generateSlugOnCreate();
-                    }
+        // Auto generate slugs early before validation
+        static::registerModelEvent('validating', function (self $tenant) {
+            if (! $tenant->slug) {
+                if ($tenant->exists && $tenant->getSlugOptions()->generateSlugsOnUpdate) {
+                    $tenant->generateSlugOnUpdate();
+                } else if (! $tenant->exists && $tenant->getSlugOptions()->generateSlugsOnCreate) {
+                    $tenant->generateSlugOnCreate();
                 }
-            });
-        }
+            }
+        });
     }
 
     /**
