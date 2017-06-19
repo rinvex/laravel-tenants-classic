@@ -43,7 +43,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property \Carbon\Carbon|null            $deleted_at
  * @property-read \Rinvex\Country\Country   $country
  * @property-read \Rinvex\Language\Language $language
- * @property-read \Cortex\Fort\Models\User  $owner
+ * @property-read \Rinvex\Fort\Models\User  $owner
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereCity($value)
@@ -170,7 +170,7 @@ class Tenant extends Model
     /**
      * {@inheritdoc}
      */
-    public static function boot()
+    protected static function boot()
     {
         parent::boot();
 
