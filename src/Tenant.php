@@ -44,6 +44,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property-read \Rinvex\Country\Country   $country
  * @property-read \Rinvex\Language\Language $language
  * @property-read \Cortex\Fort\Models\User  $owner
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereCountryCode($value)
