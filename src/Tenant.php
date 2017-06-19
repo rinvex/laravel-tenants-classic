@@ -22,55 +22,54 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property array                          $description
  * @property int                            $owner_id
  * @property string                         $email
- * @property string                         $phone
+ * @property string|null                    $phone
  * @property string                         $language_code
  * @property string                         $country_code
- * @property string                         $state
- * @property string                         $city
- * @property string                         $address
- * @property string                         $postal_code
- * @property \Carbon\Carbon                 $launch_date
- * @property string                         $website
- * @property string                         $twitter
- * @property string                         $facebook
- * @property string                         $linkedin
- * @property string                         $google_plus
- * @property string                         $skype
- * @property string                         $group
- * @property bool                           $is_active
- * @property \Carbon\Carbon                 $created_at
- * @property \Carbon\Carbon                 $updated_at
- * @property \Carbon\Carbon                 $deleted_at
+ * @property string|null                    $state
+ * @property string|null                    $city
+ * @property string|null                    $address
+ * @property string|null                    $postal_code
+ * @property \Carbon\Carbon|null            $launch_date
+ * @property string|null                    $website
+ * @property string|null                    $twitter
+ * @property string|null                    $facebook
+ * @property string|null                    $linkedin
+ * @property string|null                    $google_plus
+ * @property string|null                    $skype
+ * @property string|null                    $group
+ * @property int                            $is_active
+ * @property \Carbon\Carbon|null            $created_at
+ * @property \Carbon\Carbon|null            $updated_at
+ * @property \Carbon\Carbon|null            $deleted_at
  * @property-read \Rinvex\Country\Country   $country
  * @property-read \Rinvex\Language\Language $language
  * @property-read \Cortex\Fort\Models\User  $owner
- *
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereAddress($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereCity($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereCountryCode($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereDeletedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereDescription($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereEmail($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereFacebook($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereGooglePlus($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereGroup($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereIsActive($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereLanguageCode($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereLaunchDate($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereLinkedin($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereOwnerId($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant wherePhone($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant wherePostalCode($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereSkype($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereSlug($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereState($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereTwitter($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant whereWebsite($value)
- * @method static \Illuminate\Database\Query\Builder|\Rinvex\Tenantable\Tenant withGroup($group = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereCountryCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereFacebook($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereGooglePlus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereGroup($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereLanguageCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereLaunchDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereLinkedin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant wherePostalCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereSkype($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereTwitter($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereWebsite($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant withGroup($group = null)
  * @mixin \Eloquent
  */
 class Tenant extends Model
