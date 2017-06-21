@@ -30,12 +30,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string|null                    $address
  * @property string|null                    $postal_code
  * @property \Carbon\Carbon|null            $launch_date
- * @property string|null                    $website
- * @property string|null                    $twitter
- * @property string|null                    $facebook
- * @property string|null                    $linkedin
- * @property string|null                    $google_plus
- * @property string|null                    $skype
  * @property string|null                    $group
  * @property int                            $is_active
  * @property \Carbon\Carbon|null            $created_at
@@ -52,24 +46,18 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereFacebook($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereGooglePlus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereGroup($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereLanguageCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereLaunchDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereLinkedin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereOwnerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant wherePostalCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereSkype($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereState($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereTwitter($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereWebsite($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant withGroup($group = null)
  * @mixin \Eloquent
  */
@@ -105,12 +93,6 @@ class Tenant extends Model
         'address',
         'postal_code',
         'launch_date',
-        'website',
-        'twitter',
-        'facebook',
-        'linkedin',
-        'google_plus',
-        'skype',
         'group',
         'is_active',
     ];
