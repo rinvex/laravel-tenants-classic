@@ -15,7 +15,10 @@ class CreateTenantsTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('rinvex.tenantable.tables.tenants'), function (Blueprint $table) {
+        // Get users model
+        $userModel = config('auth.providers.'.config('auth.guards.'.config('auth.defaults.guard').'.provider').'.model');
+
+        Schema::create(config('rinvex.tenantable.tables.tenants'), function (Blueprint $table) use ($userModel) {
             // Columns
             $table->increments('id');
             $table->string('slug');
@@ -38,6 +41,8 @@ class CreateTenantsTable extends Migration
 
             // Indexes
             $table->unique('slug');
+            $table->foreign('owner_id', 'tenants_owner_id_foreign')->references('id')->on((new $userModel)->getTable())
+                  ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
