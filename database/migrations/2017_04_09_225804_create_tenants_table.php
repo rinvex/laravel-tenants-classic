@@ -41,7 +41,7 @@ class CreateTenantsTable extends Migration
 
             // Indexes
             $table->unique('slug');
-            $table->foreign('owner_id', 'tenants_owner_id_foreign')->references('id')->on((new $userModel)->getTable())
+            $table->foreign('owner_id', 'tenants_owner_id_foreign')->references('id')->on((new $userModel())->getTable())
                   ->onDelete('cascade')->onUpdate('cascade');
         });
     }
