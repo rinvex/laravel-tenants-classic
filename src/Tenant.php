@@ -35,8 +35,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property \Carbon\Carbon|null                      $created_at
  * @property \Carbon\Carbon|null                      $updated_at
  * @property \Carbon\Carbon|null                      $deleted_at
- * @property-read \Rinvex\Country\Country             $country
- * @property-read \Rinvex\Language\Language           $language
  * @property-read \Illuminate\Database\Eloquent\Model $owner
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereAddress($value)
@@ -258,26 +256,6 @@ class Tenant extends Model
         $locale = $locale ?? app()->getLocale();
 
         return static::query()->where("name->{$locale}", $name)->first();
-    }
-
-    /**
-     * Get the tenant's country.
-     *
-     * @return \Rinvex\Country\Country
-     */
-    public function getCountryAttribute()
-    {
-        return country($this->country_code);
-    }
-
-    /**
-     * Get the tenant's language.
-     *
-     * @return \Rinvex\Language\Language
-     */
-    public function getLanguageAttribute()
-    {
-        return language($this->language_code);
     }
 
     /**
