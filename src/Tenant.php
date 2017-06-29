@@ -16,28 +16,28 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 /**
  * Rinvex\Tenantable\Tenant.
  *
- * @property int                            $id
- * @property string                         $slug
- * @property array                          $name
- * @property array                          $description
- * @property int                            $owner_id
- * @property string                         $email
- * @property string|null                    $phone
- * @property string                         $language_code
- * @property string                         $country_code
- * @property string|null                    $state
- * @property string|null                    $city
- * @property string|null                    $address
- * @property string|null                    $postal_code
- * @property \Carbon\Carbon|null            $launch_date
- * @property string|null                    $group
- * @property int                            $is_active
- * @property \Carbon\Carbon|null            $created_at
- * @property \Carbon\Carbon|null            $updated_at
- * @property \Carbon\Carbon|null            $deleted_at
- * @property-read \Rinvex\Country\Country   $country
- * @property-read \Rinvex\Language\Language $language
- * @property-read \Rinvex\Fort\Models\User  $owner
+ * @property int                                      $id
+ * @property string                                   $slug
+ * @property array                                    $name
+ * @property array                                    $description
+ * @property int                                      $owner_id
+ * @property string                                   $email
+ * @property string|null                              $phone
+ * @property string                                   $language_code
+ * @property string                                   $country_code
+ * @property string|null                              $state
+ * @property string|null                              $city
+ * @property string|null                              $address
+ * @property string|null                              $postal_code
+ * @property \Carbon\Carbon|null                      $launch_date
+ * @property string|null                              $group
+ * @property int                                      $is_active
+ * @property \Carbon\Carbon|null                      $created_at
+ * @property \Carbon\Carbon|null                      $updated_at
+ * @property \Carbon\Carbon|null                      $deleted_at
+ * @property-read \Rinvex\Country\Country             $country
+ * @property-read \Rinvex\Language\Language           $language
+ * @property-read \Illuminate\Database\Eloquent\Model $owner
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereCity($value)
