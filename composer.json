@@ -2,7 +2,6 @@
     "name": "rinvex/tenantable",
     "description": "Rinvex Tenantable is a contextually intelligent polymorphic Laravel package, for single db multi-tenancy. You can completely isolate tenants data with ease using the same database, with full power and control over what data to be centrally shared, and what to be tenant related and therefore isolated from others.",
     "keywords": [
-        "tag",
         "model",
         "tenant",
         "laravel",
@@ -11,9 +10,9 @@
         "translatable",
         "polymorphic",
         "sluggable",
-        "sortable",
         "tenancy",
-        "rinvex"
+        "rinvex",
+        "multi"
     ],
     "license": "MIT",
     "homepage": "https://rinvex.com",
@@ -43,16 +42,15 @@
     "require": {
         "php": "^7.0.0",
         "watson/validating": "^3.0.1",
-        "illuminate/support": "~5.4.0",
-        "illuminate/database": "~5.4.0",
+        "illuminate/support": "~5.4.0|~5.5.0",
+        "illuminate/database": "~5.4.0|~5.5.0",
         "rinvex/cacheable": "dev-develop",
         "spatie/laravel-sluggable": "^1.3.0",
-        "spatie/eloquent-sortable": "^3.0.0",
         "spatie/laravel-translatable": "^1.1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.7.0",
-        "illuminate/container": "~5.4.0"
+        "phpunit/phpunit": "^6.0.0",
+        "illuminate/container": "~5.4.0|~5.5.0"
     },
     "autoload": {
         "classmap": [
@@ -68,11 +66,18 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
     },
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Rinvex\\Tenantable\\TenantableServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev",

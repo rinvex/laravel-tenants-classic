@@ -15,13 +15,16 @@ class CreateTenantsTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('rinvex.tenantable.tables.tenants'), function (Blueprint $table) {
+        // Get users model
+        $userModel = config('auth.providers.'.config('auth.guards.'.config('auth.defaults.guard').'.provider').'.model');
+
+        Schema::create(config('rinvex.tenantable.tables.tenants'), function (Blueprint $table) use ($userModel) {
             // Columns
             $table->increments('id');
             $table->string('slug');
             $table->{$this->jsonable()}('name');
             $table->{$this->jsonable()}('description')->nullable();
-            $table->unsignedInteger('owner_id');
+            $table->integer('owner_id')->unsigned();
             $table->string('email');
             $table->string('phone')->nullable();
             $table->string('language_code', 2);
@@ -30,14 +33,16 @@ class CreateTenantsTable extends Migration
             $table->string('city')->nullable();
             $table->string('address')->nullable();
             $table->string('postal_code')->nullable();
-            $table->boolean('active')->default(true);
-            $table->integer('order')->default(0);
+            $table->date('launch_date')->nullable();
             $table->string('group')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
 
             // Indexes
             $table->unique('slug');
+            $table->foreign('owner_id', 'tenants_owner_id_foreign')->references('id')->on((new $userModel())->getTable())
+                  ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

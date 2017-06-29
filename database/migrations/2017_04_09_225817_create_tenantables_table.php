@@ -17,14 +17,14 @@ class CreateTenantablesTable extends Migration
     {
         Schema::create(config('rinvex.tenantable.tables.tenantables'), function (Blueprint $table) {
             // Columns
-            $table->unsignedInteger('tenant_id');
-            $table->unsignedInteger('tenantable_id');
+            $table->integer('tenant_id')->unsigned();
+            $table->integer('tenantable_id')->unsigned();
             $table->string('tenantable_type');
             $table->timestamps();
 
             // Indexes
             $table->unique(['tenant_id', 'tenantable_id', 'tenantable_type'], 'tenantables_ids_type_unique');
-            $table->foreign('tenant_id')->references('id')->on('tenants')
+            $table->foreign('tenant_id')->references('id')->on(config('rinvex.tenantable.tables.tenants'))
                   ->onDelete('cascade')->onUpdate('cascade');
         });
     }
