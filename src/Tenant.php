@@ -156,14 +156,21 @@ class Tenant extends Model
 
         $this->setTable(config('rinvex.tenantable.tables.tenants'));
         $this->setRules([
-            'name' => 'required|string|max:150',
-            'description' => 'nullable|string',
             'slug' => 'required|alpha_dash|max:150|unique:'.config('rinvex.tenantable.tables.tenants').',slug',
+            'name' => 'required|string|max:150',
+            'description' => 'nullable|string|max:10000',
             'owner_id' => 'required|integer|exists:'.(new $userModel())->getTable().',id',
             'email' => 'required|email|min:3|max:150|unique:'.config('rinvex.tenantable.tables.tenants').',email',
             'phone' => 'nullable|numeric|min:4',
-            'language_code' => 'required|string|size:2',
-            'country_code' => 'required|string|size:2',
+            'country_code' => 'required|alpha|size:2|country',
+            'language_code' => 'required|alpha|size:2|language',
+            'state' => 'nullable|string',
+            'city' => 'nullable|string',
+            'address' => 'nullable|string',
+            'postal_code' => 'nullable|string',
+            'launch_date' => 'nullable|date_format:Y-m-d',
+            'group' => 'nullable|string|max:150',
+            'is_active' => 'boolean',
         ]);
     }
 
