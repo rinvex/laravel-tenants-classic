@@ -69,14 +69,6 @@ class Tenant extends Model
     /**
      * {@inheritdoc}
      */
-    protected $dates = [
-        'launch_date',
-        'deleted_at',
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
     protected $fillable = [
         'slug',
         'name',
@@ -98,7 +90,32 @@ class Tenant extends Model
     /**
      * {@inheritdoc}
      */
-    protected $observables = ['validating', 'validated'];
+    protected $casts = [
+        'slug' => 'string',
+        'name' => 'string',
+        'description' => 'string',
+        'owner_id' => 'integer',
+        'email' => 'string',
+        'phone' => 'string',
+        'country_code' => 'string',
+        'language_code' => 'string',
+        'state' => 'string',
+        'city' => 'string',
+        'address' => 'string',
+        'postal_code' => 'string',
+        'launch_date' => 'string',
+        'group' => 'string',
+        'is_active' => 'boolean',
+        'deleted_at' => 'datetime',
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $observables = [
+        'validating',
+        'validated',
+    ];
 
     /**
      * The attributes that are translatable.
