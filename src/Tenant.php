@@ -257,14 +257,14 @@ class Tenant extends Model
     /**
      * Scope tenants by given group.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $builder
      * @param string|null                           $group
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithGroup(Builder $query, string $group = null): Builder
+    public function scopeWithGroup(Builder $builder, string $group = null): Builder
     {
-        return $group ? $query->where('group', $group) : $query;
+        return $group ? $builder->where('group', $group) : $builder;
     }
 
     /**

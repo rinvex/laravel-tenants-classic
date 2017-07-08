@@ -173,45 +173,45 @@ trait Tenantable
     /**
      * Scope query with all the given tenants.
      *
-     * @param \Illuminate\Database\Eloquent\Builder                   $query
+     * @param \Illuminate\Database\Eloquent\Builder                   $builder
      * @param int|string|array|\ArrayAccess|\Rinvex\Tenantable\Tenant $tenants
      * @param string                                                  $column
      * @param string                                                  $group
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithAllTenants(Builder $query, $tenants, string $column = 'id', string $group = null): Builder
+    public function scopeWithAllTenants(Builder $builder, $tenants, string $column = 'id', string $group = null): Builder
     {
         $tenants = $tenants instanceof Model ? $tenants->{$tenants->getKey()} : ($tenants instanceof Collection ? $tenants->pluck($column)->toArray() : $tenants);
 
-        collect($tenants)->each(function ($tenant) use ($query, $column, $group) {
-            $query->whereHas('tenants', function (Builder $query) use ($tenant, $column, $group) {
-                return $query->where($column, $tenant)->when($group, function (Builder $query) use ($group) {
-                    return $query->where('group', $group);
+        collect($tenants)->each(function ($tenant) use ($builder, $column, $group) {
+            $builder->whereHas('tenants', function (Builder $builder) use ($tenant, $column, $group) {
+                return $builder->where($column, $tenant)->when($group, function (Builder $builder) use ($group) {
+                    return $builder->where('group', $group);
                 });
             });
         });
 
-        return $query;
+        return $builder;
     }
 
     /**
      * Scope query with any of the given tenants.
      *
-     * @param \Illuminate\Database\Eloquent\Builder                   $query
+     * @param \Illuminate\Database\Eloquent\Builder                   $builder
      * @param int|string|array|\ArrayAccess|\Rinvex\Tenantable\Tenant $tenants
      * @param string                                                  $column
      * @param string                                                  $group
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithAnyTenants(Builder $query, $tenants, string $column = 'id', string $group = null): Builder
+    public function scopeWithAnyTenants(Builder $builder, $tenants, string $column = 'id', string $group = null): Builder
     {
         $tenants = $tenants instanceof Model ? $tenants->{$tenants->getKey()} : ($tenants instanceof Collection ? $tenants->pluck($column)->toArray() : $tenants);
 
-        return $query->whereHas('tenants', function (Builder $query) use ($tenants, $column, $group) {
-            $query->whereIn($column, (array) $tenants)->when($group, function (Builder $query) use ($group) {
-                return $query->where('group', $group);
+        return $builder->whereHas('tenants', function (Builder $builder) use ($tenants, $column, $group) {
+            $builder->whereIn($column, (array) $tenants)->when($group, function (Builder $builder) use ($group) {
+                return $builder->where('group', $group);
             });
         });
     }
@@ -219,35 +219,35 @@ trait Tenantable
     /**
      * Scope query with any of the given tenants.
      *
-     * @param \Illuminate\Database\Eloquent\Builder                   $query
+     * @param \Illuminate\Database\Eloquent\Builder                   $builder
      * @param int|string|array|\ArrayAccess|\Rinvex\Tenantable\Tenant $tenants
      * @param string                                                  $column
      * @param string                                                  $group
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithTenants(Builder $query, $tenants, string $column = 'id', string $group = null): Builder
+    public function scopeWithTenants(Builder $builder, $tenants, string $column = 'id', string $group = null): Builder
     {
-        return static::scopeWithAnyTenants($query, $tenants, $column, $group);
+        return static::scopeWithAnyTenants($builder, $tenants, $column, $group);
     }
 
     /**
      * Scope query without any of the given tenants.
      *
-     * @param \Illuminate\Database\Eloquent\Builder                   $query
+     * @param \Illuminate\Database\Eloquent\Builder                   $builder
      * @param int|string|array|\ArrayAccess|\Rinvex\Tenantable\Tenant $tenants
      * @param string                                                  $column
      * @param string                                                  $group
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithoutTenants(Builder $query, $tenants, string $column = 'id', string $group = null): Builder
+    public function scopeWithoutTenants(Builder $builder, $tenants, string $column = 'id', string $group = null): Builder
     {
         $tenants = $tenants instanceof Model ? $tenants->{$tenants->getKey()} : ($tenants instanceof Collection ? $tenants->pluck($column)->toArray() : $tenants);
 
-        return $query->whereDoesntHave('tenants', function (Builder $query) use ($tenants, $column, $group) {
-            $query->whereIn($column, (array) $tenants)->when($group, function (Builder $query) use ($group) {
-                return $query->where('group', $group);
+        return $builder->whereDoesntHave('tenants', function (Builder $builder) use ($tenants, $column, $group) {
+            $builder->whereIn($column, (array) $tenants)->when($group, function (Builder $builder) use ($group) {
+                return $builder->where('group', $group);
             });
         });
     }
@@ -255,13 +255,13 @@ trait Tenantable
     /**
      * Scope query without any tenants.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $builder
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithoutAnyTenants(Builder $query): Builder
+    public function scopeWithoutAnyTenants(Builder $builder): Builder
     {
-        return $query->doesntHave('tenants');
+        return $builder->doesntHave('tenants');
     }
 
     /**
