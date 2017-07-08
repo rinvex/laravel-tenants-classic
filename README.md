@@ -26,7 +26,7 @@
 
 3. Add the following service provider to the `'providers'` array inside `app/config/app.php`:
     ```php
-    Rinvex\Tenantable\TenantableServiceProvider::class
+    Rinvex\Tenantable\TenantableServiceProvider::class,
     ```
 
 4. **Optionally** you can publish migration and config files by running the following commands:
@@ -48,9 +48,7 @@
 ### Create Your Model
 
 Simply create a new eloquent model, and use `Tenantable` trait:
-``` php
-<?php
-
+```php
 namespace App;
 
 use Rinvex\Tenantable\Tenant;
