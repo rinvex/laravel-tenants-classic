@@ -29,13 +29,13 @@
     Rinvex\Tenantable\TenantableServiceProvider::class,
     ```
 
-4. **Optionally** you can publish migration and config files by running the following commands:
+4. **Optionally** you can publish migrations and config files by running the following commands:
     ```shell
     // Publish migrations
-    php artisan vendor:publish --tag="migrations" --provider="Rinvex\Tenantable\TenantableServiceProvider"
+    php artisan vendor:publish --tag="rinvex-tenantable-migrations"
 
     // Publish config
-    php artisan vendor:publish --tag="config" --provider="Rinvex\Tenantable\TenantableServiceProvider"
+    php artisan vendor:publish --tag="rinvex-tenantable-config"
     ```
 
 5. Done!
