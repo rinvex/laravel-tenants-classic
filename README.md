@@ -49,7 +49,7 @@
 
 Simply create a new eloquent model, and use `Tenantable` trait:
 ```php
-namespace App;
+namespace App\Models;
 
 use Rinvex\Tenantable\Tenant;
 use Rinvex\Tenantable\Tenantable;
@@ -72,10 +72,8 @@ class Product extends Model
 Nothing special here, just normal [Eloquent](https://laravel.com/docs/5.4/eloquent) model stuff:
 
 ```php
-use Rinvex\Tenantable\Tenant;
-
 // Create a new tenant
-Tenant::create([
+\Rinvex\Tenantable\Tenant::create([
     'name' => 'ACME Inc.',
     'slug' => 'acme',
     'owner_id' => '1',
@@ -85,7 +83,7 @@ Tenant::create([
 ]);
 
 // Get existing tenant by id
-Tenant::find(1);
+$tenant = \Rinvex\Tenantable\Tenant::find(1);
 ```
 
 > **Notes:** since **Rinvex Tenantable** extends and utilizes other awesome packages, checkout the following documentations for further details:
@@ -120,24 +118,24 @@ After you've added tenants, all queries against a Model which uses `Tenantable` 
 
 ```php
 // This will only include Models belonging to the active tenant
-\App\Product::all();
+$tenantProducts = \App\Models\Product::all();
 
 // This will fail with a `ModelNotFoundForTenantException` if it belongs to the wrong tenant (if active tenant is 1 for example)
-\App\Product::find(2);
+$product = \App\Models\Product::find(2);
 ```
 
 If you need to query across all tenants, you can use `forAllTenants` method:
 
 ```php
 // Will include results from ALL tenants, just for this query
-Product::forAllTenants()->get();
+$allTenantProducts = \App\Models\Product::forAllTenants()->get();
 ```
 
 Under the hood, **Rinvex Tenantable** uses Laravel's [anonymous global scopes](https://laravel.com/docs/5.4/eloquent#global-scopes), which means if you are scoping by active tenant, and you want to exclude one single query, you can do so:
 
 ```php
 // Will NOT be scoped, and will return results from ALL tenants, just for this query
-Product::withoutGlobalScope('tenant')->get();
+$allTenantProducts = \App\Models\Product::withoutGlobalScope('tenant')->get();
 ```
 
 > **Notes:**
@@ -150,7 +148,7 @@ The API is intutive and very straightfarwad, so let's give it a quick look:
 
 ```php
 // Instantiate your model
-$product = \App\Product::find(1);
+$product = \App\Models\Product::find(1);
 
 // Attach given tenants to the model
 // accepts tenant id, instance, array of ids,
@@ -184,8 +182,8 @@ $product->tenantList();
 It's very easy to get all models attached to certain tenant as follows:
 
 ```php
-$tenant = Tenant::find(1);
-$tenant->entries(\App\Product::class);
+$tenant = \Rinvex\Tenantable\Tenant::find(1);
+$tenant->entries(\App\Models\Product::class);
 ```
 
 #### Query Scopes
@@ -194,16 +192,16 @@ Yes, **Rinvex Tenantable** shipped with few awesome query scopes for your conven
 
 ```php
 // Get models with all given tenants
-Product::withAllTenants([1, 2])->get();
+$productsWithAllTenants = \App\Models\Product::withAllTenants([1, 2])->get();
 
 // Get models with any given tenants
-Product::withAnyTenants([1, 2])->get();
+$productsWithAnyTenants = \App\Models\Product::withAnyTenants([1, 2])->get();
 
 // Get models without tenants
-Product::withoutTenants([1, 2])->get();
+$productsWithoutTenants = \App\Models\Product::withoutTenants([1, 2])->get();
 
 // Get models without any tenants
-Product::withoutAnyTenants()->get();
+$productsWithoutAnyTenants = \App\Models\Product::withoutAnyTenants()->get();
 ```
 
 As you may have expected, all of the scopes accepts tenant id, slug, instance, array of ids, or even collection of instances. Check source code for deeper insights 😉
@@ -213,7 +211,7 @@ As you may have expected, all of the scopes accepts tenant id, slug, instance, a
 Manage tenant translations with ease as follows:
 
 ```php
-$tenant = Tenant::find(1);
+$tenant = \Rinvex\Tenantable\Tenant::find(1);
 
 // Set tenant translation
 $tenant->setTranslation('name', 'en', 'Name in English');
