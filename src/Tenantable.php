@@ -91,7 +91,7 @@ trait Tenantable
     }
 
     /**
-     * Boot the tenantable trait for a model.
+     * Boot the tenantable trait for the model.
      *
      * @return void
      */
@@ -121,7 +121,7 @@ trait Tenantable
     }
 
     /**
-     * Attach the given tenant(s) to the tenantable model.
+     * Attach the given tenant(s) to the model.
      *
      * @param mixed $tenants
      *
@@ -133,7 +133,7 @@ trait Tenantable
     }
 
     /**
-     * Remove the given tenant(s) from the tenantable model.
+     * Remove the given tenant(s) from the model.
      *
      * @param mixed $tenants
      *
