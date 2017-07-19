@@ -47,7 +47,7 @@
 
 ### Create Your Model
 
-Simply create a new eloquent model, and use `Tenantable` trait:
+Simply create a new eloquent model, and use `\Rinvex\Tenantable\Tenantable` trait:
 ```php
 namespace App\Models;
 
