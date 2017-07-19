@@ -18,8 +18,7 @@ class CreateTenantablesTable extends Migration
         Schema::create(config('rinvex.tenantable.tables.tenantables'), function (Blueprint $table) {
             // Columns
             $table->integer('tenant_id')->unsigned();
-            $table->integer('tenantable_id')->unsigned();
-            $table->string('tenantable_type');
+            $table->morphs('tenantable');
             $table->timestamps();
 
             // Indexes
