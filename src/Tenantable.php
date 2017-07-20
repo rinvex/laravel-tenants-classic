@@ -69,7 +69,8 @@ trait Tenantable
      */
     public function tenants(): MorphToMany
     {
-        return $this->morphToMany(static::getTenantClassName(), 'tenantable', config('rinvex.tenantable.tables.tenantables'), 'tenantable_id', 'tenant_id')->withTimestamps();
+        return $this->morphToMany(static::getTenantClassName(), 'tenantable', config('rinvex.tenantable.tables.tenantables'), 'tenantable_id', 'tenant_id')
+                    ->withTimestamps();
     }
 
     /**
