@@ -170,7 +170,7 @@ class Tenant extends Model
             'postal_code' => 'nullable|string',
             'launch_date' => 'nullable|date_format:Y-m-d',
             'group' => 'nullable|string|max:150',
-            'is_active' => 'sometimes|required|boolean',
+            'is_active' => 'sometimes|boolean',
         ]);
     }
 
