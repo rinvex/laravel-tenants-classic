@@ -317,4 +317,28 @@ class Tenant extends Model
 
         return $this->belongsTo($userModel, 'owner_id', 'id');
     }
+
+    /**
+     * Active the tenant.
+     *
+     * @return $this
+     */
+    public function activate(): self
+    {
+        $this->update(['is_active' => true]);
+
+        return $this;
+    }
+
+    /**
+     * Deactivate the tenant.
+     *
+     * @return $this
+     */
+    public function deactivate(): self
+    {
+        $this->update(['is_active' => false]);
+
+        return $this;
+    }
 }
