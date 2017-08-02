@@ -194,6 +194,30 @@ class Tenant extends Model
     }
 
     /**
+     * Get the active tenants.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActive(Builder $builder): Builder
+    {
+        return $builder->where('is_active', true);
+    }
+
+    /**
+     * Get the inactive tenants.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeInactive(Builder $builder): Builder
+    {
+        return $builder->where('is_active', false);
+    }
+
+    /**
      * Get all attached models of the given class to the tenant.
      *
      * @param string $class
