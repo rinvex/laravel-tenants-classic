@@ -53,23 +53,13 @@ trait Tenantable
     abstract public function morphToMany($related, $name, $table = null, $foreignKey = null, $otherKey = null, $inverse = false);
 
     /**
-     * Get tenant class name.
-     *
-     * @return string
-     */
-    public static function getTenantClassName(): string
-    {
-        return Tenant::class;
-    }
-
-    /**
      * Get all attached tenants to the model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function tenants(): MorphToMany
     {
-        return $this->morphToMany(static::getTenantClassName(), 'tenantable', config('rinvex.tenantable.tables.tenantables'), 'tenantable_id', 'tenant_id')
+        return $this->morphToMany(config('rinvex.tenantable.models.tenant'), 'tenantable', config('rinvex.tenantable.tables.tenantables'), 'tenantable_id', 'tenant_id')
                     ->withTimestamps();
     }
 
