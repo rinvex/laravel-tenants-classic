@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\Tenantable;
+namespace Rinvex\Tenantable\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Rinvex\Tenantable\Console\Commands\MigrateCommand;

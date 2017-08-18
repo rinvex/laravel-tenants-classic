@@ -33,13 +33,13 @@
 
 ### Create Your Model
 
-Simply create a new eloquent model, and use `\Rinvex\Tenantable\Tenantable` trait:
+Simply create a new eloquent model, and use `\Rinvex\Tenantable\Traits\Tenantable` trait:
 ```php
 namespace App\Models;
 
-use Rinvex\Tenantable\Tenant;
-use Rinvex\Tenantable\Tenantable;
+use Rinvex\Tenantable\Models\Tenant;
 use Illuminate\Database\Eloquent\Model;
+use Rinvex\Tenantable\Traits\Tenantable;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Product extends Model
@@ -59,7 +59,7 @@ Nothing special here, just normal [Eloquent](https://laravel.com/docs/5.4/eloque
 
 ```php
 // Create a new tenant
-\Rinvex\Tenantable\Tenant::create([
+\Rinvex\Tenantable\Models\Tenant::create([
     'name' => 'ACME Inc.',
     'slug' => 'acme',
     'owner_id' => '1',
@@ -69,7 +69,7 @@ Nothing special here, just normal [Eloquent](https://laravel.com/docs/5.4/eloque
 ]);
 
 // Get existing tenant by id
-$tenant = \Rinvex\Tenantable\Tenant::find(1);
+$tenant = \Rinvex\Tenantable\Models\Tenant::find(1);
 ```
 
 > **Notes:** since **Rinvex Tenantable** extends and utilizes other awesome packages, checkout the following documentations for further details:
@@ -168,7 +168,7 @@ $product->tenantList();
 It's very easy to get all models attached to certain tenant as follows:
 
 ```php
-$tenant = \Rinvex\Tenantable\Tenant::find(1);
+$tenant = \Rinvex\Tenantable\Models\Tenant::find(1);
 $tenant->entries(\App\Models\Product::class);
 ```
 
@@ -197,7 +197,7 @@ As you may have expected, all of the scopes accepts tenant id, slug, instance, a
 Manage tenant translations with ease as follows:
 
 ```php
-$tenant = \Rinvex\Tenantable\Tenant::find(1);
+$tenant = \Rinvex\Tenantable\Models\Tenant::find(1);
 
 // Set tenant translation
 $tenant->setTranslation('name', 'en', 'Name in English');

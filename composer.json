@@ -76,7 +76,7 @@
         },
         "laravel": {
             "providers": [
-                "Rinvex\\Tenantable\\TenantableServiceProvider"
+                "Rinvex\\Tenantable\\Providers\\TenantableServiceProvider"
             ]
         }
     },

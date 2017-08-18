@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\Tenantable;
+namespace Rinvex\Tenantable\Models;
 
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
- * Rinvex\Tenantable\Tenant.
+ * Rinvex\Tenantable\Models\Tenant.
  *
  * @property int                                      $id
  * @property string                                   $slug
@@ -37,26 +37,26 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property \Carbon\Carbon|null                      $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Model $owner
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereCity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereCountryCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereGroup($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereLanguageCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereLaunchDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereOwnerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant wherePhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant wherePostalCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereState($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Tenant withGroup($group = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereCountryCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereGroup($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereLanguageCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereLaunchDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant wherePostalCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant withGroup($group = null)
  * @mixin \Eloquent
  */
 class Tenant extends Model

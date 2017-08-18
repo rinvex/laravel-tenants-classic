@@ -8,7 +8,7 @@ use ReflectionClass;
 use PHPUnit\Framework\TestCase;
 use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
-use Rinvex\Tenantable\TenantableServiceProvider;
+use Rinvex\Tenantable\Providers\TenantableServiceProvider;
 
 class ServiceProviderTest extends TestCase
 {
