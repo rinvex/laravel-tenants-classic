@@ -92,8 +92,6 @@ class Tenant extends Model
      */
     protected $casts = [
         'slug' => 'string',
-        'name' => 'string',
-        'description' => 'string',
         'owner_id' => 'integer',
         'email' => 'string',
         'phone' => 'string',
