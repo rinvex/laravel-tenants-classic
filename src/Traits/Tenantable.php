@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Rinvex\Tenantable\Traits;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Rinvex\Tenantable\Exceptions\ModelNotFoundForTenantException;
 
 trait Tenantable
@@ -164,10 +164,10 @@ trait Tenantable
     /**
      * Scope query with all the given tenants.
      *
-     * @param \Illuminate\Database\Eloquent\Builder                   $builder
+     * @param \Illuminate\Database\Eloquent\Builder                          $builder
      * @param int|string|array|\ArrayAccess|\Rinvex\Tenantable\Models\Tenant $tenants
-     * @param string                                                  $column
-     * @param string                                                  $group
+     * @param string                                                         $column
+     * @param string                                                         $group
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -189,10 +189,10 @@ trait Tenantable
     /**
      * Scope query with any of the given tenants.
      *
-     * @param \Illuminate\Database\Eloquent\Builder                   $builder
+     * @param \Illuminate\Database\Eloquent\Builder                          $builder
      * @param int|string|array|\ArrayAccess|\Rinvex\Tenantable\Models\Tenant $tenants
-     * @param string                                                  $column
-     * @param string                                                  $group
+     * @param string                                                         $column
+     * @param string                                                         $group
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -210,10 +210,10 @@ trait Tenantable
     /**
      * Scope query with any of the given tenants.
      *
-     * @param \Illuminate\Database\Eloquent\Builder                   $builder
+     * @param \Illuminate\Database\Eloquent\Builder                          $builder
      * @param int|string|array|\ArrayAccess|\Rinvex\Tenantable\Models\Tenant $tenants
-     * @param string                                                  $column
-     * @param string                                                  $group
+     * @param string                                                         $column
+     * @param string                                                         $group
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -225,10 +225,10 @@ trait Tenantable
     /**
      * Scope query without any of the given tenants.
      *
-     * @param \Illuminate\Database\Eloquent\Builder                   $builder
+     * @param \Illuminate\Database\Eloquent\Builder                          $builder
      * @param int|string|array|\ArrayAccess|\Rinvex\Tenantable\Models\Tenant $tenants
-     * @param string                                                  $column
-     * @param string                                                  $group
+     * @param string                                                         $column
+     * @param string                                                         $group
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
