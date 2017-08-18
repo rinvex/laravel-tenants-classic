@@ -24,7 +24,7 @@ class TenantableServiceProvider extends ServiceProvider
     public function register()
     {
         // Merge config
-        $this->mergeConfigFrom(realpath(__DIR__.'/../config/config.php'), 'rinvex.tenantable');
+        $this->mergeConfigFrom(realpath(__DIR__.'/../../config/config.php'), 'rinvex.tenantable');
 
         // Register artisan commands
         foreach ($this->commands as $key => $value) {
