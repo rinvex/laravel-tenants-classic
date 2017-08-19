@@ -57,7 +57,7 @@ class TenantableServiceProvider extends ServiceProvider
      */
     protected function publishResources()
     {
-        $this->publishes([realpath(__DIR__.'/../config/config.php') => config_path('rinvex.tenantable.php')], 'rinvex-tenantable-config');
-        $this->publishes([realpath(__DIR__.'/../database/migrations') => database_path('migrations')], 'rinvex-tenantable-migrations');
+        $this->publishes([realpath(__DIR__.'/../../config/config.php') => config_path('rinvex.tenantable.php')], 'rinvex-tenantable-config');
+        $this->publishes([realpath(__DIR__.'/../../database/migrations') => database_path('migrations')], 'rinvex-tenantable-migrations');
     }
 }
