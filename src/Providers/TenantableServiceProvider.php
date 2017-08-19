@@ -26,6 +26,11 @@ class TenantableServiceProvider extends ServiceProvider
         // Merge config
         $this->mergeConfigFrom(realpath(__DIR__.'/../../config/config.php'), 'rinvex.tenantable');
 
+        // Register eloquent models
+        $this->app->singleton('rinvex.tenantable.tenant', function ($app) {
+            return new $app['config']['rinvex.tenantable.models.tenant']();
+        });
+
         // Register artisan commands
         foreach ($this->commands as $key => $value) {
             $this->app->singleton($value, function ($app) use ($key) {
