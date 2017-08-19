@@ -41,14 +41,14 @@ trait Tenantable
     /**
      * Define a polymorphic many-to-many relationship.
      *
-     * @param  string $related
-     * @param  string $name
-     * @param  string $table
-     * @param  string $foreignPivotKey
-     * @param  string $relatedPivotKey
-     * @param  string $parentKey
-     * @param  string $relatedKey
-     * @param  bool   $inverse
+     * @param string $related
+     * @param string $name
+     * @param string $table
+     * @param string $foreignPivotKey
+     * @param string $relatedPivotKey
+     * @param string $parentKey
+     * @param string $relatedKey
+     * @param bool   $inverse
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
