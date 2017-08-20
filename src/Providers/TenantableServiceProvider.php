@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rinvex\Tenantable\Providers;
 
+use Rinvex\Tenantable\Models\Tenant;
 use Illuminate\Support\ServiceProvider;
 use Rinvex\Tenantable\Console\Commands\MigrateCommand;
 
@@ -26,10 +27,11 @@ class TenantableServiceProvider extends ServiceProvider
         // Merge config
         $this->mergeConfigFrom(realpath(__DIR__.'/../../config/config.php'), 'rinvex.tenantable');
 
-        // Register eloquent models
+        // Bind eloquent models to IoC container
         $this->app->singleton('rinvex.tenantable.tenant', function ($app) {
             return new $app['config']['rinvex.tenantable.models.tenant']();
         });
+        $this->app->alias('rinvex.tenantable.tenant', Tenant::class);
 
         // Register artisan commands
         foreach ($this->commands as $key => $value) {
