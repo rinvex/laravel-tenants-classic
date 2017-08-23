@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Rinvex\Cacheable\CacheableEloquent;
 use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Builder;
+use Rinvex\Tenantable\Contracts\TenantContract;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
@@ -61,7 +62,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant withGroup($group = null)
  * @mixin \Eloquent
  */
-class Tenant extends Model
+class Tenant extends Model implements TenantContract
 {
     use HasSlug;
     use HasTranslations;

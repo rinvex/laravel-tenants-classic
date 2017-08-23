@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Rinvex\Tenantable\Providers;
 
-use Rinvex\Tenantable\Models\Tenant;
 use Illuminate\Support\ServiceProvider;
+use Rinvex\Tenantable\Contracts\TenantContract;
 use Rinvex\Tenantable\Console\Commands\MigrateCommand;
 
 class TenantableServiceProvider extends ServiceProvider
@@ -31,7 +31,7 @@ class TenantableServiceProvider extends ServiceProvider
         $this->app->singleton('rinvex.tenantable.tenant', function ($app) {
             return new $app['config']['rinvex.tenantable.models.tenant']();
         });
-        $this->app->alias('rinvex.tenantable.tenant', Tenant::class);
+        $this->app->alias('rinvex.tenantable.tenant', TenantContract::class);
 
         // Register console commands
         ! $this->app->runningInConsole() || $this->registerCommands();
