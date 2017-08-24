@@ -183,13 +183,11 @@ class Tenant extends Model implements TenantContract
         parent::boot();
 
         // Auto generate slugs early before validation
-        static::registerModelEvent('validating', function (self $tenant) {
-            if (! $tenant->slug) {
-                if ($tenant->exists && $tenant->getSlugOptions()->generateSlugsOnUpdate) {
-                    $tenant->generateSlugOnUpdate();
-                } elseif (! $tenant->exists && $tenant->getSlugOptions()->generateSlugsOnCreate) {
-                    $tenant->generateSlugOnCreate();
-                }
+        static::validating(function (self $tenant) {
+            if ($tenant->exists && $tenant->getSlugOptions()->generateSlugsOnUpdate) {
+                $tenant->generateSlugOnUpdate();
+            } elseif (! $tenant->exists && $tenant->getSlugOptions()->generateSlugsOnCreate) {
+                $tenant->generateSlugOnCreate();
             }
         });
     }
