@@ -6,11 +6,11 @@ namespace Rinvex\Tenantable\Models;
 
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
-use Watson\Validating\ValidatingTrait;
 use Illuminate\Database\Eloquent\Model;
 use Rinvex\Cacheable\CacheableEloquent;
-use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Builder;
+use Rinvex\Support\Traits\HasTranslations;
+use Rinvex\Support\Traits\ValidatingTrait;
 use Rinvex\Tenantable\Contracts\TenantContract;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
