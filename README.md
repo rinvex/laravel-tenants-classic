@@ -84,7 +84,7 @@ Make sure to activate your tenants in such a way that it happens on every reques
 By default we set the active tenant by setting a runtime config value, [the normal way](https://laravel.com/docs/5.4/configuration#accessing-configuration-values):
 
 ```php
-config(['rinvex.tenantable.tenant' => 1]);
+config(['rinvex.tenantable.tenant.active' => 1]);
 ```
 
 You can pass either tenant id, slug, or instance. This package is smart enough to figure it out.
@@ -94,7 +94,7 @@ Note that you can only activate one tenant at a time, even if your resources bel
 To deactivate your tenant and stop scoping by it, simply unset that runtime config value as follows:
 
 ```php
-config(['rinvex.tenantable.tenant' => null]);
+config(['rinvex.tenantable.tenant.active' => null]);
 ```
 
 ### Querying Tenant scoped Models
