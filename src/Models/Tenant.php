@@ -260,7 +260,6 @@ class Tenant extends Model implements TenantContract
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-                          ->usingSeparator('_')
                           ->doNotGenerateSlugsOnUpdate()
                           ->generateSlugsFrom('name')
                           ->saveSlugsTo('slug');
