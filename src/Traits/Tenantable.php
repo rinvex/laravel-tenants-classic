@@ -17,7 +17,8 @@ trait Tenantable
     /**
      * Register a saved model event with the dispatcher.
      *
-     * @param  \Closure|string  $callback
+     * @param \Closure|string $callback
+     *
      * @return void
      */
     abstract public static function saved($callback);
@@ -299,7 +300,7 @@ trait Tenantable
     /**
      * Detach model tenants.
      *
-     * @param mixed  $tenants
+     * @param mixed $tenants
      *
      * @return static
      */
