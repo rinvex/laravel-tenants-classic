@@ -274,13 +274,13 @@ Manage tenant translations with ease as follows:
 $tenant = app('rinvex.tenantable.tenant')->find(1);
 
 // Update name translations
-$tenant->setTranslation('name', 'en', 'Name in English')->save();
+$tenant->setTranslation('name', 'en', 'New English Tenant Name')->save();
 
 // Alternatively you can use default eloquent update
 $tenant->update([
     'name' => [
         'en' => 'New Tenant',
-        'ar' => 'وسم جديد',
+        'ar' => 'مستأجر جديد',
     ],
 ]);
 
