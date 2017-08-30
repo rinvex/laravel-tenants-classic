@@ -272,7 +272,7 @@ trait Tenantable
      * @param mixed $tenants
      * @param bool  $detaching
      *
-     * @return static
+     * @return $this
      */
     public function syncTenants($tenants, bool $detaching = true)
     {
@@ -290,7 +290,7 @@ trait Tenantable
      *
      * @param mixed $tenants
      *
-     * @return static
+     * @return $this
      */
     public function attachTenants($tenants)
     {
@@ -302,7 +302,7 @@ trait Tenantable
      *
      * @param mixed $tenants
      *
-     * @return static
+     * @return $this
      */
     public function detachTenants($tenants = null)
     {

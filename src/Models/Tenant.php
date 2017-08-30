@@ -269,7 +269,7 @@ class Tenant extends Model implements TenantContract
     /**
      * Active the tenant.
      *
-     * @return static
+     * @return $this
      */
     public function activate()
     {
@@ -281,7 +281,7 @@ class Tenant extends Model implements TenantContract
     /**
      * Deactivate the tenant.
      *
-     * @return static
+     * @return $this
      */
     public function deactivate()
     {

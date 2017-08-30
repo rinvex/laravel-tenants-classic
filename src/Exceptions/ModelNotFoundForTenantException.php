@@ -12,7 +12,7 @@ class ModelNotFoundForTenantException extends ModelNotFoundException
      * @param string    $model
      * @param int|array $ids
      *
-     * @return static
+     * @return $this
      */
     public function setModel($model, $ids = [])
     {
