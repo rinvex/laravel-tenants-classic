@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Rinvex\Tenantable\Traits;
 
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Rinvex\Tenantable\Exceptions\ModelNotFoundForTenantException;
@@ -14,20 +15,12 @@ use Rinvex\Tenantable\Exceptions\ModelNotFoundForTenantException;
 trait Tenantable
 {
     /**
-     * The Queued tenants.
+     * Register a saved model event with the dispatcher.
      *
-     * @var array
-     */
-    protected $queuedTenants = [];
-
-    /**
-     * Register a created model event with the dispatcher.
-     *
-     * @param \Closure|string $callback
-     *
+     * @param  \Closure|string  $callback
      * @return void
      */
-    abstract public static function created($callback);
+    abstract public static function saved($callback);
 
     /**
      * Register a deleted model event with the dispatcher.
@@ -70,19 +63,15 @@ trait Tenantable
     /**
      * Attach the given tenant(s) to the model.
      *
-     * @param int|array|\ArrayAccess|\Rinvex\Tenantable\Models\Tenant $tenants
+     * @param mixed $tenants
      *
      * @return void
      */
     public function setTenantsAttribute($tenants)
     {
-        if (! $this->exists) {
-            $this->queuedTenants = $tenants;
-
-            return;
-        }
-
-        $this->attachTenants($tenants);
+        static::saved(function (self $model) use ($tenants) {
+            $model->syncTenants($tenants);
+        });
     }
 
     /**
@@ -102,161 +91,9 @@ trait Tenantable
             }
         });
 
-        static::created(function (Model $tenantableModel) {
-            if ($tenantableModel->queuedTenants) {
-                $tenantableModel->attachTenants($tenantableModel->queuedTenants);
-
-                $tenantableModel->queuedTenants = [];
-            }
+        static::deleted(function (self $model) {
+            $model->tenants()->detach();
         });
-
-        static::deleted(function (Model $tenantableModel) {
-            $tenantableModel->tenants()->detach();
-        });
-    }
-
-    /**
-     * Attach the given tenant(s) to the model.
-     *
-     * @param int|string|array|\ArrayAccess|\Rinvex\Tenantable\Models\Tenant $tenants
-     *
-     * @return void
-     */
-    public function attachTenants($tenants)
-    {
-        $this->tenants()->syncWithoutDetaching($tenants);
-    }
-
-    /**
-     * Remove the given tenant(s) from the model.
-     *
-     * @param int|string|array|\ArrayAccess|\Rinvex\Tenantable\Models\Tenant $tenants
-     *
-     * @return void
-     */
-    public function detachTenants($tenants = null)
-    {
-        $this->tenants()->detach($tenants);
-    }
-
-    /**
-     * Get the tenant list.
-     *
-     * @param string $keyColumn
-     *
-     * @return array
-     */
-    public function tenantList(string $keyColumn = 'id'): array
-    {
-        return $this->tenants()->pluck('name', $keyColumn)->toArray();
-    }
-
-    /**
-     * Filter tenants with group.
-     *
-     * @param string|null $group
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function tenantsWithGroup(string $group = null): Collection
-    {
-        return $this->tenants->filter(function (Tenant $tenant) use ($group) {
-            return $tenant->group === $group;
-        });
-    }
-
-    /**
-     * Scope query with all the given tenants.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder                          $builder
-     * @param int|string|array|\ArrayAccess|\Rinvex\Tenantable\Models\Tenant $tenants
-     * @param string                                                         $column
-     * @param string                                                         $group
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeWithAllTenants(Builder $builder, $tenants, string $column = 'id', string $group = null): Builder
-    {
-        $tenants = $tenants instanceof Model ? $tenants->{$tenants->getKey()} : ($tenants instanceof Collection ? $tenants->pluck($column)->toArray() : $tenants);
-
-        collect($tenants)->each(function ($tenant) use ($builder, $column, $group) {
-            $builder->whereHas('tenants', function (Builder $builder) use ($tenant, $column, $group) {
-                return $builder->where($column, $tenant)->when($group, function (Builder $builder) use ($group) {
-                    return $builder->where('group', $group);
-                });
-            });
-        });
-
-        return $builder;
-    }
-
-    /**
-     * Scope query with any of the given tenants.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder                          $builder
-     * @param int|string|array|\ArrayAccess|\Rinvex\Tenantable\Models\Tenant $tenants
-     * @param string                                                         $column
-     * @param string                                                         $group
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeWithAnyTenants(Builder $builder, $tenants, string $column = 'id', string $group = null): Builder
-    {
-        $tenants = $tenants instanceof Model ? $tenants->{$tenants->getKey()} : ($tenants instanceof Collection ? $tenants->pluck($column)->toArray() : $tenants);
-
-        return $builder->whereHas('tenants', function (Builder $builder) use ($tenants, $column, $group) {
-            $builder->whereIn($column, (array) $tenants)->when($group, function (Builder $builder) use ($group) {
-                return $builder->where('group', $group);
-            });
-        });
-    }
-
-    /**
-     * Scope query with any of the given tenants.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder                          $builder
-     * @param int|string|array|\ArrayAccess|\Rinvex\Tenantable\Models\Tenant $tenants
-     * @param string                                                         $column
-     * @param string                                                         $group
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeWithTenants(Builder $builder, $tenants, string $column = 'id', string $group = null): Builder
-    {
-        return static::scopeWithAnyTenants($builder, $tenants, $column, $group);
-    }
-
-    /**
-     * Scope query without any of the given tenants.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder                          $builder
-     * @param int|string|array|\ArrayAccess|\Rinvex\Tenantable\Models\Tenant $tenants
-     * @param string                                                         $column
-     * @param string                                                         $group
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeWithoutTenants(Builder $builder, $tenants, string $column = 'id', string $group = null): Builder
-    {
-        $tenants = $tenants instanceof Model ? $tenants->{$tenants->getKey()} : ($tenants instanceof Collection ? $tenants->pluck($column)->toArray() : $tenants);
-
-        return $builder->whereDoesntHave('tenants', function (Builder $builder) use ($tenants, $column, $group) {
-            $builder->whereIn($column, (array) $tenants)->when($group, function (Builder $builder) use ($group) {
-                return $builder->where('group', $group);
-            });
-        });
-    }
-
-    /**
-     * Scope query without any tenants.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $builder
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeWithoutAnyTenants(Builder $builder): Builder
-    {
-        return $builder->doesntHave('tenants');
     }
 
     /**
@@ -285,13 +122,231 @@ trait Tenantable
     {
         try {
             return static::query()->findOrFail($id, $columns);
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $exception) {
             // If it DOES exist, just not for this tenant, throw a nicer exception
             if (! is_null(static::forAllTenants()->find($id, $columns))) {
                 throw (new ModelNotFoundForTenantException())->setModel(get_called_class(), [$id]);
             }
 
-            throw $e;
+            throw $exception;
         }
+    }
+
+    /**
+     * Scope query with all the given tenants.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param mixed                                 $tenants
+     * @param string                                $group
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithAllTenants(Builder $builder, $tenants, string $group = null): Builder
+    {
+        $tenants = $this->prepareTenantIds($tenants);
+
+        collect($tenants)->each(function ($tenant) use ($builder, $group) {
+            $builder->whereHas('tenants', function (Builder $builder) use ($tenant, $group) {
+                return $builder->where('id', $tenant)->when($group, function (Builder $builder) use ($group) {
+                    return $builder->where('group', $group);
+                });
+            });
+        });
+
+        return $builder;
+    }
+
+    /**
+     * Scope query with any of the given tenants.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param mixed                                 $tenants
+     * @param string                                $group
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithAnyTenants(Builder $builder, $tenants, string $group = null): Builder
+    {
+        $tenants = $this->prepareTenantIds($tenants);
+
+        return $builder->whereHas('tenants', function (Builder $builder) use ($tenants, $group) {
+            $builder->whereIn('id', $tenants)->when($group, function (Builder $builder) use ($group) {
+                return $builder->where('group', $group);
+            });
+        });
+    }
+
+    /**
+     * Scope query with any of the given tenants.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param mixed                                 $tenants
+     * @param string                                $group
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithTenants(Builder $builder, $tenants, string $group = null): Builder
+    {
+        return static::scopeWithAnyTenants($builder, $tenants, $group);
+    }
+
+    /**
+     * Scope query without any of the given tenants.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param mixed                                 $tenants
+     * @param string                                $group
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithoutTenants(Builder $builder, $tenants, string $group = null): Builder
+    {
+        $tenants = $this->prepareTenantIds($tenants);
+
+        return $builder->whereDoesntHave('tenants', function (Builder $builder) use ($tenants, $group) {
+            $builder->whereIn('id', $tenants)->when($group, function (Builder $builder) use ($group) {
+                return $builder->where('group', $group);
+            });
+        });
+    }
+
+    /**
+     * Scope query without any tenants.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithoutAnyTenants(Builder $builder): Builder
+    {
+        return $builder->doesntHave('tenants');
+    }
+
+    /**
+     * Determine if the model has any of the given tenants.
+     *
+     * @param mixed  $tenants
+     * @param string $group
+     *
+     * @return bool
+     */
+    public function hasTenants($tenants, string $group = null): bool
+    {
+        $tenants = $this->prepareTenantIds($tenants, $group);
+
+        return ! $this->tenants->pluck('id')->intersect($tenants)->isEmpty();
+    }
+
+    /**
+     * Determine if the model has any the given tenants.
+     *
+     * @param mixed  $tenants
+     * @param string $group
+     *
+     * @return bool
+     */
+    public function hasAnyTenants($tenants, string $group = null): bool
+    {
+        return static::hasTenants($tenants, $group);
+    }
+
+    /**
+     * Determine if the model has all of the given tenants.
+     *
+     * @param mixed  $tenants
+     * @param string $group
+     *
+     * @return bool
+     */
+    public function hasAllTenants($tenants, string $group = null): bool
+    {
+        $tenants = $this->prepareTenantIds($tenants, $group);
+
+        return collect($tenants)->diff($this->tenants->pluck('id'))->isEmpty();
+    }
+
+    /**
+     * Sync model tenants.
+     *
+     * @param mixed $tenants
+     * @param bool  $detaching
+     *
+     * @return static
+     */
+    public function syncTenants($tenants, bool $detaching = true)
+    {
+        // Find tenants
+        $tenants = $this->prepareTenantIds($tenants);
+
+        // Sync model tenants
+        $this->tenants()->sync($tenants, $detaching);
+
+        return $this;
+    }
+
+    /**
+     * Attach model tenants.
+     *
+     * @param mixed $tenants
+     *
+     * @return static
+     */
+    public function attachTenants($tenants)
+    {
+        return $this->syncTenants($tenants, false);
+    }
+
+    /**
+     * Detach model tenants.
+     *
+     * @param mixed  $tenants
+     *
+     * @return static
+     */
+    public function detachTenants($tenants = null)
+    {
+        $tenants = ! is_null($tenants) ? $this->prepareTenantIds($tenants) : null;
+
+        // Sync model tenants
+        $this->tenants()->detach($tenants);
+
+        return $this;
+    }
+
+    /**
+     * Prepare tenant IDs.
+     *
+     * @param mixed  $tenants
+     * @param string $group
+     *
+     * @return array
+     */
+    protected function prepareTenantIds($tenants, string $group = null): array
+    {
+        // Convert collection to plain array
+        if ($tenants instanceof BaseCollection && is_string($tenants->first())) {
+            $tenants = $tenants->toArray();
+        }
+
+        // Find tenants by slug, and get their IDs
+        if (is_string($tenants) || (is_array($tenants) && is_string(array_first($tenants)))) {
+            $tenants = app('rinvex.tenantable.tenant')->whereIn('slug', $tenants)->when($group, function (Builder $builder) use ($group) {
+                return $builder->where('group', $group);
+            })->get()->pluck('id');
+        }
+
+        if ($tenants instanceof Model) {
+            return [$tenants->getKey()];
+        }
+
+        if ($tenants instanceof Collection) {
+            return $tenants->modelKeys();
+        }
+
+        if ($tenants instanceof BaseCollection) {
+            return $tenants->toArray();
+        }
+
+        return (array) $tenants;
     }
 }

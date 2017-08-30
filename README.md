@@ -44,11 +44,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 class Product extends Model
 {
     use Tenantable;
-
-    public function tenants(): MorphToMany
-    {
-        return $this->morphToMany(config('rinvex.tenantable.models.tenant'), 'tenantable');
-    }
 }
 ```
 
@@ -98,8 +93,8 @@ config(['rinvex.tenantable.tenant.active' => null]);
 ```
 
 ### Querying Tenant scoped Models
-    
-After you've added tenants, all queries against a Model which uses `Tenantable` will be scoped automatically:
+
+After you've added tenants, all queries against a Model which uses `\Rinvex\Tenantable\Traits\Tenantable` will be scoped automatically:
 
 ```php
 // This will only include Models belonging to the active tenant
@@ -109,7 +104,7 @@ $tenantProducts = \App\Models\Product::all();
 $product = \App\Models\Product::find(2);
 ```
 
-If you need to query across all tenants, you can use `forAllTenants` method:
+If you need to query across all tenants, you can use `forAllTenants()` method:
 
 ```php
 // Will include results from ALL tenants, just for this query
@@ -133,38 +128,102 @@ The API is intutive and very straightfarwad, so let's give it a quick look:
 
 ```php
 // Instantiate your model
-$product = \App\Models\Product::find(1);
-
-// Attach given tenants to the model
-// accepts tenant id, instance, array of ids,
-// or collection of instances, same signature as $model->sync()
-$product->attachTenants([1, 2]);
-
-// Alternatively you can pass tenants as an attribute to the model
-$product->fill([
-    'tenants' => [1, 2],
-])->save();
-
-// Detach given tenants from the model
-// accepts tenant id, instance, array of ids,
-// or collection of instances, same signature as $model->sync()
-$product->detachTenants(2);
-
-// Remove all attached tenants
-$product->detachTenants();
+$product = new \App\Models\Product();
 
 // Get attached tenants collection
 $product->tenants;
 
-// Get attached tenants array with ids and names
-$product->tenantList();
+// Get attached tenants query builder
+$product->tenants();
 ```
+
+You can attach tenants in various ways:
+
+```php
+// Single tenant id
+$product->attachTenants(1);
+
+// Multiple tenant IDs array
+$product->attachTenants([1, 2, 5]);
+
+// Multiple tenant IDs collection
+$product->attachTenants(collect([1, 2, 5]));
+
+// Single tenant model instance
+$tenantInstance = app('rinvex.tenantable.tenant')->first();
+$product->attachTenants($tenantInstance);
+
+// Single tenant slug
+$product->attachTenants('test-tenant');
+
+// Multiple tenant slugs array
+$product->attachTenants(['first-tenant', 'second-tenant']);
+
+// Multiple tenant slugs collection
+$product->attachTenants(collect(['first-tenant', 'second-tenant']));
+
+// Multiple tenant model instances
+$tenantInstances = app('rinvex.tenantable.tenant')->whereIn('id', [1, 2, 5])->get();
+$product->attachTenants($tenantInstances);
+```
+
+> **Notes:** 
+> - The `attachTenants()` method attach the given tenants to the model without touching the currently attached tenants, while there's the `syncTenants()` method that can detach any records that's not in the given items, this method takes a second optional boolean parameter that's set detaching flag to `true` or `false`.
+> - To detach model tenants you can use the `detachTenants()` method, which uses **exactly** the same signature as the `attachTenants()` method, with additional feature of detaching all currently attached tenants by passing null or nothing to that method as follows: `$product->detachTenants();`.
+
+And as you may have expected, you can check if tenants attached:
+
+```php
+// Single tenant id
+$product->hasAnyTenants(1);
+
+// Multiple tenant IDs array
+$product->hasAnyTenants([1, 2, 5]);
+
+// Multiple tenant IDs collection
+$product->hasAnyTenants(collect([1, 2, 5]));
+
+// Single tenant model instance
+$tenantInstance = app('rinvex.tenantable.tenant')->first();
+$product->hasAnyTenants($tenantInstance);
+
+// Single tenant slug
+$product->hasAnyTenants('test-tenant');
+
+// Multiple tenant slugs array
+$product->hasAnyTenants(['first-tenant', 'second-tenant']);
+
+// Multiple tenant slugs collection
+$product->hasAnyTenants(collect(['first-tenant', 'second-tenant']));
+
+// Multiple tenant model instances
+$tenantInstances = app('rinvex.tenantable.tenant')->whereIn('id', [1, 2, 5])->get();
+$product->hasAnyTenants($tenantInstances);
+```
+
+> **Notes:** 
+> - The `hasAnyTenants()` method check if **ANY** of the given tenants are attached to the model. It returns boolean `true` or `false` as a result.
+> - Similarly the `hasAllTenants()` method uses **exactly** the same signature as the `hasAnyTenants()` method, but it behaves differently and performs a strict comparison to check if **ALL** of the given tenants are attached.
 
 ### Advanced Usage
 
+#### Generate Tenant Slugs
+
+**Rinvex Tenantable** auto generates slugs and auto detect and insert default translation for you if not provided, but you still can pass it explicitly through normal eloquent `create` method, as follows:
+
+```php
+app('rinvex.tenantable.tenant')->create(['name' => ['en' => 'My New Tenant'], 'slug' => 'custom-tenant-slug']);
+```
+
+> **Note:** Check **[Sluggable](https://github.com/spatie/laravel-sluggable)** package for further details.
+
+#### Smart Parameter Detection
+
+**Rinvex Tenantable** methods that accept list of tenants are smart enough to handle almost all kinds of inputs as you've seen in the above examples. It will check input type and behave accordingly. 
+
 #### Retrieve All Models Attached To The Tenant
 
-It's very easy to get all models attached to certain tenant as follows:
+You may encounter a situation where you need to get all models attached to certain tenant, you do so with ease as follows:
 
 ```php
 $tenant = app('rinvex.tenantable.tenant')->find(1);
@@ -176,20 +235,36 @@ $tenant->entries(\App\Models\Product::class);
 Yes, **Rinvex Tenantable** shipped with few awesome query scopes for your convenience, usage example:
 
 ```php
-// Get models with all given tenants
-$productsWithAllTenants = \App\Models\Product::withAllTenants([1, 2])->get();
+// Single tenant id
+$product->withAnyTenants(1)->get();
 
-// Get models with any given tenants
-$productsWithAnyTenants = \App\Models\Product::withAnyTenants([1, 2])->get();
+// Multiple tenant IDs array
+$product->withAnyTenants([1, 2, 5])->get();
 
-// Get models without tenants
-$productsWithoutTenants = \App\Models\Product::withoutTenants([1, 2])->get();
+// Multiple tenant IDs collection
+$product->withAnyTenants(collect([1, 2, 5]))->get();
 
-// Get models without any tenants
-$productsWithoutAnyTenants = \App\Models\Product::withoutAnyTenants()->get();
+// Single tenant model instance
+$tenantInstance = app('rinvex.tenantable.tenant')->first();
+$product->withAnyTenants($tenantInstance)->get();
+
+// Single tenant slug
+$product->withAnyTenants('test-tenant')->get();
+
+// Multiple tenant slugs array
+$product->withAnyTenants(['first-tenant', 'second-tenant'])->get();
+
+// Multiple tenant slugs collection
+$product->withAnyTenants(collect(['first-tenant', 'second-tenant']))->get();
+
+// Multiple tenant model instances
+$tenantInstances = app('rinvex.tenantable.tenant')->whereIn('id', [1, 2, 5])->get();
+$product->withAnyTenants($tenantInstances)->get();
 ```
 
-As you may have expected, all of the scopes accepts tenant id, slug, instance, array of ids, or even collection of instances. Check source code for deeper insights 😉
+> **Notes:**
+> - The `withAnyTenants()` scope finds products with **ANY** attached tenants of the given. It returns normally a query builder, so you can chain it or call `get()` method for example to execute and get results.
+> - Similarly there's few other scopes like `withAllTenants()` that finds products with **ALL** attached tenants of the given, `withoutTenants()` which finds products without **ANY** attached tenants of the given, and lastly `withoutAnyTenants()` which find products without **ANY** attached tenants at all. All scopes are created equal, with same signature, and returns query builder.
 
 #### Tenant Translations
 
@@ -198,15 +273,28 @@ Manage tenant translations with ease as follows:
 ```php
 $tenant = app('rinvex.tenantable.tenant')->find(1);
 
-// Set tenant translation
-$tenant->setTranslation('name', 'en', 'Name in English');
+// Update name translations
+$tenant->setTranslation('name', 'en', 'Name in English')->save();
 
-// Get tenant translation
-$tenant->setTranslation('name', 'en');
+// Alternatively you can use default eloquent update
+$tenant->update([
+    'name' => [
+        'en' => 'New Tenant',
+        'ar' => 'وسم جديد',
+    ],
+]);
+
+// Get single tenant translation
+$tenant->getTranslation('name', 'en');
+
+// Get all tenant translations
+$tenant->getTranslations('name');
 
 // Get tenant name in default locale
 $tenant->name;
 ```
+
+> **Note:** Check **[Translatable](https://github.com/spatie/laravel-translatable)** package for further details.
 
 
 ## Changelog

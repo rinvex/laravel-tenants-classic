@@ -193,30 +193,6 @@ class Tenant extends Model implements TenantContract
     }
 
     /**
-     * Get the active tenants.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $builder
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeActive(Builder $builder): Builder
-    {
-        return $builder->where('is_active', true);
-    }
-
-    /**
-     * Get the inactive tenants.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $builder
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeInactive(Builder $builder): Builder
-    {
-        return $builder->where('is_active', false);
-    }
-
-    /**
      * Get all attached models of the given class to the tenant.
      *
      * @param string $class
@@ -242,31 +218,40 @@ class Tenant extends Model implements TenantContract
     }
 
     /**
-     * Scope tenants by given group.
+     * Get the active tenants.
      *
      * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param string|null                           $group
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithGroup(Builder $builder, string $group = null): Builder
+    public function scopeActive(Builder $builder): Builder
     {
-        return $group ? $builder->where('group', $group) : $builder;
+        return $builder->where('is_active', true);
     }
 
     /**
-     * Find tenant by name.
+     * Get the inactive tenants.
      *
-     * @param string      $name
-     * @param string|null $locale
+     * @param \Illuminate\Database\Eloquent\Builder $builder
      *
-     * @return static|null
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function findByName(string $name, string $locale = null)
+    public function scopeInactive(Builder $builder): Builder
     {
-        $locale = $locale ?? app()->getLocale();
+        return $builder->where('is_active', false);
+    }
 
-        return static::query()->where("name->{$locale}", $name)->first();
+    /**
+     * Scope tenants by given group.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param string                                $group
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithGroup(Builder $builder, string $group): Builder
+    {
+        return $builder->where('group', $group);
     }
 
     /**
