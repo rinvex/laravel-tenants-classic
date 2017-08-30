@@ -54,7 +54,7 @@ class Product extends Model
 
 ### Manage Your Tenants
 
-Nothing special here, just normal [Eloquent](https://laravel.com/docs/5.4/eloquent) model stuff:
+Nothing special here, just normal [Eloquent](https://laravel.com/docs/master/eloquent) model stuff:
 
 ```php
 // Create a new tenant
@@ -81,7 +81,7 @@ $tenant = app('rinvex.tenantable.tenant')->find(1);
 
 Make sure to activate your tenants in such a way that it happens on every request, and before you need Models scoped, like in a middleware or as part of a stateless authentication method like OAuth.
 
-By default we set the active tenant by setting a runtime config value, [the normal way](https://laravel.com/docs/5.4/configuration#accessing-configuration-values):
+By default we set the active tenant by setting a runtime config value, [the normal way](https://laravel.com/docs/master/configuration#accessing-configuration-values):
 
 ```php
 config(['rinvex.tenantable.tenant.active' => 1]);
@@ -116,7 +116,7 @@ If you need to query across all tenants, you can use `forAllTenants` method:
 $allTenantProducts = \App\Models\Product::forAllTenants()->get();
 ```
 
-Under the hood, **Rinvex Tenantable** uses Laravel's [anonymous global scopes](https://laravel.com/docs/5.4/eloquent#global-scopes), which means if you are scoping by active tenant, and you want to exclude one single query, you can do so:
+Under the hood, **Rinvex Tenantable** uses Laravel's [anonymous global scopes](https://laravel.com/docs/master/eloquent#global-scopes), which means if you are scoping by active tenant, and you want to exclude one single query, you can do so:
 
 ```php
 // Will NOT be scoped, and will return results from ALL tenants, just for this query
