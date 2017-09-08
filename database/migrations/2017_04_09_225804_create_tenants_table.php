@@ -18,7 +18,7 @@ class CreateTenantsTable extends Migration
         // Get users model
         $userModel = config('auth.providers.'.config('auth.guards.'.config('auth.defaults.guard').'.provider').'.model');
 
-        Schema::create(config('rinvex.tenantable.tables.tenants'), function (Blueprint $table) use ($userModel) {
+        Schema::create(config('rinvex.tenants.tables.tenants'), function (Blueprint $table) use ($userModel) {
             // Columns
             $table->increments('id');
             $table->string('slug');
@@ -53,7 +53,7 @@ class CreateTenantsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('rinvex.tenantable.tables.tenants'));
+        Schema::dropIfExists(config('rinvex.tenants.tables.tenants'));
     }
 
     /**

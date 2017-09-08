@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\Tenantable\Traits;
+namespace Rinvex\Tenants\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Rinvex\Tenantable\Exceptions\ModelNotFoundForTenantException;
+use Rinvex\Tenants\Exceptions\ModelNotFoundForTenantException;
 
 trait Tenantable
 {
@@ -57,7 +57,7 @@ trait Tenantable
      */
     public function tenants(): MorphToMany
     {
-        return $this->morphToMany(config('rinvex.tenantable.models.tenant'), 'tenantable', config('rinvex.tenantable.tables.tenantables'), 'tenantable_id', 'tenant_id')
+        return $this->morphToMany(config('rinvex.tenants.models.tenant'), 'tenantable', config('rinvex.tenants.tables.tenantables'), 'tenantable_id', 'tenant_id')
                     ->withTimestamps();
     }
 
@@ -83,7 +83,7 @@ trait Tenantable
     public static function bootTenantable()
     {
         static::addGlobalScope('tenant', function (Builder $builder) {
-            if ($tenant = config('rinvex.tenantable.tenant.active')) {
+            if ($tenant = config('rinvex.tenants.tenant.active')) {
                 $builder->whereHas('tenants', function (Builder $builder) use ($tenant) {
                     $key = $tenant instanceof Model ? $tenant->getKeyName() : (is_int($tenant) ? 'id' : 'slug');
                     $value = $tenant instanceof Model ? $tenant->$key : $tenant;
@@ -115,7 +115,7 @@ trait Tenantable
      * @param mixed $id
      * @param array $columns
      *
-     * @throws \Rinvex\Tenantable\Exceptions\ModelNotFoundForTenantException
+     * @throws \Rinvex\Tenants\Exceptions\ModelNotFoundForTenantException
      *
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
      */
@@ -331,7 +331,7 @@ trait Tenantable
 
         // Find tenants by slug, and get their IDs
         if (is_string($tenants) || (is_array($tenants) && is_string(array_first($tenants)))) {
-            $tenants = app('rinvex.tenantable.tenant')->whereIn('slug', $tenants)->when($group, function (Builder $builder) use ($group) {
+            $tenants = app('rinvex.tenants.tenant')->whereIn('slug', $tenants)->when($group, function (Builder $builder) use ($group) {
                 return $builder->where('group', $group);
             })->get()->pluck('id');
         }

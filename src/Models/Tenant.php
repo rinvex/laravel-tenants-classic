@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\Tenantable\Models;
+namespace Rinvex\Tenants\Models;
 
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -11,11 +11,11 @@ use Rinvex\Cacheable\CacheableEloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Rinvex\Support\Traits\HasTranslations;
 use Rinvex\Support\Traits\ValidatingTrait;
-use Rinvex\Tenantable\Contracts\TenantContract;
+use Rinvex\Tenants\Contracts\TenantContract;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
- * Rinvex\Tenantable\Models\Tenant.
+ * Rinvex\Tenants\Models\Tenant.
  *
  * @property int                                                $id
  * @property string                                             $slug
@@ -38,28 +38,28 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property \Carbon\Carbon                                     $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $owner
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant active()
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant inactive()
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereCity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereCountryCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereGroup($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereLanguageCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereLaunchDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereOwnerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant wherePhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant wherePostalCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereState($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenantable\Models\Tenant withGroup($group = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant active()
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant inactive()
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereCountryCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereGroup($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereLanguageCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereLaunchDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant wherePostalCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant withGroup($group = null)
  * @mixin \Eloquent
  */
 class Tenant extends Model implements TenantContract
@@ -155,13 +155,13 @@ class Tenant extends Model implements TenantContract
         // Get users model
         $userModel = config('auth.providers.'.config('auth.guards.'.config('auth.defaults.guard').'.provider').'.model');
 
-        $this->setTable(config('rinvex.tenantable.tables.tenants'));
+        $this->setTable(config('rinvex.tenants.tables.tenants'));
         $this->setRules([
-            'slug' => 'required|alpha_dash|max:150|unique:'.config('rinvex.tenantable.tables.tenants').',slug',
+            'slug' => 'required|alpha_dash|max:150|unique:'.config('rinvex.tenants.tables.tenants').',slug',
             'name' => 'required|string|max:150',
             'description' => 'nullable|string|max:10000',
             'owner_id' => 'required|integer|exists:'.(new $userModel())->getTable().',id',
-            'email' => 'required|email|min:3|max:150|unique:'.config('rinvex.tenantable.tables.tenants').',email',
+            'email' => 'required|email|min:3|max:150|unique:'.config('rinvex.tenants.tables.tenants').',email',
             'phone' => 'nullable|numeric|min:4',
             'country_code' => 'required|alpha|size:2|country',
             'language_code' => 'required|alpha|size:2|language',
@@ -201,7 +201,7 @@ class Tenant extends Model implements TenantContract
      */
     public function entries(string $class): MorphToMany
     {
-        return $this->morphedByMany($class, 'tenantable', config('rinvex.tenantable.tables.tenantables'), 'tenant_id', 'tenantable_id');
+        return $this->morphedByMany($class, 'tenantable', config('rinvex.tenants.tables.tenantables'), 'tenant_id', 'tenantable_id');
     }
 
     /**

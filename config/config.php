@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
 
-    // Tenantable Database Tables
+    // Tenants Database Tables
     'tables' => [
 
         'tenants' => 'tenants',
@@ -12,9 +12,9 @@ return [
 
     ],
 
-    // Tenantable Models
+    // Tenants Models
     'models' => [
-        'tenant' => \Rinvex\Tenantable\Models\Tenant::class,
+        'tenant' => \Rinvex\Tenants\Models\Tenant::class,
     ],
 
 ];

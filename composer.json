@@ -1,6 +1,6 @@
 {
-    "name": "rinvex/tenantable",
-    "description": "Rinvex Tenantable is a contextually intelligent polymorphic Laravel package, for single db multi-tenancy. You can completely isolate tenants data with ease using the same database, with full power and control over what data to be centrally shared, and what to be tenant related and therefore isolated from others.",
+    "name": "rinvex/tenants",
+    "description": "Rinvex Tenants is a contextually intelligent polymorphic Laravel package, for single db multi-tenancy. You can completely isolate tenants data with ease using the same database, with full power and control over what data to be centrally shared, and what to be tenant related and therefore isolated from others.",
     "keywords": [
         "model",
         "tenant",
@@ -18,9 +18,9 @@
     "homepage": "https://rinvex.com",
     "support": {
         "email": "help@rinvex.com",
-        "issues": "https://github.com/rinvex/tenantable/issues",
-        "source": "https://github.com/rinvex/tenantable",
-        "docs": "https://github.com/rinvex/tenantable/blob/master/README.md"
+        "issues": "https://github.com/rinvex/tenants/issues",
+        "source": "https://github.com/rinvex/tenants",
+        "docs": "https://github.com/rinvex/tenants/blob/master/README.md"
     },
     "authors": [
         {
@@ -36,7 +36,7 @@
         },
         {
             "name": "The Generous Laravel Community",
-            "homepage": "https://github.com/rinvex/tenantable/contributors"
+            "homepage": "https://github.com/rinvex/tenants/contributors"
         }
     ],
     "require": {
@@ -57,12 +57,12 @@
             "database"
         ],
         "psr-4": {
-            "Rinvex\\Tenantable\\": "src/"
+            "Rinvex\\Tenants\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Rinvex\\Tenantable\\Test\\": "tests"
+            "Rinvex\\Tenants\\Test\\": "tests"
         }
     },
     "config": {
@@ -76,7 +76,7 @@
         },
         "laravel": {
             "providers": [
-                "Rinvex\\Tenantable\\Providers\\TenantableServiceProvider"
+                "Rinvex\\Tenants\\Providers\\TenantsServiceProvider"
             ]
         }
     },

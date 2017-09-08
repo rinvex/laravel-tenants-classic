@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\Tenantable\Providers;
+namespace Rinvex\Tenants\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Rinvex\Tenantable\Contracts\TenantContract;
-use Rinvex\Tenantable\Console\Commands\MigrateCommand;
+use Rinvex\Tenants\Contracts\TenantContract;
+use Rinvex\Tenants\Console\Commands\MigrateCommand;
 
-class TenantableServiceProvider extends ServiceProvider
+class TenantsServiceProvider extends ServiceProvider
 {
     /**
      * The commands to be registered.
@@ -16,7 +16,7 @@ class TenantableServiceProvider extends ServiceProvider
      * @var array
      */
     protected $commands = [
-        MigrateCommand::class => 'command.rinvex.tenantable.migrate',
+        MigrateCommand::class => 'command.rinvex.tenants.migrate',
     ];
 
     /**
@@ -25,13 +25,13 @@ class TenantableServiceProvider extends ServiceProvider
     public function register()
     {
         // Merge config
-        $this->mergeConfigFrom(realpath(__DIR__.'/../../config/config.php'), 'rinvex.tenantable');
+        $this->mergeConfigFrom(realpath(__DIR__.'/../../config/config.php'), 'rinvex.tenants');
 
         // Bind eloquent models to IoC container
-        $this->app->singleton('rinvex.tenantable.tenant', function ($app) {
-            return new $app['config']['rinvex.tenantable.models.tenant']();
+        $this->app->singleton('rinvex.tenants.tenant', function ($app) {
+            return new $app['config']['rinvex.tenants.models.tenant']();
         });
-        $this->app->alias('rinvex.tenantable.tenant', TenantContract::class);
+        $this->app->alias('rinvex.tenants.tenant', TenantContract::class);
 
         // Register console commands
         ! $this->app->runningInConsole() || $this->registerCommands();
@@ -56,8 +56,8 @@ class TenantableServiceProvider extends ServiceProvider
      */
     protected function publishResources()
     {
-        $this->publishes([realpath(__DIR__.'/../../config/config.php') => config_path('rinvex.tenantable.php')], 'rinvex-tenantable-config');
-        $this->publishes([realpath(__DIR__.'/../../database/migrations') => database_path('migrations')], 'rinvex-tenantable-migrations');
+        $this->publishes([realpath(__DIR__.'/../../config/config.php') => config_path('rinvex.tenants.php')], 'rinvex-tenants-config');
+        $this->publishes([realpath(__DIR__.'/../../database/migrations') => database_path('migrations')], 'rinvex-tenants-migrations');
     }
 
     /**

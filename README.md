@@ -1,27 +1,27 @@
-# Rinvex Tenantable
+# Rinvex Tenants
 
-**Rinvex Tenantable** is a contextually intelligent polymorphic Laravel package, for single db multi-tenancy. You can completely isolate tenants data with ease using the same database, with full power and control over what data to be centrally shared, and what to be tenant related and therefore isolated from others.
+**Rinvex Tenants** is a contextually intelligent polymorphic Laravel package, for single db multi-tenancy. You can completely isolate tenants data with ease using the same database, with full power and control over what data to be centrally shared, and what to be tenant related and therefore isolated from others.
 
-[![Packagist](https://img.shields.io/packagist/v/rinvex/tenantable.svg?label=Packagist&style=flat-square)](https://packagist.org/packages/rinvex/tenantable)
-[![VersionEye Dependencies](https://img.shields.io/versioneye/d/php/rinvex:tenantable.svg?label=Dependencies&style=flat-square)](https://www.versioneye.com/php/rinvex:tenantable/)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/rinvex/tenantable.svg?label=Scrutinizer&style=flat-square)](https://scrutinizer-ci.com/g/rinvex/tenantable/)
-[![Code Climate](https://img.shields.io/codeclimate/github/rinvex/tenantable.svg?label=CodeClimate&style=flat-square)](https://codeclimate.com/github/rinvex/tenantable)
-[![Travis](https://img.shields.io/travis/rinvex/tenantable.svg?label=TravisCI&style=flat-square)](https://travis-ci.org/rinvex/tenantable)
+[![Packagist](https://img.shields.io/packagist/v/rinvex/tenants.svg?label=Packagist&style=flat-square)](https://packagist.org/packages/rinvex/tenants)
+[![VersionEye Dependencies](https://img.shields.io/versioneye/d/php/rinvex:tenants.svg?label=Dependencies&style=flat-square)](https://www.versioneye.com/php/rinvex:tenants/)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/rinvex/tenants.svg?label=Scrutinizer&style=flat-square)](https://scrutinizer-ci.com/g/rinvex/tenants/)
+[![Code Climate](https://img.shields.io/codeclimate/github/rinvex/tenants.svg?label=CodeClimate&style=flat-square)](https://codeclimate.com/github/rinvex/tenants)
+[![Travis](https://img.shields.io/travis/rinvex/tenants.svg?label=TravisCI&style=flat-square)](https://travis-ci.org/rinvex/tenants)
 [![SensioLabs Insight](https://img.shields.io/sensiolabs/i/6ddccc21-ed54-4738-84b5-0ab311c9c1db.svg?label=SensioLabs&style=flat-square)](https://insight.sensiolabs.com/projects/6ddccc21-ed54-4738-84b5-0ab311c9c1db)
 [![StyleCI](https://styleci.io/repos/87875339/shield)](https://styleci.io/repos/87875339)
-[![License](https://img.shields.io/packagist/l/rinvex/tenantable.svg?label=License&style=flat-square)](https://github.com/rinvex/tenantable/blob/develop/LICENSE)
+[![License](https://img.shields.io/packagist/l/rinvex/tenants.svg?label=License&style=flat-square)](https://github.com/rinvex/tenants/blob/develop/LICENSE)
 
 
 ## Installation
 
 1. Install the package via composer:
     ```shell
-    composer require rinvex/tenantable
+    composer require rinvex/tenants
     ```
 
 2. Execute migrations via the following command:
     ```
-    php artisan rinvex:migrate:tenantable
+    php artisan rinvex:migrate:tenants
     ```
 
 3. Done!
@@ -29,16 +29,16 @@
 
 ## Usage
 
-**Rinvex Tenantable** assumes that you have `tenant_id` column on all of your tenant scoped tables that references which tenant each row belongs to, and it's recommended to add foreign key constraint for that column that reference `tenants` table for data integrity.
+**Rinvex Tenants** assumes that you have `tenant_id` column on all of your tenant scoped tables that references which tenant each row belongs to, and it's recommended to add foreign key constraint for that column that reference `tenants` table for data integrity.
 
 ### Create Your Model
 
-Simply create a new eloquent model, and use `\Rinvex\Tenantable\Traits\Tenantable` trait:
+Simply create a new eloquent model, and use `\Rinvex\Tenants\Traits\Tenantable` trait:
 ```php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Rinvex\Tenantable\Traits\Tenantable;
+use Rinvex\Tenants\Traits\Tenantable;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Product extends Model
@@ -53,7 +53,7 @@ Nothing special here, just normal [Eloquent](https://laravel.com/docs/master/elo
 
 ```php
 // Create a new tenant
-app('rinvex.tenantable.tenant')->create([
+app('rinvex.tenants.tenant')->create([
     'name' => 'ACME Inc.',
     'slug' => 'acme',
     'owner_id' => '1',
@@ -63,23 +63,23 @@ app('rinvex.tenantable.tenant')->create([
 ]);
 
 // Get existing tenant by id
-$tenant = app('rinvex.tenantable.tenant')->find(1);
+$tenant = app('rinvex.tenants.tenant')->find(1);
 ```
 
-> **Notes:** since **Rinvex Tenantable** extends and utilizes other awesome packages, checkout the following documentations for further details:
+> **Notes:** since **Rinvex Tenants** extends and utilizes other awesome packages, checkout the following documentations for further details:
 > - Translatable out of the box using [`spatie/laravel-translatable`](https://github.com/spatie/laravel-translatable)
 > - Automatic Slugging using [`spatie/laravel-sluggable`](https://github.com/spatie/laravel-sluggable)
 
 ### Activate Your Tenant
 
-**Rinvex Tenantable** is stateless, which means you have to set the active tenant on every request, therefore it will only scope that specific request.
+**Rinvex Tenants** is stateless, which means you have to set the active tenant on every request, therefore it will only scope that specific request.
 
 Make sure to activate your tenants in such a way that it happens on every request, and before you need Models scoped, like in a middleware or as part of a stateless authentication method like OAuth.
 
 By default we set the active tenant by setting a runtime config value, [the normal way](https://laravel.com/docs/master/configuration#accessing-configuration-values):
 
 ```php
-config(['rinvex.tenantable.tenant.active' => 1]);
+config(['rinvex.tenants.tenant.active' => 1]);
 ```
 
 You can pass either tenant id, slug, or instance. This package is smart enough to figure it out.
@@ -89,12 +89,12 @@ Note that you can only activate one tenant at a time, even if your resources bel
 To deactivate your tenant and stop scoping by it, simply unset that runtime config value as follows:
 
 ```php
-config(['rinvex.tenantable.tenant.active' => null]);
+config(['rinvex.tenants.tenant.active' => null]);
 ```
 
 ### Querying Tenant scoped Models
 
-After you've added tenants, all queries against a Model which uses `\Rinvex\Tenantable\Traits\Tenantable` will be scoped automatically:
+After you've added tenants, all queries against a Model which uses `\Rinvex\Tenants\Traits\Tenantable` will be scoped automatically:
 
 ```php
 // This will only include Models belonging to the active tenant
@@ -111,7 +111,7 @@ If you need to query across all tenants, you can use `forAllTenants()` method:
 $allTenantProducts = \App\Models\Product::forAllTenants()->get();
 ```
 
-Under the hood, **Rinvex Tenantable** uses Laravel's [anonymous global scopes](https://laravel.com/docs/master/eloquent#global-scopes), which means if you are scoping by active tenant, and you want to exclude one single query, you can do so:
+Under the hood, **Rinvex Tenants** uses Laravel's [anonymous global scopes](https://laravel.com/docs/master/eloquent#global-scopes), which means if you are scoping by active tenant, and you want to exclude one single query, you can do so:
 
 ```php
 // Will NOT be scoped, and will return results from ALL tenants, just for this query
@@ -120,7 +120,7 @@ $allTenantProducts = \App\Models\Product::withoutGlobalScope('tenant')->get();
 
 > **Notes:**
 > - When you are developing multi-tenancy applications, it can be confusing sometimes why you keep getting `ModelNotFound` exceptions for rows that **DO** exist, because they belong to the wrong tenant.
-> - **Rinvex Tenantable** will catch those exceptions, and re-throw them as `ModelNotFoundForTenantException`, to help you out 🙂
+> - **Rinvex Tenants** will catch those exceptions, and re-throw them as `ModelNotFoundForTenantException`, to help you out 🙂
 
 ### Manage Your Tenantable Model
 
@@ -150,7 +150,7 @@ $product->attachTenants([1, 2, 5]);
 $product->attachTenants(collect([1, 2, 5]));
 
 // Single tenant model instance
-$tenantInstance = app('rinvex.tenantable.tenant')->first();
+$tenantInstance = app('rinvex.tenants.tenant')->first();
 $product->attachTenants($tenantInstance);
 
 // Single tenant slug
@@ -163,7 +163,7 @@ $product->attachTenants(['first-tenant', 'second-tenant']);
 $product->attachTenants(collect(['first-tenant', 'second-tenant']));
 
 // Multiple tenant model instances
-$tenantInstances = app('rinvex.tenantable.tenant')->whereIn('id', [1, 2, 5])->get();
+$tenantInstances = app('rinvex.tenants.tenant')->whereIn('id', [1, 2, 5])->get();
 $product->attachTenants($tenantInstances);
 ```
 
@@ -184,7 +184,7 @@ $product->hasAnyTenants([1, 2, 5]);
 $product->hasAnyTenants(collect([1, 2, 5]));
 
 // Single tenant model instance
-$tenantInstance = app('rinvex.tenantable.tenant')->first();
+$tenantInstance = app('rinvex.tenants.tenant')->first();
 $product->hasAnyTenants($tenantInstance);
 
 // Single tenant slug
@@ -197,7 +197,7 @@ $product->hasAnyTenants(['first-tenant', 'second-tenant']);
 $product->hasAnyTenants(collect(['first-tenant', 'second-tenant']));
 
 // Multiple tenant model instances
-$tenantInstances = app('rinvex.tenantable.tenant')->whereIn('id', [1, 2, 5])->get();
+$tenantInstances = app('rinvex.tenants.tenant')->whereIn('id', [1, 2, 5])->get();
 $product->hasAnyTenants($tenantInstances);
 ```
 
@@ -209,30 +209,30 @@ $product->hasAnyTenants($tenantInstances);
 
 #### Generate Tenant Slugs
 
-**Rinvex Tenantable** auto generates slugs and auto detect and insert default translation for you if not provided, but you still can pass it explicitly through normal eloquent `create` method, as follows:
+**Rinvex Tenants** auto generates slugs and auto detect and insert default translation for you if not provided, but you still can pass it explicitly through normal eloquent `create` method, as follows:
 
 ```php
-app('rinvex.tenantable.tenant')->create(['name' => ['en' => 'My New Tenant'], 'slug' => 'custom-tenant-slug']);
+app('rinvex.tenants.tenant')->create(['name' => ['en' => 'My New Tenant'], 'slug' => 'custom-tenant-slug']);
 ```
 
 > **Note:** Check **[Sluggable](https://github.com/spatie/laravel-sluggable)** package for further details.
 
 #### Smart Parameter Detection
 
-**Rinvex Tenantable** methods that accept list of tenants are smart enough to handle almost all kinds of inputs as you've seen in the above examples. It will check input type and behave accordingly. 
+**Rinvex Tenants** methods that accept list of tenants are smart enough to handle almost all kinds of inputs as you've seen in the above examples. It will check input type and behave accordingly. 
 
 #### Retrieve All Models Attached To The Tenant
 
 You may encounter a situation where you need to get all models attached to certain tenant, you do so with ease as follows:
 
 ```php
-$tenant = app('rinvex.tenantable.tenant')->find(1);
+$tenant = app('rinvex.tenants.tenant')->find(1);
 $tenant->entries(\App\Models\Product::class);
 ```
 
 #### Query Scopes
 
-Yes, **Rinvex Tenantable** shipped with few awesome query scopes for your convenience, usage example:
+Yes, **Rinvex Tenants** shipped with few awesome query scopes for your convenience, usage example:
 
 ```php
 // Single tenant id
@@ -245,7 +245,7 @@ $product->withAnyTenants([1, 2, 5])->get();
 $product->withAnyTenants(collect([1, 2, 5]))->get();
 
 // Single tenant model instance
-$tenantInstance = app('rinvex.tenantable.tenant')->first();
+$tenantInstance = app('rinvex.tenants.tenant')->first();
 $product->withAnyTenants($tenantInstance)->get();
 
 // Single tenant slug
@@ -258,7 +258,7 @@ $product->withAnyTenants(['first-tenant', 'second-tenant'])->get();
 $product->withAnyTenants(collect(['first-tenant', 'second-tenant']))->get();
 
 // Multiple tenant model instances
-$tenantInstances = app('rinvex.tenantable.tenant')->whereIn('id', [1, 2, 5])->get();
+$tenantInstances = app('rinvex.tenants.tenant')->whereIn('id', [1, 2, 5])->get();
 $product->withAnyTenants($tenantInstances)->get();
 ```
 
@@ -271,7 +271,7 @@ $product->withAnyTenants($tenantInstances)->get();
 Manage tenant translations with ease as follows:
 
 ```php
-$tenant = app('rinvex.tenantable.tenant')->find(1);
+$tenant = app('rinvex.tenants.tenant')->find(1);
 
 // Update name translations
 $tenant->setTranslation('name', 'en', 'New English Tenant Name')->save();
