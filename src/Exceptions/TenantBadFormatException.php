@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\Tenantable\Exceptions;
+namespace Rinvex\Tenants\Exceptions;
 
 use Exception;
 
