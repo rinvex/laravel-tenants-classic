@@ -29,7 +29,7 @@
 
 ## Usage
 
-**Rinvex Tenants** assumes that you have `tenant_id` column on all of your tenant scoped tables that references which tenant each row belongs to, and it's recommended to add foreign key constraint for that column that reference `tenants` table for data integrity.
+**Rinvex Tenants** is developed with the concept that every tenantable model can be attached to multiple tenants at the same time, so you don't need special column in your model database table to specify the tenant it belongs to, tenant relationships simply stored in a separate central table.
 
 ### Create Your Model
 
