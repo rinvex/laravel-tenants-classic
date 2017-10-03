@@ -115,7 +115,7 @@ Under the hood, **Rinvex Tenants** uses Laravel's [anonymous global scopes](http
 
 ```php
 // Will NOT be scoped, and will return results from ALL tenants, just for this query
-$allTenantProducts = \App\Models\Product::withoutGlobalScope('tenant')->get();
+$allTenantProducts = \App\Models\Product::withoutGlobalScope('tenantable')->get();
 ```
 
 > **Notes:**
