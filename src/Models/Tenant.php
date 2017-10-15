@@ -267,7 +267,7 @@ class Tenant extends Model implements TenantContract
     }
 
     /**
-     * Active the tenant.
+     * Activate the tenant.
      *
      * @return $this
      */
