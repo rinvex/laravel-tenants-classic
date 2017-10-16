@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property bool                                               $is_active
  * @property \Carbon\Carbon|null                                $created_at
  * @property \Carbon\Carbon|null                                $updated_at
- * @property \Carbon\Carbon                                     $deleted_at
+ * @property \Carbon\Carbon|null                                $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $owner
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant active()
