@@ -33,8 +33,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string                                             $launch_date
  * @property string                                             $group
  * @property bool                                               $is_active
- * @property \Carbon\Carbon                                     $created_at
- * @property \Carbon\Carbon                                     $updated_at
+ * @property \Carbon\Carbon|null                                $created_at
+ * @property \Carbon\Carbon|null                                $updated_at
  * @property \Carbon\Carbon                                     $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $owner
  *
@@ -59,7 +59,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant withGroup($group = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant withGroup($group)
  * @mixin \Eloquent
  */
 class Tenant extends Model implements TenantContract

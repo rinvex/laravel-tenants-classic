@@ -23,8 +23,8 @@ namespace Rinvex\Tenants\Contracts;
  * @property string                                             $launch_date
  * @property string                                             $group
  * @property bool                                               $is_active
- * @property \Carbon\Carbon                                     $created_at
- * @property \Carbon\Carbon                                     $updated_at
+ * @property \Carbon\Carbon|null                                $created_at
+ * @property \Carbon\Carbon|null                                $updated_at
  * @property \Carbon\Carbon                                     $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $owner
  *
@@ -49,7 +49,7 @@ namespace Rinvex\Tenants\Contracts;
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant withGroup($group = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant withGroup($group)
  * @mixin \Eloquent
  */
 interface TenantContract
