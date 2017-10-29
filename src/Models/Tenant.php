@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Rinvex\Tenants\Models;
 
-use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Rinvex\Support\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Model;
 use Rinvex\Cacheable\CacheableEloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -173,23 +173,6 @@ class Tenant extends Model implements TenantContract
             'group' => 'nullable|string|max:150',
             'is_active' => 'sometimes|boolean',
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        // Auto generate slugs early before validation
-        static::validating(function (self $tenant) {
-            if ($tenant->exists && $tenant->getSlugOptions()->generateSlugsOnUpdate) {
-                $tenant->generateSlugOnUpdate();
-            } elseif (! $tenant->exists && $tenant->getSlugOptions()->generateSlugsOnCreate) {
-                $tenant->generateSlugOnCreate();
-            }
-        });
     }
 
     /**
