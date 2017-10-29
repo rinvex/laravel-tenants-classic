@@ -29,7 +29,7 @@ class MigrateCommand extends Command
      */
     public function handle()
     {
-        $this->warn('Migrate rinvex/tenants:');
+        $this->warn($this->description);
         $this->call('migrate', ['--step' => true, '--path' => 'vendor/rinvex/tenants/database/migrations']);
     }
 }
