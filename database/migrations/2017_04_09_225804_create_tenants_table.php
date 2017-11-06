@@ -26,6 +26,7 @@ class CreateTenantsTable extends Migration
             $table->{$this->jsonable()}('description')->nullable();
             $table->integer('owner_id')->unsigned();
             $table->string('email');
+            $table->string('website')->nullable();
             $table->string('phone')->nullable();
             $table->string('language_code', 2);
             $table->string('country_code', 2);
@@ -36,6 +37,8 @@ class CreateTenantsTable extends Migration
             $table->date('launch_date')->nullable();
             $table->string('group')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->string('thumbnail')->nullable();
+            $table->string('cover_photo')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

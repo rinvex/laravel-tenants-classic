@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property array                                              $description
  * @property int                                                $owner_id
  * @property string                                             $email
+ * @property string                                             $website
  * @property string                                             $phone
  * @property string                                             $language_code
  * @property string                                             $country_code
@@ -33,6 +34,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string                                             $launch_date
  * @property string                                             $group
  * @property bool                                               $is_active
+ * @property string                                             $thumbnail
+ * @property string                                             $cover_photo
  * @property \Carbon\Carbon|null                                $created_at
  * @property \Carbon\Carbon|null                                $updated_at
  * @property \Carbon\Carbon|null                                $deleted_at
@@ -78,6 +81,7 @@ class Tenant extends Model implements TenantContract
         'description',
         'owner_id',
         'email',
+        'website',
         'phone',
         'language_code',
         'country_code',
@@ -88,6 +92,8 @@ class Tenant extends Model implements TenantContract
         'launch_date',
         'group',
         'is_active',
+        'thumbnail',
+        'cover_photo',
     ];
 
     /**
@@ -97,6 +103,7 @@ class Tenant extends Model implements TenantContract
         'slug' => 'string',
         'owner_id' => 'integer',
         'email' => 'string',
+        'website' => 'string',
         'phone' => 'string',
         'country_code' => 'string',
         'language_code' => 'string',
@@ -107,6 +114,8 @@ class Tenant extends Model implements TenantContract
         'launch_date' => 'string',
         'group' => 'string',
         'is_active' => 'boolean',
+        'thumbnail' => 'string',
+        'cover_photo' => 'string',
         'deleted_at' => 'datetime',
     ];
 
@@ -162,6 +171,7 @@ class Tenant extends Model implements TenantContract
             'description' => 'nullable|string|max:10000',
             'owner_id' => 'required|integer|exists:'.(new $userModel())->getTable().',id',
             'email' => 'required|email|min:3|max:150|unique:'.config('rinvex.tenants.tables.tenants').',email',
+            'website' => 'nullable|string|max:150',
             'phone' => 'nullable|numeric|min:4',
             'country_code' => 'required|alpha|size:2|country',
             'language_code' => 'required|alpha|size:2|language',
@@ -172,6 +182,8 @@ class Tenant extends Model implements TenantContract
             'launch_date' => 'nullable|date_format:Y-m-d',
             'group' => 'nullable|string|max:150',
             'is_active' => 'sometimes|boolean',
+            'thumbnail' => 'nullable|string|max:150',
+            'cover_photo' => 'nullable|string|max:150',
         ]);
     }
 

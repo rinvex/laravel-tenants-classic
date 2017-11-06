@@ -13,6 +13,7 @@ namespace Rinvex\Tenants\Contracts;
  * @property array                                              $description
  * @property int                                                $owner_id
  * @property string                                             $email
+ * @property string                                             $website
  * @property string                                             $phone
  * @property string                                             $language_code
  * @property string                                             $country_code
@@ -23,6 +24,8 @@ namespace Rinvex\Tenants\Contracts;
  * @property string                                             $launch_date
  * @property string                                             $group
  * @property bool                                               $is_active
+ * @property string                                             $thumbnail
+ * @property string                                             $cover_photo
  * @property \Carbon\Carbon|null                                $created_at
  * @property \Carbon\Carbon|null                                $updated_at
  * @property \Carbon\Carbon|null                                $deleted_at
