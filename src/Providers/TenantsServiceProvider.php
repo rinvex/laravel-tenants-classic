@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Rinvex\Tenants\Contracts\TenantContract;
 use Rinvex\Tenants\Console\Commands\MigrateCommand;
 use Rinvex\Tenants\Console\Commands\PublishCommand;
+use Rinvex\Tenants\Console\Commands\RollbackCommand;
 
 class TenantsServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,7 @@ class TenantsServiceProvider extends ServiceProvider
     protected $commands = [
         MigrateCommand::class => 'command.rinvex.tenants.migrate',
         PublishCommand::class => 'command.rinvex.tenants.publish',
+        RollbackCommand::class => 'command.rinvex.tenants.rollback',
     ];
 
     /**
