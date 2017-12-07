@@ -82,7 +82,7 @@ trait Tenantable
      */
     public static function bootTenantable()
     {
-        if ($tenant = config('rinvex.tenants.tenant.active')) {
+        if ($tenant = config('rinvex.tenants.active')) {
             static::addGlobalScope('tenantable', function (Builder $builder) use ($tenant) {
                 $builder->whereHas('tenants', function (Builder $builder) use ($tenant) {
                     $key = $tenant instanceof Model ? $tenant->getKeyName() : (is_int($tenant) ? 'id' : 'slug');
