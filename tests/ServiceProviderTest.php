@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\Tenants\Test;
+namespace Rinvex\Tenants\Tests;
 
 use ReflectionClass;
 use PHPUnit\Framework\TestCase;
