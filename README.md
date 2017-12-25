@@ -29,23 +29,9 @@
 
 **Rinvex Tenants** is developed with the concept that every tenantable model can be attached to multiple tenants at the same time, so you don't need special column in your model database table to specify the tenant it belongs to, tenant relationships simply stored in a separate central table.
 
-### Create Your Model
+To add tenants support to your eloquent models simply use `\Rinvex\Tenants\Traits\Tenantable` trait.
 
-Simply create a new eloquent model, and use `\Rinvex\Tenants\Traits\Tenantable` trait:
-```php
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-use Rinvex\Tenants\Traits\Tenantable;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
-
-class Product extends Model
-{
-    use Tenantable;
-}
-```
-
-### Manage Your Tenants
+### Manage your tenants
 
 Nothing special here, just normal [Eloquent](https://laravel.com/docs/master/eloquent) model stuff:
 
@@ -120,13 +106,13 @@ $allTenantProducts = \App\Models\Product::withoutGlobalScope('tenantable')->get(
 > - When you are developing multi-tenancy applications, it can be confusing sometimes why you keep getting `ModelNotFound` exceptions for rows that **DO** exist, because they belong to the wrong tenant.
 > - **Rinvex Tenants** will catch those exceptions, and re-throw them as `ModelNotFoundForTenantException`, to help you out 🙂
 
-### Manage Your Tenantable Model
+### Manage your tenantable model
 
 The API is intutive and very straightfarwad, so let's give it a quick look:
 
 ```php
-// Instantiate your model
-$product = new \App\Models\Product();
+// Get instance of your model
+$product = new \App\Models\Product::find(1);
 
 // Get attached tenants collection
 $product->tenants;
