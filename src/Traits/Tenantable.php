@@ -68,7 +68,7 @@ trait Tenantable
      *
      * @return void
      */
-    public function setTenantsAttribute($tenants)
+    public function setTenantsAttribute($tenants): void
     {
         static::saved(function (self $model) use ($tenants) {
             $model->syncTenants($tenants);

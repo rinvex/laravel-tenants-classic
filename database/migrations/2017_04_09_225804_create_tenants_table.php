@@ -13,7 +13,7 @@ class CreateTenantsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         // Get users model
         $userModel = config('auth.providers.'.config('auth.guards.'.config('auth.defaults.guard').'.provider').'.model');
@@ -52,7 +52,7 @@ class CreateTenantsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists(config('rinvex.tenants.tables.tenants'));
     }
