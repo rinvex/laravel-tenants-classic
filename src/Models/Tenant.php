@@ -33,8 +33,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string                                             $launch_date
  * @property string                                             $group
  * @property bool                                               $is_active
- * @property string                                             $thumbnail
- * @property string                                             $cover_photo
  * @property \Carbon\Carbon|null                                $created_at
  * @property \Carbon\Carbon|null                                $updated_at
  * @property \Carbon\Carbon|null                                $deleted_at
@@ -88,8 +86,6 @@ class Tenant extends Model implements TenantContract
         'launch_date',
         'group',
         'is_active',
-        'thumbnail',
-        'cover_photo',
     ];
 
     /**
@@ -110,8 +106,6 @@ class Tenant extends Model implements TenantContract
         'launch_date' => 'string',
         'group' => 'string',
         'is_active' => 'boolean',
-        'thumbnail' => 'string',
-        'cover_photo' => 'string',
         'deleted_at' => 'datetime',
     ];
 
@@ -178,8 +172,6 @@ class Tenant extends Model implements TenantContract
             'launch_date' => 'nullable|date_format:Y-m-d',
             'group' => 'nullable|string|max:150',
             'is_active' => 'sometimes|boolean',
-            'thumbnail' => 'nullable|string|max:150',
-            'cover_photo' => 'nullable|string|max:150',
         ]);
     }
 

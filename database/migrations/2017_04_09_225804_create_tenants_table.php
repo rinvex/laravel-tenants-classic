@@ -37,8 +37,6 @@ class CreateTenantsTable extends Migration
             $table->date('launch_date')->nullable();
             $table->string('group')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->string('thumbnail')->nullable();
-            $table->string('cover_photo')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
