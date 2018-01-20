@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 use Rinvex\Cacheable\CacheableEloquent;
 use Rinvex\Support\Traits\HasTranslations;
 use Rinvex\Support\Traits\ValidatingTrait;
-use Rinvex\Tenants\Contracts\TenantContract;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
@@ -60,7 +59,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Tenant extends Model implements TenantContract
+class Tenant extends Model
 {
     use HasSlug;
     use HasTranslations;

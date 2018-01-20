@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Rinvex\Tenants\Providers;
 
+use Rinvex\Tenants\Models\Tenant;
 use Illuminate\Support\ServiceProvider;
-use Rinvex\Tenants\Contracts\TenantContract;
 use Rinvex\Tenants\Console\Commands\MigrateCommand;
 use Rinvex\Tenants\Console\Commands\PublishCommand;
 use Rinvex\Tenants\Console\Commands\RollbackCommand;
@@ -35,7 +35,7 @@ class TenantsServiceProvider extends ServiceProvider
         $this->app->singleton('rinvex.tenants.tenant', function ($app) {
             return new $app['config']['rinvex.tenants.models.tenant']();
         });
-        $this->app->alias('rinvex.tenants.tenant', TenantContract::class);
+        $this->app->alias('rinvex.tenants.tenant', Tenant::class);
 
         // Register console commands
         ! $this->app->runningInConsole() || $this->registerCommands();
