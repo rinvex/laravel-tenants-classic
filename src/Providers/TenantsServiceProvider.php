@@ -32,10 +32,8 @@ class TenantsServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(realpath(__DIR__.'/../../config/config.php'), 'rinvex.tenants');
 
         // Bind eloquent models to IoC container
-        $this->app->singleton('rinvex.tenants.tenant', function ($app) {
-            return new $app['config']['rinvex.tenants.models.tenant']();
-        });
-        $this->app->alias('rinvex.tenants.tenant', Tenant::class);
+        $this->app->singleton('rinvex.tenants.tenant', $tenantModel = $this->app['config']['rinvex.tenants.models.tenant']);
+        $tenantModel === Tenant::class || $this->app->alias('rinvex.tenants.tenant', Tenant::class);
 
         // Register console commands
         ! $this->app->runningInConsole() || $this->registerCommands();
@@ -73,9 +71,7 @@ class TenantsServiceProvider extends ServiceProvider
     {
         // Register artisan commands
         foreach ($this->commands as $key => $value) {
-            $this->app->singleton($value, function ($app) use ($key) {
-                return new $key();
-            });
+            $this->app->singleton($value, $key);
         }
 
         $this->commands(array_values($this->commands));
