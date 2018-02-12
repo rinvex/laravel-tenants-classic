@@ -8,9 +8,10 @@ use Spatie\Sluggable\SlugOptions;
 use Rinvex\Support\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Model;
 use Rinvex\Cacheable\CacheableEloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Rinvex\Support\Traits\HasTranslations;
 use Rinvex\Support\Traits\ValidatingTrait;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
@@ -20,7 +21,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string                                             $slug
  * @property array                                              $name
  * @property array                                              $description
- * @property int                                                $owner_id
+ * @property int                                                $user_id
+ * @property string                                             $user_type
  * @property string                                             $email
  * @property string                                             $website
  * @property string                                             $phone
@@ -36,8 +38,9 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property \Carbon\Carbon|null                                $created_at
  * @property \Carbon\Carbon|null                                $updated_at
  * @property \Carbon\Carbon|null                                $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $owner
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $user
  *
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant ofUser(\Illuminate\Database\Eloquent\Model $user)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereCountryCode($value)
@@ -51,7 +54,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereLanguageCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereLaunchDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereUserType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant wherePostalCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereSlug($value)
@@ -73,7 +77,8 @@ class Tenant extends Model
         'slug',
         'name',
         'description',
-        'owner_id',
+        'user_id',
+        'user_type',
         'email',
         'website',
         'phone',
@@ -93,7 +98,8 @@ class Tenant extends Model
      */
     protected $casts = [
         'slug' => 'string',
-        'owner_id' => 'integer',
+        'user_id' => 'integer',
+        'user_type' => 'string',
         'email' => 'string',
         'website' => 'string',
         'phone' => 'string',
@@ -151,15 +157,13 @@ class Tenant extends Model
     {
         parent::__construct($attributes);
 
-        // Get users model
-        $userModel = config('auth.providers.'.config('auth.guards.'.config('auth.defaults.guard').'.provider').'.model');
-
         $this->setTable(config('rinvex.tenants.tables.tenants'));
         $this->setRules([
             'slug' => 'required|alpha_dash|max:150|unique:'.config('rinvex.tenants.tables.tenants').',slug',
             'name' => 'required|string|max:150',
             'description' => 'nullable|string|max:10000',
-            'owner_id' => 'required|integer|exists:'.(new $userModel())->getTable().',id',
+            'user_id' => 'required|integer',
+            'user_type' => 'required|string',
             'email' => 'required|email|min:3|max:150|unique:'.config('rinvex.tenants.tables.tenants').',email',
             'website' => 'nullable|string|max:150',
             'phone' => 'nullable|numeric|min:4',
@@ -201,15 +205,26 @@ class Tenant extends Model
     }
 
     /**
-     * A tenant always belongs to an owner.
+     * Get the owning user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function owner(): BelongsTo
+    public function user(): MorphTo
     {
-        $userModel = config('auth.providers.'.config('auth.guards.'.config('auth.defaults.guard').'.provider').'.model');
+        return $this->morphTo();
+    }
 
-        return $this->belongsTo($userModel, 'owner_id', 'id');
+    /**
+     * Get bookings of the given user.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param \Illuminate\Database\Eloquent\Model   $user
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOfUser(Builder $builder, Model $user): Builder
+    {
+        return $builder->where('user_type', $user->getMorphClass())->where('user_id', $user->getKey());
     }
 
     /**

@@ -15,16 +15,13 @@ class CreateTenantsTable extends Migration
      */
     public function up(): void
     {
-        // Get users model
-        $userModel = config('auth.providers.'.config('auth.guards.'.config('auth.defaults.guard').'.provider').'.model');
-
-        Schema::create(config('rinvex.tenants.tables.tenants'), function (Blueprint $table) use ($userModel) {
+        Schema::create(config('rinvex.tenants.tables.tenants'), function (Blueprint $table) {
             // Columns
             $table->increments('id');
             $table->string('slug');
             $table->{$this->jsonable()}('name');
             $table->{$this->jsonable()}('description')->nullable();
-            $table->integer('owner_id')->unsigned();
+            $table->morphs('user');
             $table->string('email');
             $table->string('website')->nullable();
             $table->string('phone')->nullable();
@@ -42,8 +39,6 @@ class CreateTenantsTable extends Migration
 
             // Indexes
             $table->unique('slug');
-            $table->foreign('owner_id', 'tenants_owner_id_foreign')->references('id')->on((new $userModel())->getTable())
-                  ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
