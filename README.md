@@ -3,11 +3,9 @@
 **Rinvex Tenants** is a contextually intelligent polymorphic Laravel package, for single db multi-tenancy. You can completely isolate tenants data with ease using the same database, with full power and control over what data to be centrally shared, and what to be tenant related and therefore isolated from others.
 
 [![Packagist](https://img.shields.io/packagist/v/rinvex/tenants.svg?label=Packagist&style=flat-square)](https://packagist.org/packages/rinvex/tenants)
-[![VersionEye Dependencies](https://img.shields.io/versioneye/d/php/rinvex:tenants.svg?label=Dependencies&style=flat-square)](https://www.versioneye.com/php/rinvex:tenants/)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/rinvex/tenants.svg?label=Scrutinizer&style=flat-square)](https://scrutinizer-ci.com/g/rinvex/tenants/)
 [![Code Climate](https://img.shields.io/codeclimate/github/rinvex/tenants.svg?label=CodeClimate&style=flat-square)](https://codeclimate.com/github/rinvex/tenants)
 [![Travis](https://img.shields.io/travis/rinvex/tenants.svg?label=TravisCI&style=flat-square)](https://travis-ci.org/rinvex/tenants)
-[![SensioLabs Insight](https://img.shields.io/sensiolabs/i/6ddccc21-ed54-4738-84b5-0ab311c9c1db.svg?label=SensioLabs&style=flat-square)](https://insight.sensiolabs.com/projects/6ddccc21-ed54-4738-84b5-0ab311c9c1db)
 [![StyleCI](https://styleci.io/repos/87875339/shield)](https://styleci.io/repos/87875339)
 [![License](https://img.shields.io/packagist/l/rinvex/tenants.svg?label=License&style=flat-square)](https://github.com/rinvex/tenants/blob/develop/LICENSE)
 
@@ -29,25 +27,11 @@
 
 ## Usage
 
-**Rinvex Tenants** assumes that you have `tenant_id` column on all of your tenant scoped tables that references which tenant each row belongs to, and it's recommended to add foreign key constraint for that column that reference `tenants` table for data integrity.
+**Rinvex Tenants** is developed with the concept that every tenantable model can be attached to multiple tenants at the same time, so you don't need special column in your model database table to specify the tenant it belongs to, tenant relationships simply stored in a separate central table.
 
-### Create Your Model
+To add tenants support to your eloquent models simply use `\Rinvex\Tenants\Traits\Tenantable` trait.
 
-Simply create a new eloquent model, and use `\Rinvex\Tenants\Traits\Tenantable` trait:
-```php
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-use Rinvex\Tenants\Traits\Tenantable;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
-
-class Product extends Model
-{
-    use Tenantable;
-}
-```
-
-### Manage Your Tenants
+### Manage your tenants
 
 Nothing special here, just normal [Eloquent](https://laravel.com/docs/master/eloquent) model stuff:
 
@@ -56,7 +40,8 @@ Nothing special here, just normal [Eloquent](https://laravel.com/docs/master/elo
 app('rinvex.tenants.tenant')->create([
     'name' => 'ACME Inc.',
     'slug' => 'acme',
-    'owner_id' => '1',
+    'user_id' => '1',
+    'user_type' => 'user',
     'email' => 'owner@acme.inc',
     'language_code' => 'en',
     'country_code' => 'us',
@@ -79,7 +64,7 @@ Make sure to activate your tenants in such a way that it happens on every reques
 By default we set the active tenant by setting a runtime config value, [the normal way](https://laravel.com/docs/master/configuration#accessing-configuration-values):
 
 ```php
-config(['rinvex.tenants.tenant.active' => 1]);
+config(['rinvex.tenants.active' => 1]);
 ```
 
 You can pass either tenant id, slug, or instance. This package is smart enough to figure it out.
@@ -89,7 +74,7 @@ Note that you can only activate one tenant at a time, even if your resources bel
 To deactivate your tenant and stop scoping by it, simply unset that runtime config value as follows:
 
 ```php
-config(['rinvex.tenants.tenant.active' => null]);
+config(['rinvex.tenants.active' => null]);
 ```
 
 ### Querying Tenant scoped Models
@@ -115,20 +100,20 @@ Under the hood, **Rinvex Tenants** uses Laravel's [anonymous global scopes](http
 
 ```php
 // Will NOT be scoped, and will return results from ALL tenants, just for this query
-$allTenantProducts = \App\Models\Product::withoutGlobalScope('tenant')->get();
+$allTenantProducts = \App\Models\Product::withoutGlobalScope('tenantable')->get();
 ```
 
 > **Notes:**
 > - When you are developing multi-tenancy applications, it can be confusing sometimes why you keep getting `ModelNotFound` exceptions for rows that **DO** exist, because they belong to the wrong tenant.
 > - **Rinvex Tenants** will catch those exceptions, and re-throw them as `ModelNotFoundForTenantException`, to help you out 🙂
 
-### Manage Your Tenantable Model
+### Manage your tenantable model
 
 The API is intutive and very straightfarwad, so let's give it a quick look:
 
 ```php
-// Instantiate your model
-$product = new \App\Models\Product();
+// Get instance of your model
+$product = new \App\Models\Product::find(1);
 
 // Get attached tenants collection
 $product->tenants;
@@ -338,4 +323,4 @@ Rinvex is a software solutions startup, specialized in integrated enterprise sol
 
 This software is released under [The MIT License (MIT)](LICENSE).
 
-(c) 2016-2017 Rinvex LLC, Some rights reserved.
+(c) 2016-2018 Rinvex LLC, Some rights reserved.

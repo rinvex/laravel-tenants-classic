@@ -13,19 +13,17 @@ class CreateTenantsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        // Get users model
-        $userModel = config('auth.providers.'.config('auth.guards.'.config('auth.defaults.guard').'.provider').'.model');
-
-        Schema::create(config('rinvex.tenants.tables.tenants'), function (Blueprint $table) use ($userModel) {
+        Schema::create(config('rinvex.tenants.tables.tenants'), function (Blueprint $table) {
             // Columns
             $table->increments('id');
             $table->string('slug');
             $table->{$this->jsonable()}('name');
             $table->{$this->jsonable()}('description')->nullable();
-            $table->integer('owner_id')->unsigned();
+            $table->morphs('user');
             $table->string('email');
+            $table->string('website')->nullable();
             $table->string('phone')->nullable();
             $table->string('language_code', 2);
             $table->string('country_code', 2);
@@ -41,8 +39,6 @@ class CreateTenantsTable extends Migration
 
             // Indexes
             $table->unique('slug');
-            $table->foreign('owner_id', 'tenants_owner_id_foreign')->references('id')->on((new $userModel())->getTable())
-                  ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -51,7 +47,7 @@ class CreateTenantsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists(config('rinvex.tenants.tables.tenants'));
     }
@@ -61,7 +57,7 @@ class CreateTenantsTable extends Migration
      *
      * @return string
      */
-    protected function jsonable()
+    protected function jsonable(): string
     {
         return DB::connection()->getPdo()->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql'
                && version_compare(DB::connection()->getPdo()->getAttribute(PDO::ATTR_SERVER_VERSION), '5.7.8', 'ge')

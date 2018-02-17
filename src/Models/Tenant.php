@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Rinvex\Tenants\Models;
 
-use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Rinvex\Support\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Model;
 use Rinvex\Cacheable\CacheableEloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Rinvex\Support\Traits\HasTranslations;
 use Rinvex\Support\Traits\ValidatingTrait;
-use Rinvex\Tenants\Contracts\TenantContract;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
@@ -21,8 +21,10 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string                                             $slug
  * @property array                                              $name
  * @property array                                              $description
- * @property int                                                $owner_id
+ * @property int                                                $user_id
+ * @property string                                             $user_type
  * @property string                                             $email
+ * @property string                                             $website
  * @property string                                             $phone
  * @property string                                             $language_code
  * @property string                                             $country_code
@@ -33,13 +35,12 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string                                             $launch_date
  * @property string                                             $group
  * @property bool                                               $is_active
- * @property \Carbon\Carbon                                     $created_at
- * @property \Carbon\Carbon                                     $updated_at
- * @property \Carbon\Carbon                                     $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $owner
+ * @property \Carbon\Carbon|null                                $created_at
+ * @property \Carbon\Carbon|null                                $updated_at
+ * @property \Carbon\Carbon|null                                $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant active()
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant inactive()
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant ofUser(\Illuminate\Database\Eloquent\Model $user)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereCountryCode($value)
@@ -53,16 +54,16 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereLanguageCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereLaunchDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereUserType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant wherePostalCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant withGroup($group = null)
  * @mixin \Eloquent
  */
-class Tenant extends Model implements TenantContract
+class Tenant extends Model
 {
     use HasSlug;
     use HasTranslations;
@@ -76,8 +77,10 @@ class Tenant extends Model implements TenantContract
         'slug',
         'name',
         'description',
-        'owner_id',
+        'user_id',
+        'user_type',
         'email',
+        'website',
         'phone',
         'language_code',
         'country_code',
@@ -95,8 +98,10 @@ class Tenant extends Model implements TenantContract
      */
     protected $casts = [
         'slug' => 'string',
-        'owner_id' => 'integer',
+        'user_id' => 'integer',
+        'user_type' => 'string',
         'email' => 'string',
+        'website' => 'string',
         'phone' => 'string',
         'country_code' => 'string',
         'language_code' => 'string',
@@ -152,16 +157,15 @@ class Tenant extends Model implements TenantContract
     {
         parent::__construct($attributes);
 
-        // Get users model
-        $userModel = config('auth.providers.'.config('auth.guards.'.config('auth.defaults.guard').'.provider').'.model');
-
         $this->setTable(config('rinvex.tenants.tables.tenants'));
         $this->setRules([
             'slug' => 'required|alpha_dash|max:150|unique:'.config('rinvex.tenants.tables.tenants').',slug',
             'name' => 'required|string|max:150',
             'description' => 'nullable|string|max:10000',
-            'owner_id' => 'required|integer|exists:'.(new $userModel())->getTable().',id',
+            'user_id' => 'required|integer',
+            'user_type' => 'required|string',
             'email' => 'required|email|min:3|max:150|unique:'.config('rinvex.tenants.tables.tenants').',email',
+            'website' => 'nullable|string|max:150',
             'phone' => 'nullable|numeric|min:4',
             'country_code' => 'required|alpha|size:2|country',
             'language_code' => 'required|alpha|size:2|language',
@@ -173,23 +177,6 @@ class Tenant extends Model implements TenantContract
             'group' => 'nullable|string|max:150',
             'is_active' => 'sometimes|boolean',
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        // Auto generate slugs early before validation
-        static::validating(function (self $tenant) {
-            if ($tenant->exists && $tenant->getSlugOptions()->generateSlugsOnUpdate) {
-                $tenant->generateSlugOnUpdate();
-            } elseif (! $tenant->exists && $tenant->getSlugOptions()->generateSlugsOnCreate) {
-                $tenant->generateSlugOnCreate();
-            }
-        });
     }
 
     /**
@@ -218,56 +205,30 @@ class Tenant extends Model implements TenantContract
     }
 
     /**
-     * Get the active tenants.
+     * Get the owning user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function user(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    /**
+     * Get bookings of the given user.
      *
      * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param \Illuminate\Database\Eloquent\Model   $user
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeActive(Builder $builder): Builder
+    public function scopeOfUser(Builder $builder, Model $user): Builder
     {
-        return $builder->where('is_active', true);
+        return $builder->where('user_type', $user->getMorphClass())->where('user_id', $user->getKey());
     }
 
     /**
-     * Get the inactive tenants.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $builder
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeInactive(Builder $builder): Builder
-    {
-        return $builder->where('is_active', false);
-    }
-
-    /**
-     * Scope tenants by given group.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param string                                $group
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeWithGroup(Builder $builder, string $group): Builder
-    {
-        return $builder->where('group', $group);
-    }
-
-    /**
-     * A tenant always belongs to an owner.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function owner()
-    {
-        $userModel = config('auth.providers.'.config('auth.guards.'.config('auth.defaults.guard').'.provider').'.model');
-
-        return $this->belongsTo($userModel, 'owner_id', 'id');
-    }
-
-    /**
-     * Active the tenant.
+     * Activate the tenant.
      *
      * @return $this
      */

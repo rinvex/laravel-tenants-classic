@@ -68,7 +68,7 @@ trait Tenantable
      *
      * @return void
      */
-    public function setTenantsAttribute($tenants)
+    public function setTenantsAttribute($tenants): void
     {
         static::saved(function (self $model) use ($tenants) {
             $model->syncTenants($tenants);
@@ -82,15 +82,19 @@ trait Tenantable
      */
     public static function bootTenantable()
     {
-        static::addGlobalScope('tenant', function (Builder $builder) {
-            if ($tenant = config('rinvex.tenants.tenant.active')) {
+        if ($tenant = config('rinvex.tenants.active')) {
+            static::addGlobalScope('tenantable', function (Builder $builder) use ($tenant) {
                 $builder->whereHas('tenants', function (Builder $builder) use ($tenant) {
                     $key = $tenant instanceof Model ? $tenant->getKeyName() : (is_int($tenant) ? 'id' : 'slug');
                     $value = $tenant instanceof Model ? $tenant->$key : $tenant;
                     $builder->where($key, $value);
                 });
-            }
-        });
+            });
+
+            static::saved(function (self $model) use ($tenant) {
+                $model->attachTenants($tenant);
+            });
+        }
 
         static::deleted(function (self $model) {
             $model->tenants()->detach();
@@ -104,7 +108,7 @@ trait Tenantable
      */
     public static function forAllTenants()
     {
-        return (new static())->newQuery()->withoutGlobalScopes(['tenant']);
+        return (new static())->newQuery()->withoutGlobalScopes(['tenantable']);
     }
 
     /**
