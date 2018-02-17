@@ -22,7 +22,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 - Fix validation rules and check owner id existence
 
 ## v0.0.1 - 2017-04-11
-- Commit first draft
+- Tag first release
 
 [v0.0.3]: https://github.com/rinvex/tenants/compare/v0.0.2...v0.0.3
 [v0.0.2]: https://github.com/rinvex/tenants/compare/v0.0.1...v0.0.2
