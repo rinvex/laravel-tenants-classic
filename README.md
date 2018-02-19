@@ -39,7 +39,7 @@ Nothing special here, just normal [Eloquent](https://laravel.com/docs/master/elo
 // Create a new tenant
 app('rinvex.tenants.tenant')->create([
     'title' => 'ACME Inc.',
-    'slug' => 'acme',
+    'name' => 'acme',
     'user_id' => '1',
     'user_type' => 'user',
     'email' => 'owner@acme.inc',
@@ -67,7 +67,7 @@ By default we set the active tenant by setting a runtime config value, [the norm
 config(['rinvex.tenants.active' => 1]);
 ```
 
-You can pass either tenant id, slug, or instance. This package is smart enough to figure it out.
+You can pass either tenant id, name, or instance. This package is smart enough to figure it out.
 
 Note that you can only activate one tenant at a time, even if your resources belongs to multiple tenants, only one tenant could be active. You still have the ability to change the active tenant at any point of the request, but note that it will have scoping effect only on those models requested after that change, while any other models requested at an earlier stage of the request will be scoped with the previous tenant, or not scoped at all (according to your logic).
 
@@ -138,13 +138,13 @@ $product->attachTenants(collect([1, 2, 5]));
 $tenantInstance = app('rinvex.tenants.tenant')->first();
 $product->attachTenants($tenantInstance);
 
-// Single tenant slug
+// Single tenant name
 $product->attachTenants('test-tenant');
 
-// Multiple tenant slugs array
+// Multiple tenant names array
 $product->attachTenants(['first-tenant', 'second-tenant']);
 
-// Multiple tenant slugs collection
+// Multiple tenant names collection
 $product->attachTenants(collect(['first-tenant', 'second-tenant']));
 
 // Multiple tenant model instances
@@ -172,13 +172,13 @@ $product->hasAnyTenants(collect([1, 2, 5]));
 $tenantInstance = app('rinvex.tenants.tenant')->first();
 $product->hasAnyTenants($tenantInstance);
 
-// Single tenant slug
+// Single tenant name
 $product->hasAnyTenants('test-tenant');
 
-// Multiple tenant slugs array
+// Multiple tenant names array
 $product->hasAnyTenants(['first-tenant', 'second-tenant']);
 
-// Multiple tenant slugs collection
+// Multiple tenant names collection
 $product->hasAnyTenants(collect(['first-tenant', 'second-tenant']));
 
 // Multiple tenant model instances
@@ -192,12 +192,12 @@ $product->hasAnyTenants($tenantInstances);
 
 ### Advanced Usage
 
-#### Generate Tenant Slugs
+#### Generate Tenant Names
 
-**Rinvex Tenants** auto generates slugs and auto detect and insert default translation for you if not provided, but you still can pass it explicitly through normal eloquent `create` method, as follows:
+**Rinvex Tenants** auto generates names and auto detect and insert default translation for you if not provided, but you still can pass it explicitly through normal eloquent `create` method, as follows:
 
 ```php
-app('rinvex.tenants.tenant')->create(['title' => ['en' => 'My New Tenant'], 'slug' => 'custom-tenant-slug']);
+app('rinvex.tenants.tenant')->create(['title' => ['en' => 'My New Tenant'], 'name' => 'custom-tenant-name']);
 ```
 
 > **Note:** Check **[Sluggable](https://github.com/spatie/laravel-sluggable)** package for further details.
@@ -233,13 +233,13 @@ $product->withAnyTenants(collect([1, 2, 5]))->get();
 $tenantInstance = app('rinvex.tenants.tenant')->first();
 $product->withAnyTenants($tenantInstance)->get();
 
-// Single tenant slug
+// Single tenant name
 $product->withAnyTenants('test-tenant')->get();
 
-// Multiple tenant slugs array
+// Multiple tenant names array
 $product->withAnyTenants(['first-tenant', 'second-tenant'])->get();
 
-// Multiple tenant slugs collection
+// Multiple tenant names collection
 $product->withAnyTenants(collect(['first-tenant', 'second-tenant']))->get();
 
 // Multiple tenant model instances

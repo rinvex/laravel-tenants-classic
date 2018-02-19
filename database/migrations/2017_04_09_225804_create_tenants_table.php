@@ -18,7 +18,7 @@ class CreateTenantsTable extends Migration
         Schema::create(config('rinvex.tenants.tables.tenants'), function (Blueprint $table) {
             // Columns
             $table->increments('id');
-            $table->string('slug');
+            $table->string('name');
             $table->{$this->jsonable()}('title');
             $table->{$this->jsonable()}('description')->nullable();
             $table->morphs('user');
@@ -38,7 +38,7 @@ class CreateTenantsTable extends Migration
             $table->softDeletes();
 
             // Indexes
-            $table->unique('slug');
+            $table->unique('name');
         });
     }
 
