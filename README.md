@@ -38,7 +38,7 @@ Nothing special here, just normal [Eloquent](https://laravel.com/docs/master/elo
 ```php
 // Create a new tenant
 app('rinvex.tenants.tenant')->create([
-    'name' => 'ACME Inc.',
+    'title' => 'ACME Inc.',
     'slug' => 'acme',
     'user_id' => '1',
     'user_type' => 'user',
@@ -197,7 +197,7 @@ $product->hasAnyTenants($tenantInstances);
 **Rinvex Tenants** auto generates slugs and auto detect and insert default translation for you if not provided, but you still can pass it explicitly through normal eloquent `create` method, as follows:
 
 ```php
-app('rinvex.tenants.tenant')->create(['name' => ['en' => 'My New Tenant'], 'slug' => 'custom-tenant-slug']);
+app('rinvex.tenants.tenant')->create(['title' => ['en' => 'My New Tenant'], 'slug' => 'custom-tenant-slug']);
 ```
 
 > **Note:** Check **[Sluggable](https://github.com/spatie/laravel-sluggable)** package for further details.
@@ -258,25 +258,25 @@ Manage tenant translations with ease as follows:
 ```php
 $tenant = app('rinvex.tenants.tenant')->find(1);
 
-// Update name translations
-$tenant->setTranslation('name', 'en', 'New English Tenant Name')->save();
+// Update title translations
+$tenant->setTranslation('title', 'en', 'New English Tenant Title')->save();
 
 // Alternatively you can use default eloquent update
 $tenant->update([
-    'name' => [
+    'title' => [
         'en' => 'New Tenant',
         'ar' => 'مستأجر جديد',
     ],
 ]);
 
 // Get single tenant translation
-$tenant->getTranslation('name', 'en');
+$tenant->getTranslation('title', 'en');
 
 // Get all tenant translations
-$tenant->getTranslations('name');
+$tenant->getTranslations('title');
 
-// Get tenant name in default locale
-$tenant->name;
+// Get tenant title in default locale
+$tenant->title;
 ```
 
 > **Note:** Check **[Translatable](https://github.com/spatie/laravel-translatable)** package for further details.

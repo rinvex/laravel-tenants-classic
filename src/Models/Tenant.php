@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  *
  * @property int                                                $id
  * @property string                                             $slug
- * @property array                                              $name
+ * @property array                                              $title
  * @property array                                              $description
  * @property int                                                $user_id
  * @property string                                             $user_type
@@ -53,7 +53,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereLanguageCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereLaunchDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereUserType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant wherePhone($value)
@@ -75,7 +75,7 @@ class Tenant extends Model
      */
     protected $fillable = [
         'slug',
-        'name',
+        'title',
         'description',
         'user_id',
         'user_type',
@@ -129,7 +129,7 @@ class Tenant extends Model
      * @var array
      */
     public $translatable = [
-        'name',
+        'title',
         'description',
     ];
 
@@ -160,7 +160,7 @@ class Tenant extends Model
         $this->setTable(config('rinvex.tenants.tables.tenants'));
         $this->setRules([
             'slug' => 'required|alpha_dash|max:150|unique:'.config('rinvex.tenants.tables.tenants').',slug',
-            'name' => 'required|string|max:150',
+            'title' => 'required|string|max:150',
             'description' => 'nullable|string|max:10000',
             'user_id' => 'required|integer',
             'user_type' => 'required|string',
@@ -200,7 +200,7 @@ class Tenant extends Model
     {
         return SlugOptions::create()
                           ->doNotGenerateSlugsOnUpdate()
-                          ->generateSlugsFrom('name')
+                          ->generateSlugsFrom('title')
                           ->saveSlugsTo('slug');
     }
 

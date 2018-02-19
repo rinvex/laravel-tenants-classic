@@ -19,7 +19,7 @@ class CreateTenantsTable extends Migration
             // Columns
             $table->increments('id');
             $table->string('slug');
-            $table->{$this->jsonable()}('name');
+            $table->{$this->jsonable()}('title');
             $table->{$this->jsonable()}('description')->nullable();
             $table->morphs('user');
             $table->string('email');
