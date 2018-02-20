@@ -21,7 +21,7 @@ class CreateTenantsTable extends Migration
             $table->string('name');
             $table->{$this->jsonable()}('title');
             $table->{$this->jsonable()}('description')->nullable();
-            $table->morphs('user');
+            $table->morphs('owner');
             $table->string('email');
             $table->string('website')->nullable();
             $table->string('phone')->nullable();

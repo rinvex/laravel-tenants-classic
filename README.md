@@ -40,8 +40,8 @@ Nothing special here, just normal [Eloquent](https://laravel.com/docs/master/elo
 app('rinvex.tenants.tenant')->create([
     'title' => 'ACME Inc.',
     'name' => 'acme',
-    'user_id' => '1',
-    'user_type' => 'user',
+    'owner_id' => '1',
+    'owner_type' => 'manager',
     'email' => 'owner@acme.inc',
     'language_code' => 'en',
     'country_code' => 'us',
