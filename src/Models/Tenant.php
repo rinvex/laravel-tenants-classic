@@ -215,6 +215,30 @@ class Tenant extends Model
     }
 
     /**
+     * Determine if the given model is owner of tenant.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
+     * @return bool
+     */
+    public function isOwner(Model $model): bool
+    {
+        return $model->getKey() === $this->owner->getKey();
+    }
+
+    /**
+     * Determine if the given model is staff of tenant.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
+     * @return bool
+     */
+    public function isStaff(Model $model): bool
+    {
+        return $model->tenants->contains($this);
+    }
+
+    /**
      * Get tenants of the given owner.
      *
      * @param \Illuminate\Database\Eloquent\Builder $builder
