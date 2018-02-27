@@ -44,6 +44,7 @@
         "illuminate/console": "~5.6.0",
         "illuminate/database": "~5.6.0",
         "illuminate/support": "~5.6.0",
+        "propaganistas/laravel-phone": "^4.0.0",
         "rinvex/cacheable": "dev-develop",
         "rinvex/support": "dev-develop",
         "spatie/laravel-sluggable": "^2.1.0",
