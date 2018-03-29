@@ -333,9 +333,9 @@ trait Tenantable
             $tenants = $tenants->toArray();
         }
 
-        // Find tenants by name, and get their IDs
+        // Find tenants by slug, and get their IDs
         if (is_string($tenants) || (is_array($tenants) && is_string(array_first($tenants)))) {
-            $tenants = app('rinvex.tenants.tenant')->whereIn('name', $tenants)->when($group, function (Builder $builder) use ($group) {
+            $tenants = app('rinvex.tenants.tenant')->whereIn('slug', $tenants)->when($group, function (Builder $builder) use ($group) {
                 return $builder->where('group', $group);
             })->get()->pluck('id');
         }
