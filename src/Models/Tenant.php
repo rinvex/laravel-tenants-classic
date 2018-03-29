@@ -75,7 +75,7 @@ class Tenant extends Model
      */
     protected $fillable = [
         'slug',
-        'title',
+        'name',
         'description',
         'owner_id',
         'owner_type',
@@ -129,7 +129,7 @@ class Tenant extends Model
      * @var array
      */
     public $translatable = [
-        'title',
+        'name',
         'description',
     ];
 
@@ -160,7 +160,7 @@ class Tenant extends Model
         $this->setTable(config('rinvex.tenants.tables.tenants'));
         $this->setRules([
             'slug' => 'required|alpha_dash|max:150|unique:'.config('rinvex.tenants.tables.tenants').',slug',
-            'title' => 'required|string|max:150',
+            'name' => 'required|string|max:150',
             'description' => 'nullable|string|max:10000',
             'owner_id' => 'required|integer',
             'owner_type' => 'required|string',
@@ -200,7 +200,7 @@ class Tenant extends Model
     {
         return SlugOptions::create()
                           ->doNotGenerateSlugsOnUpdate()
-                          ->generateSlugsFrom('title')
+                          ->generateSlugsFrom('name')
                           ->saveSlugsTo('slug');
     }
 
