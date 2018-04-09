@@ -220,7 +220,7 @@ trait Tenantable
     /**
      * Determine if the model has any of the given tenants.
      *
-     * @param mixed  $tenants
+     * @param mixed $tenants
      *
      * @return bool
      */
@@ -234,7 +234,7 @@ trait Tenantable
     /**
      * Determine if the model has any the given tenants.
      *
-     * @param mixed  $tenants
+     * @param mixed $tenants
      *
      * @return bool
      */
@@ -246,7 +246,7 @@ trait Tenantable
     /**
      * Determine if the model has all of the given tenants.
      *
-     * @param mixed  $tenants
+     * @param mixed $tenants
      *
      * @return bool
      */
@@ -308,7 +308,7 @@ trait Tenantable
     /**
      * Prepare tenant IDs.
      *
-     * @param mixed  $tenants
+     * @param mixed $tenants
      *
      * @return array
      */
