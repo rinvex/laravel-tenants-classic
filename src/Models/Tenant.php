@@ -32,6 +32,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string                                             $address
  * @property string                                             $postal_code
  * @property string                                             $launch_date
+ * @property string                                             $timezone
+ * @property string                                             $currency
  * @property string                                             $group
  * @property bool                                               $is_active
  * @property \Carbon\Carbon|null                                $created_at
@@ -44,6 +46,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereCountryCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereCurrency($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereEmail($value)
@@ -52,6 +55,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereLanguageCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereLaunchDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereTimezone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereOwnerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereOwnerType($value)
@@ -88,7 +92,8 @@ class Tenant extends Model
         'address',
         'postal_code',
         'launch_date',
-        'group',
+        'timezone',
+        'currency',
         'is_active',
     ];
 
@@ -109,7 +114,8 @@ class Tenant extends Model
         'address' => 'string',
         'postal_code' => 'string',
         'launch_date' => 'string',
-        'group' => 'string',
+        'timezone' => 'string',
+        'currency' => 'string',
         'is_active' => 'boolean',
         'deleted_at' => 'datetime',
     ];
@@ -173,7 +179,8 @@ class Tenant extends Model
             'address' => 'nullable|string',
             'postal_code' => 'nullable|string',
             'launch_date' => 'nullable|date_format:Y-m-d',
-            'group' => 'nullable|string|max:150',
+            'timezone' => 'required|string|timezone',
+            'currency' => 'required|alpha|size:3',
             'is_active' => 'sometimes|boolean',
         ]);
     }
