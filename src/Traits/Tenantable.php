@@ -86,7 +86,7 @@ trait Tenantable
             static::addGlobalScope('tenantable', function (Builder $builder) use ($tenant) {
                 $builder->whereHas('tenants', function (Builder $builder) use ($tenant) {
                     $key = $tenant instanceof Model ? $tenant->getKeyName() : (is_int($tenant) ? 'id' : 'slug');
-                    $value = $tenant instanceof Model ? $tenant->$key : $tenant;
+                    $value = $tenant instanceof Model ? $tenant->{$key} : $tenant;
                     $builder->where($key, $value);
                 });
             });
