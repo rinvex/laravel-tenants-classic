@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v0.0.5] - 2018-09-21
+- Update travis php versions
+- Define polymorphic relationship parameters explicitly
+- Rename tenant "user" to "owner"
+- Add isOwner and isStaff model methods
+- Install composer package propaganistas/laravel-phone for phone verification
+- Require composer package rinvex/language
+- Loose strongly typed return value of owner relationship for flexible override on module level
+- Remove group and add timezone, currency attributes
+- Drop StyleCI multi-language support (paid feature now!)
+- Update composer dependencies
+- Prepare and tweak testing configuration
+- Highlight variables in strings explicitly
+- Update StyleCI options
+- Update PHPUnit options
+- Rename model activation and deactivation methods
+- Add tag model factory
+
 ## [v0.0.4] - 2018-02-18
 - Rename tenantable global scope
 - Update supplementary files
@@ -42,6 +60,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v0.0.1 - 2017-04-11
 - Tag first release
 
+[v0.0.5]: https://github.com/rinvex/tenants/compare/v0.0.4...v0.0.5
 [v0.0.4]: https://github.com/rinvex/tenants/compare/v0.0.3...v0.0.4
 [v0.0.3]: https://github.com/rinvex/tenants/compare/v0.0.2...v0.0.3
 [v0.0.2]: https://github.com/rinvex/tenants/compare/v0.0.1...v0.0.2
