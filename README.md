@@ -40,8 +40,8 @@ Nothing special here, just normal [Eloquent](https://laravel.com/docs/master/elo
 app('rinvex.tenants.tenant')->create([
     'name' => 'ACME Inc.',
     'slug' => 'acme',
-    'user_id' => '1',
-    'user_type' => 'user',
+    'owner_id' => '1',
+    'owner_type' => 'manager',
     'email' => 'owner@acme.inc',
     'language_code' => 'en',
     'country_code' => 'us',
@@ -258,8 +258,8 @@ Manage tenant translations with ease as follows:
 ```php
 $tenant = app('rinvex.tenants.tenant')->find(1);
 
-// Update name translations
-$tenant->setTranslation('name', 'en', 'New English Tenant Name')->save();
+// Update title translations
+$tenant->setTranslation('name', 'en', 'New English Tenant Title')->save();
 
 // Alternatively you can use default eloquent update
 $tenant->update([
@@ -275,7 +275,7 @@ $tenant->getTranslation('name', 'en');
 // Get all tenant translations
 $tenant->getTranslations('name');
 
-// Get tenant name in default locale
+// Get tenant title in default locale
 $tenant->name;
 ```
 

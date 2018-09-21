@@ -86,7 +86,7 @@ trait Tenantable
             static::addGlobalScope('tenantable', function (Builder $builder) use ($tenant) {
                 $builder->whereHas('tenants', function (Builder $builder) use ($tenant) {
                     $key = $tenant instanceof Model ? $tenant->getKeyName() : (is_int($tenant) ? 'id' : 'slug');
-                    $value = $tenant instanceof Model ? $tenant->$key : $tenant;
+                    $value = $tenant instanceof Model ? $tenant->{$key} : $tenant;
                     $builder->where($key, $value);
                 });
             });
@@ -142,19 +142,16 @@ trait Tenantable
      *
      * @param \Illuminate\Database\Eloquent\Builder $builder
      * @param mixed                                 $tenants
-     * @param string                                $group
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithAllTenants(Builder $builder, $tenants, string $group = null): Builder
+    public function scopeWithAllTenants(Builder $builder, $tenants): Builder
     {
         $tenants = $this->prepareTenantIds($tenants);
 
-        collect($tenants)->each(function ($tenant) use ($builder, $group) {
-            $builder->whereHas('tenants', function (Builder $builder) use ($tenant, $group) {
-                return $builder->where('id', $tenant)->when($group, function (Builder $builder) use ($group) {
-                    return $builder->where('group', $group);
-                });
+        collect($tenants)->each(function ($tenant) use ($builder) {
+            $builder->whereHas('tenants', function (Builder $builder) use ($tenant) {
+                return $builder->where('id', $tenant);
             });
         });
 
@@ -166,18 +163,15 @@ trait Tenantable
      *
      * @param \Illuminate\Database\Eloquent\Builder $builder
      * @param mixed                                 $tenants
-     * @param string                                $group
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithAnyTenants(Builder $builder, $tenants, string $group = null): Builder
+    public function scopeWithAnyTenants(Builder $builder, $tenants): Builder
     {
         $tenants = $this->prepareTenantIds($tenants);
 
-        return $builder->whereHas('tenants', function (Builder $builder) use ($tenants, $group) {
-            $builder->whereIn('id', $tenants)->when($group, function (Builder $builder) use ($group) {
-                return $builder->where('group', $group);
-            });
+        return $builder->whereHas('tenants', function (Builder $builder) use ($tenants) {
+            $builder->whereIn('id', $tenants);
         });
     }
 
@@ -186,13 +180,12 @@ trait Tenantable
      *
      * @param \Illuminate\Database\Eloquent\Builder $builder
      * @param mixed                                 $tenants
-     * @param string                                $group
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithTenants(Builder $builder, $tenants, string $group = null): Builder
+    public function scopeWithTenants(Builder $builder, $tenants): Builder
     {
-        return static::scopeWithAnyTenants($builder, $tenants, $group);
+        return static::scopeWithAnyTenants($builder, $tenants);
     }
 
     /**
@@ -200,18 +193,15 @@ trait Tenantable
      *
      * @param \Illuminate\Database\Eloquent\Builder $builder
      * @param mixed                                 $tenants
-     * @param string                                $group
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithoutTenants(Builder $builder, $tenants, string $group = null): Builder
+    public function scopeWithoutTenants(Builder $builder, $tenants): Builder
     {
         $tenants = $this->prepareTenantIds($tenants);
 
-        return $builder->whereDoesntHave('tenants', function (Builder $builder) use ($tenants, $group) {
-            $builder->whereIn('id', $tenants)->when($group, function (Builder $builder) use ($group) {
-                return $builder->where('group', $group);
-            });
+        return $builder->whereDoesntHave('tenants', function (Builder $builder) use ($tenants) {
+            $builder->whereIn('id', $tenants);
         });
     }
 
@@ -230,14 +220,13 @@ trait Tenantable
     /**
      * Determine if the model has any of the given tenants.
      *
-     * @param mixed  $tenants
-     * @param string $group
+     * @param mixed $tenants
      *
      * @return bool
      */
-    public function hasTenants($tenants, string $group = null): bool
+    public function hasTenants($tenants): bool
     {
-        $tenants = $this->prepareTenantIds($tenants, $group);
+        $tenants = $this->prepareTenantIds($tenants);
 
         return ! $this->tenants->pluck('id')->intersect($tenants)->isEmpty();
     }
@@ -245,27 +234,25 @@ trait Tenantable
     /**
      * Determine if the model has any the given tenants.
      *
-     * @param mixed  $tenants
-     * @param string $group
+     * @param mixed $tenants
      *
      * @return bool
      */
-    public function hasAnyTenants($tenants, string $group = null): bool
+    public function hasAnyTenants($tenants): bool
     {
-        return static::hasTenants($tenants, $group);
+        return static::hasTenants($tenants);
     }
 
     /**
      * Determine if the model has all of the given tenants.
      *
-     * @param mixed  $tenants
-     * @param string $group
+     * @param mixed $tenants
      *
      * @return bool
      */
-    public function hasAllTenants($tenants, string $group = null): bool
+    public function hasAllTenants($tenants): bool
     {
-        $tenants = $this->prepareTenantIds($tenants, $group);
+        $tenants = $this->prepareTenantIds($tenants);
 
         return collect($tenants)->diff($this->tenants->pluck('id'))->isEmpty();
     }
@@ -321,12 +308,11 @@ trait Tenantable
     /**
      * Prepare tenant IDs.
      *
-     * @param mixed  $tenants
-     * @param string $group
+     * @param mixed $tenants
      *
      * @return array
      */
-    protected function prepareTenantIds($tenants, string $group = null): array
+    protected function prepareTenantIds($tenants): array
     {
         // Convert collection to plain array
         if ($tenants instanceof BaseCollection && is_string($tenants->first())) {
@@ -335,9 +321,7 @@ trait Tenantable
 
         // Find tenants by slug, and get their IDs
         if (is_string($tenants) || (is_array($tenants) && is_string(array_first($tenants)))) {
-            $tenants = app('rinvex.tenants.tenant')->whereIn('slug', $tenants)->when($group, function (Builder $builder) use ($group) {
-                return $builder->where('group', $group);
-            })->get()->pluck('id');
+            $tenants = app('rinvex.tenants.tenant')->whereIn('slug', $tenants)->get()->pluck('id');
         }
 
         if ($tenants instanceof Model) {

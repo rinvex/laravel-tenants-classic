@@ -11,7 +11,6 @@ use Rinvex\Cacheable\CacheableEloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Rinvex\Support\Traits\HasTranslations;
 use Rinvex\Support\Traits\ValidatingTrait;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
@@ -19,10 +18,10 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  *
  * @property int                                                $id
  * @property string                                             $slug
- * @property array                                              $name
+ * @property array                                              $title
  * @property array                                              $description
- * @property int                                                $user_id
- * @property string                                             $user_type
+ * @property int                                                $owner_id
+ * @property string                                             $owner_type
  * @property string                                             $email
  * @property string                                             $website
  * @property string                                             $phone
@@ -33,18 +32,21 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string                                             $address
  * @property string                                             $postal_code
  * @property string                                             $launch_date
+ * @property string                                             $timezone
+ * @property string                                             $currency
  * @property string                                             $group
  * @property bool                                               $is_active
  * @property \Carbon\Carbon|null                                $created_at
  * @property \Carbon\Carbon|null                                $updated_at
  * @property \Carbon\Carbon|null                                $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $user
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $owner
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant ofUser(\Illuminate\Database\Eloquent\Model $user)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant ofOwner(\Illuminate\Database\Eloquent\Model $owner)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereCountryCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereCurrency($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereEmail($value)
@@ -53,9 +55,10 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereLanguageCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereLaunchDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereUserType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereTimezone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereOwnerType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant wherePostalCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereSlug($value)
@@ -77,8 +80,8 @@ class Tenant extends Model
         'slug',
         'name',
         'description',
-        'user_id',
-        'user_type',
+        'owner_id',
+        'owner_type',
         'email',
         'website',
         'phone',
@@ -89,7 +92,8 @@ class Tenant extends Model
         'address',
         'postal_code',
         'launch_date',
-        'group',
+        'timezone',
+        'currency',
         'is_active',
     ];
 
@@ -98,8 +102,8 @@ class Tenant extends Model
      */
     protected $casts = [
         'slug' => 'string',
-        'user_id' => 'integer',
-        'user_type' => 'string',
+        'owner_id' => 'integer',
+        'owner_type' => 'string',
         'email' => 'string',
         'website' => 'string',
         'phone' => 'string',
@@ -110,7 +114,8 @@ class Tenant extends Model
         'address' => 'string',
         'postal_code' => 'string',
         'launch_date' => 'string',
-        'group' => 'string',
+        'timezone' => 'string',
+        'currency' => 'string',
         'is_active' => 'boolean',
         'deleted_at' => 'datetime',
     ];
@@ -162,11 +167,11 @@ class Tenant extends Model
             'slug' => 'required|alpha_dash|max:150|unique:'.config('rinvex.tenants.tables.tenants').',slug',
             'name' => 'required|string|max:150',
             'description' => 'nullable|string|max:10000',
-            'user_id' => 'required|integer',
-            'user_type' => 'required|string',
+            'owner_id' => 'required|integer',
+            'owner_type' => 'required|string',
             'email' => 'required|email|min:3|max:150|unique:'.config('rinvex.tenants.tables.tenants').',email',
             'website' => 'nullable|string|max:150',
-            'phone' => 'nullable|numeric|min:4',
+            'phone' => 'nullable|numeric|phone',
             'country_code' => 'required|alpha|size:2|country',
             'language_code' => 'required|alpha|size:2|language',
             'state' => 'nullable|string',
@@ -174,7 +179,8 @@ class Tenant extends Model
             'address' => 'nullable|string',
             'postal_code' => 'nullable|string',
             'launch_date' => 'nullable|date_format:Y-m-d',
-            'group' => 'nullable|string|max:150',
+            'timezone' => 'required|string|timezone',
+            'currency' => 'required|alpha|size:3',
             'is_active' => 'sometimes|boolean',
         ]);
     }
@@ -205,26 +211,50 @@ class Tenant extends Model
     }
 
     /**
-     * Get the owning user.
+     * Get the tenant owner.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function user(): MorphTo
+    public function owner()
     {
-        return $this->morphTo();
+        return $this->morphTo('owner', 'owner_type', 'owner_id');
     }
 
     /**
-     * Get bookings of the given user.
+     * Determine if the given model is owner of tenant.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
+     * @return bool
+     */
+    public function isOwner(Model $model): bool
+    {
+        return $model->getKey() === $this->owner->getKey();
+    }
+
+    /**
+     * Determine if the given model is staff of tenant.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
+     * @return bool
+     */
+    public function isStaff(Model $model): bool
+    {
+        return $model->tenants->contains($this);
+    }
+
+    /**
+     * Get tenants of the given owner.
      *
      * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param \Illuminate\Database\Eloquent\Model   $user
+     * @param \Illuminate\Database\Eloquent\Model   $owner
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOfUser(Builder $builder, Model $user): Builder
+    public function scopeOfOwner(Builder $builder, Model $owner): Builder
     {
-        return $builder->where('user_type', $user->getMorphClass())->where('user_id', $user->getKey());
+        return $builder->where('owner_type', $owner->getMorphClass())->where('owner_id', $owner->getKey());
     }
 
     /**
