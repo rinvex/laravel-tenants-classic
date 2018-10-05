@@ -2,19 +2,19 @@
 
 **Rinvex Tenants** is a contextually intelligent polymorphic Laravel package, for single db multi-tenancy. You can completely isolate tenants data with ease using the same database, with full power and control over what data to be centrally shared, and what to be tenant related and therefore isolated from others.
 
-[![Packagist](https://img.shields.io/packagist/v/rinvex/tenants.svg?label=Packagist&style=flat-square)](https://packagist.org/packages/rinvex/tenants)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/rinvex/tenants.svg?label=Scrutinizer&style=flat-square)](https://scrutinizer-ci.com/g/rinvex/tenants/)
-[![Code Climate](https://img.shields.io/codeclimate/github/rinvex/tenants.svg?label=CodeClimate&style=flat-square)](https://codeclimate.com/github/rinvex/tenants)
-[![Travis](https://img.shields.io/travis/rinvex/tenants.svg?label=TravisCI&style=flat-square)](https://travis-ci.org/rinvex/tenants)
+[![Packagist](https://img.shields.io/packagist/v/rinvex/laravel-tenants.svg?label=Packagist&style=flat-square)](https://packagist.org/packages/rinvex/laravel-tenants)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/rinvex/laravel-tenants.svg?label=Scrutinizer&style=flat-square)](https://scrutinizer-ci.com/g/rinvex/laravel-tenants/)
+[![Code Climate](https://img.shields.io/codeclimate/github/rinvex/laravel-tenants.svg?label=CodeClimate&style=flat-square)](https://codeclimate.com/github/rinvex/laravel-tenants)
+[![Travis](https://img.shields.io/travis/rinvex/laravel-tenants.svg?label=TravisCI&style=flat-square)](https://travis-ci.org/rinvex/laravel-tenants)
 [![StyleCI](https://styleci.io/repos/87875339/shield)](https://styleci.io/repos/87875339)
-[![License](https://img.shields.io/packagist/l/rinvex/tenants.svg?label=License&style=flat-square)](https://github.com/rinvex/tenants/blob/develop/LICENSE)
+[![License](https://img.shields.io/packagist/l/rinvex/laravel-tenants.svg?label=License&style=flat-square)](https://github.com/rinvex/laravel-tenants/blob/develop/LICENSE)
 
 
 ## Installation
 
 1. Install the package via composer:
     ```shell
-    composer require rinvex/tenants
+    composer require rinvex/laravel-tenants
     ```
 
 2. Execute migrations via the following command:
