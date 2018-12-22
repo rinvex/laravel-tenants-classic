@@ -45,16 +45,16 @@
         "illuminate/console": "~5.7.0",
         "illuminate/database": "~5.7.0",
         "illuminate/support": "~5.7.0",
-        "propaganistas/laravel-phone": "^4.0.0",
+        "propaganistas/laravel-phone": "^4.1.0",
         "rinvex/laravel-cacheable": "^1.0.0",
         "rinvex/languages": "^3.0.0",
         "rinvex/laravel-support": "^1.0.0",
         "spatie/laravel-sluggable": "^2.1.0",
-        "spatie/laravel-translatable": "^2.1.0",
+        "spatie/laravel-translatable": "^3.1.0",
         "watson/validating": "^3.1.0"
     },
     "require-dev": {
-        "codedungeon/phpunit-result-printer": "^0.22.0",
+        "codedungeon/phpunit-result-printer": "^0.23.0",
         "illuminate/container": "~5.7.0",
         "phpunit/phpunit": "^7.0.0"
     },
