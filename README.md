@@ -22,7 +22,12 @@
     php artisan rinvex:migrate:tenants
     ```
 
-3. Done!
+3. **Optional** if you want to change the configurations:
+    ```shell
+    php artisan rinvex:publish:tenants
+    ```
+
+4. Done!
 
 
 ## Usage
