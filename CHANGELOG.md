@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v1.0.3] - 2018-12-23
+- Add missing countries & languages dependencies (fix #19)
+
 ## [v1.0.2] - 2018-12-22
 - Update composer dependencies
 - Add PHP 7.3 support to travis
@@ -73,6 +76,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v0.0.1 - 2017-04-11
 - Tag first release
 
+[v1.0.3]: https://github.com/rinvex/laravel-tenants/compare/v1.0.2...v1.0.3
 [v1.0.2]: https://github.com/rinvex/laravel-tenants/compare/v1.0.1...v1.0.2
 [v1.0.1]: https://github.com/rinvex/laravel-tenants/compare/v1.0.0...v1.0.1
 [v1.0.0]: https://github.com/rinvex/laravel-tenants/compare/v0.0.5...v1.0.0
