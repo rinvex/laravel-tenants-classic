@@ -130,7 +130,7 @@ trait Tenantable
         } catch (ModelNotFoundException $exception) {
             // If it DOES exist, just not for this tenant, throw a nicer exception
             if (! is_null(static::forAllTenants()->find($id, $columns))) {
-                throw (new ModelNotFoundForTenantException())->setModel(get_called_class(), [$id]);
+                throw (new ModelNotFoundForTenantException())->setModel(static::class, [$id]);
             }
 
             throw $exception;
