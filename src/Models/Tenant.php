@@ -243,25 +243,25 @@ class Tenant extends Model
     }
 
     /**
-     * Determine if the given model is owner of tenant.
+     * Determine if the given model is supermanager of the tenant.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      *
      * @return bool
      */
-    public function isOwner(Model $model): bool
+    public function isSuperManager(Model $model): bool
     {
-        return $model->getKey() === $this->owner->getKey();
+        return $this->isManager($model) && $model->isA('supermanager');
     }
 
     /**
-     * Determine if the given model is staff of tenant.
+     * Determine if the given model is manager of the tenant.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      *
      * @return bool
      */
-    public function isStaff(Model $model): bool
+    public function isManager(Model $model): bool
     {
         return $model->tenants->contains($this);
     }
