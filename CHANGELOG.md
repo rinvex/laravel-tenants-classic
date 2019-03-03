@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v2.0.0] - 2019-03-03
+- Rename environment variable QUEUE_DRIVER to QUEUE_CONNECTION
+- Require PHP 7.2 & Laravel 5.8
+- Apply PHPUnit 8 updates
+- Replace get_called_class() with static::class (potentially deprecated in PHP 7.4)
+- Refactor isManager & isSupermanager methods
+- Drop ownership feature of tenants
+
 ## [v1.0.3] - 2018-12-23
 - Add missing countries & languages dependencies (fix #19)
 
@@ -76,6 +84,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v0.0.1 - 2017-04-11
 - Tag first release
 
+[v2.0.0]: https://github.com/rinvex/laravel-tenants/compare/v1.0.3...v2.0.0
 [v1.0.3]: https://github.com/rinvex/laravel-tenants/compare/v1.0.2...v1.0.3
 [v1.0.2]: https://github.com/rinvex/laravel-tenants/compare/v1.0.1...v1.0.2
 [v1.0.1]: https://github.com/rinvex/laravel-tenants/compare/v1.0.0...v1.0.1

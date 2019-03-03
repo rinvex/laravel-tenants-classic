@@ -45,9 +45,7 @@ Nothing special here, just normal [Eloquent](https://laravel.com/docs/master/elo
 app('rinvex.tenants.tenant')->create([
     'name' => 'ACME Inc.',
     'slug' => 'acme',
-    'owner_id' => '1',
-    'owner_type' => 'manager',
-    'email' => 'owner@acme.inc',
+    'email' => 'info@acme.inc',
     'language_code' => 'en',
     'country_code' => 'us',
 ]);
@@ -296,7 +294,7 @@ Refer to the [Changelog](CHANGELOG.md) for a full history of the project.
 
 The following support channels are available at your fingertips:
 
-- [Chat on Slack](http://chat.rinvex.com)
+- [Chat on Slack](https://bit.ly/rinvex-slack)
 - [Help on Email](mailto:help@rinvex.com)
 - [Follow on Twitter](https://twitter.com/rinvex)
 
