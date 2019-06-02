@@ -39,7 +39,7 @@ class TenantsServiceProvider extends ServiceProvider
         $tenantModel === Tenant::class || $this->app->alias('rinvex.tenants.tenant', Tenant::class);
 
         // Register console commands
-        ! $this->app->runningInConsole() || $this->registersCommands();
+        ! $this->app->runningInConsole() || $this->registerCommands();
     }
 
     /**
