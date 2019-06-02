@@ -17,14 +17,14 @@
     composer require rinvex/laravel-tenants
     ```
 
-2. Execute migrations via the following command:
-    ```
-    php artisan rinvex:migrate:tenants
-    ```
-
-3. **Optional** if you want to change the configurations:
+2. Publish resources (migrations and config files):
     ```shell
     php artisan rinvex:publish:tenants
+    ```
+
+3. Execute migrations via the following command:
+    ```shell
+    php artisan rinvex:migrate:tenants
     ```
 
 4. Done!
