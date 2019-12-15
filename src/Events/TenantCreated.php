@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Rinvex\Tenants\Events;
 
-use Illuminate\Broadcasting\Channel;
 use Rinvex\Tenants\Models\Tenant;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
