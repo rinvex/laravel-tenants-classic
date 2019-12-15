@@ -24,18 +24,3 @@ class TenantDeleted implements ShouldBroadcast
         $this->tenant = $tenant;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
