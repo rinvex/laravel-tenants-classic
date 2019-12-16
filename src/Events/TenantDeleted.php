@@ -54,6 +54,6 @@ class TenantDeleted implements ShouldBroadcast
      */
     protected function formatChannelName(): string
     {
-        return 'rinvex.tenants.count';
+        return 'rinvex.tenants.list';
     }
 }

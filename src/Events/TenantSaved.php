@@ -44,7 +44,7 @@ class TenantSaved implements ShouldBroadcast
      */
     public function broadcastAs()
     {
-        return 'rinvex.tenants.created';
+        return 'rinvex.tenants.saved';
     }
 
     /**
@@ -54,6 +54,6 @@ class TenantSaved implements ShouldBroadcast
      */
     protected function formatChannelName(): string
     {
-        return 'rinvex.tenants.count';
+        return 'rinvex.tenants.list';
     }
 }
