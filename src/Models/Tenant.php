@@ -6,9 +6,9 @@ namespace Rinvex\Tenants\Models;
 
 use Spatie\Sluggable\SlugOptions;
 use Rinvex\Support\Traits\HasSlug;
+use Rinvex\Tenants\Events\TenantSaved;
 use Illuminate\Database\Eloquent\Model;
 use Rinvex\Cacheable\CacheableEloquent;
-use Rinvex\Tenants\Events\TenantSaved;
 use Rinvex\Tenants\Events\TenantDeleted;
 use Rinvex\Support\Traits\HasTranslations;
 use Rinvex\Support\Traits\ValidatingTrait;
