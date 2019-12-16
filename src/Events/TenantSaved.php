@@ -7,11 +7,13 @@ namespace Rinvex\Tenants\Events;
 use Rinvex\Tenants\Models\Tenant;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class TenantCreated implements ShouldBroadcast
+class TenantSaved implements ShouldBroadcast
 {
     use SerializesModels;
+    Use InteractsWithSockets;
 
     public $tenant;
 

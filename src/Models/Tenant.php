@@ -8,7 +8,7 @@ use Spatie\Sluggable\SlugOptions;
 use Rinvex\Support\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Model;
 use Rinvex\Cacheable\CacheableEloquent;
-use Rinvex\Tenants\Events\TenantCreated;
+use Rinvex\Tenants\Events\TenantSaved;
 use Rinvex\Tenants\Events\TenantDeleted;
 use Rinvex\Support\Traits\HasTranslations;
 use Rinvex\Support\Traits\ValidatingTrait;
@@ -127,7 +127,7 @@ class Tenant extends Model
      * @var array
      */
     protected $dispatchesEvents = [
-        'created' => TenantCreated::class,
+        'saved' => TenantSaved::class,
         'deleted' => TenantDeleted::class,
     ];
 
