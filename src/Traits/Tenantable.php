@@ -7,6 +7,7 @@ namespace Rinvex\Tenants\Traits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -320,7 +321,7 @@ trait Tenantable
         }
 
         // Find tenants by slug, and get their IDs
-        if (is_string($tenants) || (is_array($tenants) && is_string(array_first($tenants)))) {
+        if (is_string($tenants) || (is_array($tenants) && is_string(Arr::first($tenants)))) {
             $tenants = app('rinvex.tenants.tenant')->whereIn('slug', $tenants)->get()->pluck('id');
         }
 
