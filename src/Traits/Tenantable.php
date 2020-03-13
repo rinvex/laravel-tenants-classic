@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rinvex\Tenants\Traits;
 
+use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -46,9 +47,16 @@ trait Tenantable
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    abstract public function morphToMany($related, $name, $table = null, $foreignPivotKey = null,
-                                         $relatedPivotKey = null, $parentKey = null,
-                                         $relatedKey = null, $inverse = false);
+    abstract public function morphToMany(
+        $related,
+        $name,
+        $table = null,
+        $foreignPivotKey = null,
+        $relatedPivotKey = null,
+        $parentKey = null,
+        $relatedKey = null,
+        $inverse = false
+    );
 
     /**
      * Get all attached tenants to the model.
@@ -320,7 +328,7 @@ trait Tenantable
         }
 
         // Find tenants by slug, and get their IDs
-        if (is_string($tenants) || (is_array($tenants) && is_string(array_first($tenants)))) {
+        if (is_string($tenants) || (is_array($tenants) && is_string(Arr::first($tenants)))) {
             $tenants = app('rinvex.tenants.tenant')->whereIn('slug', $tenants)->get()->pluck('id');
         }
 
