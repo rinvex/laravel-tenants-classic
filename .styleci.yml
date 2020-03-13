@@ -15,7 +15,6 @@ enabled:
   - random_api_migration
   - declare_strict_types
   - unalign_double_arrow
-  - no_alternative_syntax
   - standardize_increment
   - length_ordered_imports
   - modernize_types_casting
