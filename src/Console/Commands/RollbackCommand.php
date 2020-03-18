@@ -13,7 +13,7 @@ class RollbackCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'rinvex:rollback:tenants {--force : Force the operation to run when in production.}';
+    protected $signature = 'rinvex:rollback:tenants {--f|force : Force the operation to run when in production.}';
 
     /**
      * The console command description.
