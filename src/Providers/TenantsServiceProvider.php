@@ -48,8 +48,8 @@ class TenantsServiceProvider extends ServiceProvider
     public function boot()
     {
         // Publish Resources
-        $this->publishesConfig('rinvex/laravel-tenants');
-        $this->publishesMigrations('rinvex/laravel-tenants');
+        $this->publishesConfig('rinvex/tenants');
+        $this->publishesMigrations('rinvex/tenants');
         ! $this->autoloadMigrations('rinvex/tenants') || $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
     }
 }
