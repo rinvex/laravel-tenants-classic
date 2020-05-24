@@ -195,7 +195,7 @@ class Tenant extends Model
      */
     public function entries(string $class): MorphToMany
     {
-        return $this->morphedByMany($class, 'tenantable', config('rinvex.tenants.tables.tenantables'), 'tenant_id', 'tenantable_id');
+        return $this->morphedByMany($class, 'tenantable', config('rinvex.tenants.tables.tenantables'), 'tenant_id', 'tenantable_id', 'id', 'id');
     }
 
     /**
