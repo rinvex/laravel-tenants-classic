@@ -168,10 +168,10 @@ class Tenant extends Model
         $this->setTable(config('rinvex.tenants.tables.tenants'));
         $this->setRules([
             'slug' => 'required|alpha_dash|max:150|unique:'.config('rinvex.tenants.tables.tenants').',slug',
-            'name' => 'required|string|max:150',
+            'name' => 'required|string|strip_tags|max:150',
             'description' => 'nullable|string|max:10000',
             'email' => 'required|email|min:3|max:150|unique:'.config('rinvex.tenants.tables.tenants').',email',
-            'website' => 'nullable|string|max:150',
+            'website' => 'nullable|url|max:1500',
             'phone' => 'nullable|numeric|phone',
             'country_code' => 'required|alpha|size:2|country',
             'language_code' => 'required|alpha|size:2|language',
@@ -180,7 +180,7 @@ class Tenant extends Model
             'address' => 'nullable|string',
             'postal_code' => 'nullable|string',
             'launch_date' => 'nullable|date_format:Y-m-d',
-            'timezone' => 'required|string|timezone',
+            'timezone' => 'required|string|max:150|timezone',
             'currency' => 'required|alpha|size:3',
             'is_active' => 'sometimes|boolean',
         ]);
@@ -195,7 +195,7 @@ class Tenant extends Model
      */
     public function entries(string $class): MorphToMany
     {
-        return $this->morphedByMany($class, 'tenantable', config('rinvex.tenants.tables.tenantables'), 'tenant_id', 'tenantable_id');
+        return $this->morphedByMany($class, 'tenantable', config('rinvex.tenants.tables.tenantables'), 'tenant_id', 'tenantable_id', 'id', 'id');
     }
 
     /**
