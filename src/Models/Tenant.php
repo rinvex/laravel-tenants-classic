@@ -170,7 +170,7 @@ class Tenant extends Model
             'description' => 'nullable|string|max:10000',
             'email' => 'required|email|min:3|max:150|unique:'.config('rinvex.tenants.tables.tenants').',email',
             'website' => 'nullable|url|max:1500',
-            'phone' => 'nullable|numeric|phone',
+            'phone' => 'required|phone:AUTO',
             'country_code' => 'required|alpha|size:2|country',
             'language_code' => 'required|alpha|size:2|language',
             'state' => 'nullable|string',
