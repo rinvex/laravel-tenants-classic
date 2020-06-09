@@ -8,7 +8,6 @@ use Spatie\Sluggable\SlugOptions;
 use Rinvex\Support\Traits\HasSlug;
 use Rinvex\Tenants\Events\TenantSaved;
 use Illuminate\Database\Eloquent\Model;
-use Rinvex\Cacheable\CacheableEloquent;
 use Rinvex\Tenants\Events\TenantDeleted;
 use Rinvex\Support\Traits\HasTranslations;
 use Rinvex\Support\Traits\ValidatingTrait;
@@ -68,7 +67,6 @@ class Tenant extends Model
     use HasSlug;
     use HasTranslations;
     use ValidatingTrait;
-    use CacheableEloquent;
 
     /**
      * {@inheritdoc}
