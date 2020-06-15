@@ -8,7 +8,6 @@ use Spatie\Sluggable\SlugOptions;
 use Rinvex\Support\Traits\HasSlug;
 use Rinvex\Tenants\Events\TenantSaved;
 use Illuminate\Database\Eloquent\Model;
-use Rinvex\Cacheable\CacheableEloquent;
 use Rinvex\Tenants\Events\TenantDeleted;
 use Rinvex\Support\Traits\HasTranslations;
 use Rinvex\Support\Traits\ValidatingTrait;
@@ -68,7 +67,6 @@ class Tenant extends Model
     use HasSlug;
     use HasTranslations;
     use ValidatingTrait;
-    use CacheableEloquent;
 
     /**
      * {@inheritdoc}
@@ -172,7 +170,7 @@ class Tenant extends Model
             'description' => 'nullable|string|max:10000',
             'email' => 'required|email|min:3|max:150|unique:'.config('rinvex.tenants.tables.tenants').',email',
             'website' => 'nullable|url|max:1500',
-            'phone' => 'nullable|numeric|phone',
+            'phone' => 'required|phone:AUTO',
             'country_code' => 'required|alpha|size:2|country',
             'language_code' => 'required|alpha|size:2|language',
             'state' => 'nullable|string',

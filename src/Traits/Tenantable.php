@@ -327,7 +327,12 @@ trait Tenantable
             $tenants = $tenants->toArray();
         }
 
-        // Find tenants by slug, and get their IDs
+        // Find tenants by their ids
+        if (is_numeric($tenants) || (is_array($tenants) && is_numeric(Arr::first($tenants)))) {
+            return array_map('intval', (array) $tenants);
+        }
+
+        // Find tenants by their slugs
         if (is_string($tenants) || (is_array($tenants) && is_string(Arr::first($tenants)))) {
             $tenants = app('rinvex.tenants.tenant')->whereIn('slug', $tenants)->get()->pluck('id');
         }
