@@ -61,22 +61,34 @@ $tenant = app('rinvex.tenants.tenant')->find(1);
 
 **Rinvex Tenants** is stateless, which means you have to set the active tenant on every request, therefore it will only scope that specific request.
 
-Make sure to activate your tenants in such a way that it happens on every request, and before you need Models scoped, like in a middleware or as part of a stateless authentication method like OAuth.
+Make sure to activate your tenants in such a way that it happens on every request, and before you need Models scoped, like in `boot` method of service provider, a middleware, or as part of a stateless authentication method like OAuth.
 
-By default we set the active tenant by setting a runtime config value, [the normal way](https://laravel.com/docs/master/configuration#accessing-configuration-values):
+By default we set the active tenant through [Container Binding](https://laravel.com/docs/master/container#binding-basics):
+
+Example of setting active tenant on runtime:
 
 ```php
-config(['rinvex.tenants.active' => 1]);
+    $tenant = app('rinvex.tenants.tenant')->find(123);
+
+    // Inside service provider
+    $this->app->singleton('request.tenant', fn() => $tenant);
+
+    // OR anywhere else
+    app()->singleton('request.tenant', fn() => $tenant);
 ```
 
 You can pass either tenant id, slug, or instance. This package is smart enough to figure it out.
 
-Note that you can only activate one tenant at a time, even if your resources belongs to multiple tenants, only one tenant could be active. You still have the ability to change the active tenant at any point of the request, but note that it will have scoping effect only on those models requested after that change, while any other models requested at an earlier stage of the request will be scoped with the previous tenant, or not scoped at all (according to your logic).
+**CAUTION: Note that you can only activate one tenant at a time, even if your resources belongs to multiple tenants, only one tenant could be active. You still have the ability to change the active tenant at any point of the request, but note that it will have scoping effect only on those models requested after that change, while any other models requested at an earlier stage of the request will be scoped with the previous tenant, or not scoped at all (according to your logic).**
 
-To deactivate your tenant and stop scoping by it, simply unset that runtime config value as follows:
+To deactivate your tenant and stop scoping by it, simply set the same container service binding to `null` as follows:
 
 ```php
-config(['rinvex.tenants.active' => null]);
+    // Inside service provider
+    $this->app->singleton('request.tenant', null);
+
+    // OR anywhere else
+    app()->singleton('request.tenant', null);
 ```
 
 ### Querying Tenant scoped Models
