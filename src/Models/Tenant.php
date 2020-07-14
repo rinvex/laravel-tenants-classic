@@ -167,8 +167,8 @@ class Tenant extends Model
         $this->setRules([
             'slug' => 'required|alpha_dash|max:150|unique:'.config('rinvex.tenants.tables.tenants').',slug',
             'name' => 'required|string|strip_tags|max:150',
-            'description' => 'nullable|string|max:10000',
-            'email' => 'required|email|min:3|max:150|unique:'.config('rinvex.tenants.tables.tenants').',email',
+            'description' => 'nullable|string|max:32768',
+            'email' => 'required|email|min:3|max:128|unique:'.config('rinvex.tenants.tables.tenants').',email',
             'website' => 'nullable|url|max:1500',
             'phone' => 'required|phone:AUTO',
             'country_code' => 'required|alpha|size:2|country',
