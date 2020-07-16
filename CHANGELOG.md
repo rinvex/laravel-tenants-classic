@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v5.0.1] - 2020-07-16
+- Update timezone validation rule
+- Update validation rules
+
 ## [v5.0.0] - 2020-06-19
 - Refactor active tenant container service binding
 
@@ -153,6 +157,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v0.0.1 - 2017-04-11
 - Tag first release
 
+[v5.0.1]: https://github.com/rinvex/laravel-tenants/compare/v5.0.0...v5.0.1
 [v5.0.0]: https://github.com/rinvex/laravel-tenants/compare/v4.1.0...v5.0.0
 [v4.1.0]: https://github.com/rinvex/laravel-tenants/compare/v4.0.6...v4.1.0
 [v4.0.6]: https://github.com/rinvex/laravel-tenants/compare/v4.0.5...v4.0.6
