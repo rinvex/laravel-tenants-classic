@@ -178,7 +178,7 @@ class Tenant extends Model
             'address' => 'nullable|string',
             'postal_code' => 'nullable|string',
             'launch_date' => 'nullable|date_format:Y-m-d',
-            'timezone' => 'nullable|string|max:32|timezone',
+            'timezone' => 'nullable|string|max:64|timezone',
             'currency' => 'required|alpha|size:3',
             'is_active' => 'sometimes|boolean',
         ]);
