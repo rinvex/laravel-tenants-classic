@@ -6,9 +6,11 @@ namespace Rinvex\Tenants\Models;
 
 use Spatie\Sluggable\SlugOptions;
 use Rinvex\Support\Traits\HasSlug;
-use Rinvex\Tenants\Events\TenantSaved;
 use Illuminate\Database\Eloquent\Model;
+use Rinvex\Tenants\Events\TenantCreated;
 use Rinvex\Tenants\Events\TenantDeleted;
+use Rinvex\Tenants\Events\TenantUpdated;
+use Rinvex\Tenants\Events\TenantRestored;
 use Rinvex\Support\Traits\HasTranslations;
 use Rinvex\Support\Traits\ValidatingTrait;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -125,8 +127,10 @@ class Tenant extends Model
      * @var array
      */
     protected $dispatchesEvents = [
-        'saved' => TenantSaved::class,
+        'created' => TenantCreated::class,
+        'updated' => TenantUpdated::class,
         'deleted' => TenantDeleted::class,
+        'restored' => TenantRestored::class,
     ];
 
     /**

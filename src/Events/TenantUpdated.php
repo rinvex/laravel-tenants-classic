@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace Rinvex\Tenants\Events;
 
 use Rinvex\Tenants\Models\Tenant;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class TenantDeleted implements ShouldBroadcast
+class TenantUpdated implements ShouldBroadcast
 {
     use InteractsWithSockets;
+    use SerializesModels;
     use Dispatchable;
 
     /**
@@ -36,7 +38,7 @@ class TenantDeleted implements ShouldBroadcast
      */
     public function __construct(Tenant $tenant)
     {
-        $this->model = $tenant->withoutRelations();
+        $this->model = $tenant;
     }
 
     /**
@@ -59,6 +61,6 @@ class TenantDeleted implements ShouldBroadcast
      */
     public function broadcastAs()
     {
-        return 'tenant.deleted';
+        return 'tenant.updated';
     }
 }

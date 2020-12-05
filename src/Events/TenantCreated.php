@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace Rinvex\Tenants\Events;
 
 use Rinvex\Tenants\Models\Tenant;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class TenantSaved implements ShouldBroadcast
+class TenantCreated implements ShouldBroadcast
 {
-    use SerializesModels;
     use InteractsWithSockets;
+    use SerializesModels;
+    use Dispatchable;
 
     /**
      * The name of the queue on which to place the event.
@@ -27,7 +29,7 @@ class TenantSaved implements ShouldBroadcast
      *
      * @var \Rinvex\Tenants\Models\Tenant
      */
-    public $tenant;
+    public Tenant $model;
 
     /**
      * Create a new event instance.
@@ -36,17 +38,19 @@ class TenantSaved implements ShouldBroadcast
      */
     public function __construct(Tenant $tenant)
     {
-        $this->tenant = $tenant;
+        $this->model = $tenant;
     }
 
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel
+     * @return \Illuminate\Broadcasting\Channel|\Illuminate\Broadcasting\Channel[]
      */
     public function broadcastOn()
     {
-        return new Channel($this->formatChannelName());
+        return [
+            new PrivateChannel('rinvex.tenants.tenants.index'),
+        ];
     }
 
     /**
@@ -56,16 +60,6 @@ class TenantSaved implements ShouldBroadcast
      */
     public function broadcastAs()
     {
-        return 'rinvex.tenants.saved';
-    }
-
-    /**
-     * Format channel name.
-     *
-     * @return string
-     */
-    protected function formatChannelName(): string
-    {
-        return 'rinvex.tenants.list';
+        return 'tenant.created';
     }
 }
