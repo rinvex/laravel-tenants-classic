@@ -6,9 +6,7 @@ namespace Rinvex\Tenants\Models;
 
 use Spatie\Sluggable\SlugOptions;
 use Rinvex\Support\Traits\HasSlug;
-use Rinvex\Tenants\Events\TenantSaved;
 use Illuminate\Database\Eloquent\Model;
-use Rinvex\Tenants\Events\TenantDeleted;
 use Rinvex\Support\Traits\HasTranslations;
 use Rinvex\Support\Traits\ValidatingTrait;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -117,16 +115,6 @@ class Tenant extends Model
     protected $observables = [
         'validating',
         'validated',
-    ];
-
-    /**
-     * The event map for the model.
-     *
-     * @var array
-     */
-    protected $dispatchesEvents = [
-        'saved' => TenantSaved::class,
-        'deleted' => TenantDeleted::class,
     ];
 
     /**
