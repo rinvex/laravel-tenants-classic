@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v6.0.0] - 2020-12-22
+- Upgrade to Laravel v8
+- Move custom eloquent model events to module layer from core package layer
+- Refactor and tweak Eloquent Events
+
 ## [v5.0.2] - 2020-08-04
 - Make sure `request.tenant` IoC service already bound before using
 - Update timezone validation rule
@@ -161,6 +166,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v0.0.1 - 2017-04-11
 - Tag first release
 
+[v6.0.0]: https://github.com/rinvex/laravel-tenants/compare/v5.0.2...v6.0.0
 [v5.0.2]: https://github.com/rinvex/laravel-tenants/compare/v5.0.1...v5.0.2
 [v5.0.1]: https://github.com/rinvex/laravel-tenants/compare/v5.0.0...v5.0.1
 [v5.0.0]: https://github.com/rinvex/laravel-tenants/compare/v4.1.0...v5.0.0
