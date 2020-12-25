@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v6.0.1] - 2020-12-25
+- Add support for PHP v8
+
 ## [v6.0.0] - 2020-12-22
 - Upgrade to Laravel v8
 - Move custom eloquent model events to module layer from core package layer
@@ -27,7 +30,6 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 - Drop using rinvex/laravel-cacheable from core packages for more flexibility
   - Caching should be handled on the application layer, not enforced from the core packages
 - Drop PHP 7.2 & 7.3 support from travis
-
 
 ## [v4.0.6] - 2020-05-30
 - Remove default indent size config
@@ -166,6 +168,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v0.0.1 - 2017-04-11
 - Tag first release
 
+[v6.0.1]: https://github.com/rinvex/laravel-tenants/compare/v6.0.0...v6.0.1
 [v6.0.0]: https://github.com/rinvex/laravel-tenants/compare/v5.0.2...v6.0.0
 [v5.0.2]: https://github.com/rinvex/laravel-tenants/compare/v5.0.1...v5.0.2
 [v5.0.1]: https://github.com/rinvex/laravel-tenants/compare/v5.0.0...v5.0.1
