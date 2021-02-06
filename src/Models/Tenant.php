@@ -14,27 +14,27 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 /**
  * Rinvex\Tenants\Models\Tenant.
  *
- * @property int                                                $id
- * @property string                                             $slug
- * @property array                                              $title
- * @property array                                              $description
- * @property string                                             $email
- * @property string                                             $website
- * @property string                                             $phone
- * @property string                                             $language_code
- * @property string                                             $country_code
- * @property string                                             $state
- * @property string                                             $city
- * @property string                                             $address
- * @property string                                             $postal_code
- * @property string                                             $launch_date
- * @property string                                             $timezone
- * @property string                                             $currency
- * @property string                                             $group
- * @property bool                                               $is_active
- * @property \Carbon\Carbon|null                                $created_at
- * @property \Carbon\Carbon|null                                $updated_at
- * @property \Carbon\Carbon|null                                $deleted_at
+ * @property int                 $id
+ * @property string              $slug
+ * @property array               $title
+ * @property array               $description
+ * @property string              $email
+ * @property string              $website
+ * @property string              $phone
+ * @property string              $language_code
+ * @property string              $country_code
+ * @property string              $state
+ * @property string              $city
+ * @property string              $address
+ * @property string              $postal_code
+ * @property string              $launch_date
+ * @property string              $timezone
+ * @property string              $currency
+ * @property string              $group
+ * @property bool                $is_active
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property \Carbon\Carbon|null $deleted_at
  * @property-read \Rinvex\Country\Country                       $country
  * @property-read \Rinvex\Language\Language                     $language
  *

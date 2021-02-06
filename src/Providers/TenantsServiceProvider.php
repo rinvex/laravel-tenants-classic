@@ -35,8 +35,9 @@ class TenantsServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(realpath(__DIR__.'/../../config/config.php'), 'rinvex.tenants');
 
         // Bind eloquent models to IoC container
-        $this->app->singleton('rinvex.tenants.tenant', $tenantModel = $this->app['config']['rinvex.tenants.models.tenant']);
-        $tenantModel === Tenant::class || $this->app->alias('rinvex.tenants.tenant', Tenant::class);
+        $this->registerModels([
+            'rinvex.tenants.tenant' => Tenant::class,
+        ]);
 
         // Register console commands
         $this->registerCommands($this->commands);

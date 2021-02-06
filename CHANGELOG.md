@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v6.0.2] - 2021-02-06
+- Simplify service provider model registration into IoC
+- Enable StyleCI risky mode
+
 ## [v6.0.1] - 2020-12-25
 - Add support for PHP v8
 
@@ -168,6 +172,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v0.0.1 - 2017-04-11
 - Tag first release
 
+[v6.0.2]: https://github.com/rinvex/laravel-tenants/compare/v6.0.1...v6.0.2
 [v6.0.1]: https://github.com/rinvex/laravel-tenants/compare/v6.0.0...v6.0.1
 [v6.0.0]: https://github.com/rinvex/laravel-tenants/compare/v5.0.2...v6.0.0
 [v5.0.2]: https://github.com/rinvex/laravel-tenants/compare/v5.0.1...v5.0.2
