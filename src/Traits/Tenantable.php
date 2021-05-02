@@ -90,7 +90,7 @@ trait Tenantable
      */
     public static function bootTenantable()
     {
-        if (app()->bound('request.tenant') && $tenant = app('request.tenant')) {
+        if (app()->has('request.tenant') && $tenant = app('request.tenant')) {
             static::addGlobalScope('tenantable', function (Builder $builder) use ($tenant) {
                 $builder->whereHas('tenants', function (Builder $builder) use ($tenant) {
                     $key = $tenant instanceof Model ? $tenant->getKeyName() : (is_int($tenant) ? 'id' : 'slug');
