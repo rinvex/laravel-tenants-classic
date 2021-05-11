@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v6.0.4] - 2021-05-11
+- Fix constructor initialization order (fill attributes should come next after merging fillables & rules)
+
 ## [v6.0.3] - 2021-05-07
 - Drop old MySQL versions support that doesn't support json columns
 - Upgrade to GitHub-native Dependabot
@@ -178,6 +181,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v0.0.1 - 2017-04-11
 - Tag first release
 
+[v6.0.4]: https://github.com/rinvex/laravel-tenants/compare/v6.0.3...v6.0.4
 [v6.0.3]: https://github.com/rinvex/laravel-tenants/compare/v6.0.2...v6.0.3
 [v6.0.2]: https://github.com/rinvex/laravel-tenants/compare/v6.0.1...v6.0.2
 [v6.0.1]: https://github.com/rinvex/laravel-tenants/compare/v6.0.0...v6.0.1
