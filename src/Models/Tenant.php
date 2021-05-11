@@ -151,8 +151,6 @@ class Tenant extends Model
      */
     public function __construct(array $attributes = [])
     {
-        parent::__construct($attributes);
-
         $this->setTable(config('rinvex.tenants.tables.tenants'));
         $this->setRules([
             'slug' => 'required|alpha_dash|max:150|unique:'.config('rinvex.tenants.tables.tenants').',slug',
@@ -172,6 +170,8 @@ class Tenant extends Model
             'currency' => 'required|alpha|size:3',
             'is_active' => 'sometimes|boolean',
         ]);
+
+        parent::__construct($attributes);
     }
 
     /**
