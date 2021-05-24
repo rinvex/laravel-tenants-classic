@@ -152,7 +152,7 @@ class Tenant extends Model
     public function __construct(array $attributes = [])
     {
         $this->setTable(config('rinvex.tenants.tables.tenants'));
-        $this->setRules([
+        $this->mergeRules([
             'slug' => 'required|alpha_dash|max:150|unique:'.config('rinvex.tenants.tables.tenants').',slug',
             'name' => 'required|string|strip_tags|max:150',
             'description' => 'nullable|string|max:32768',
