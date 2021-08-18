@@ -6,7 +6,7 @@ namespace Rinvex\Tenants\Exceptions;
 
 use Exception;
 
-class TenantNotSetException extends Exception
+abstract class AbstractTenantException extends Exception
 {
     //
 }
