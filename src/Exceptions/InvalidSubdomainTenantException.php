@@ -8,6 +8,6 @@ class InvalidSubdomainTenantException extends AbstractTenantException
 {
     public function __construct(string $host)
     {
-        parent::__construct("Host $host is invalid subdomain!");
+        parent::__construct("Host ${host} is invalid subdomain!");
     }
 }

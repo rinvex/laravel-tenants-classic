@@ -15,9 +15,9 @@ class SubdomainTenantResolver implements TenantResolver
     /**
      * Resolve tenant using current request.
      *
-     * @return \Rinvex\Tenants\Models\Tenant
-     *
      * @throws \Throwable|\Rinvex\Tenants\Exceptions\InvalidDomainTenantException|\Rinvex\Tenants\Exceptions\InvalidSubdomainTenantException
+     *
+     * @return \Rinvex\Tenants\Models\Tenant
      */
     public static function resolve(): Tenant
     {
