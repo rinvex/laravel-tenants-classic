@@ -109,7 +109,7 @@ $tenant = app('rinvex.tenants.tenant')->find(1);
 
 ### Automatic Tenants Registration
 
-Tenants are automatically registered into [Service Container](https://laravel.com/docs/master/container) very early in the request, through the service provider `register` method.
+Tenants are automatically registered into [Service Container](https://laravel.com/docs/master/container) very early in the request, through service provider `boot` method.
 
 That way you'll have access to the current active tenant before models are loaded, scopes are needed, or traits are booted. That's also earlier than routes registration, and middleware pipeline, so you can assure any resources that needs to be scoped, are correctly scoped.
 
