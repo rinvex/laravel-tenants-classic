@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  *
  * @property int                 $id
  * @property string              $slug
+ * @property string              $domain
  * @property array               $title
  * @property array               $description
  * @property string              $email
@@ -57,6 +58,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant wherePostalCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereDomain($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereUpdatedAt($value)
  * @mixin \Eloquent
@@ -73,6 +75,7 @@ class Tenant extends Model
      */
     protected $fillable = [
         'slug',
+        'domain',
         'name',
         'description',
         'email',
@@ -95,6 +98,7 @@ class Tenant extends Model
      */
     protected $casts = [
         'slug' => 'string',
+        'domain' => 'string',
         'email' => 'string',
         'website' => 'string',
         'phone' => 'string',
@@ -154,6 +158,7 @@ class Tenant extends Model
         $this->setTable(config('rinvex.tenants.tables.tenants'));
         $this->mergeRules([
             'slug' => 'required|alpha_dash|max:150|unique:'.config('rinvex.tenants.tables.tenants').',slug',
+            'domain' => 'nullable|strip_tags|max:150|unique:'.config('rinvex.tenants.tables.tenants').',domain',
             'name' => 'required|string|strip_tags|max:150',
             'description' => 'nullable|string|max:32768',
             'email' => 'required|email|min:3|max:128|unique:'.config('rinvex.tenants.tables.tenants').',email',

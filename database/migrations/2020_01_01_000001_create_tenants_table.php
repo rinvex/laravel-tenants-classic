@@ -19,6 +19,7 @@ class CreateTenantsTable extends Migration
             // Columns
             $table->increments('id');
             $table->string('slug');
+            $table->string('domain')->nullable();
             $table->json('name');
             $table->json('description')->nullable();
             $table->string('email');
@@ -39,6 +40,7 @@ class CreateTenantsTable extends Migration
 
             // Indexes
             $table->unique('slug');
+            $table->unique('domain');
         });
     }
 
