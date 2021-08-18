@@ -41,6 +41,9 @@ class TenantsServiceProvider extends ServiceProvider
 
         // Register console commands
         $this->registerCommands($this->commands);
+
+        // Resolve and register tenant into service container
+        $this->app->singleton('request.tenant', fn () => ! in_array($this->app['request']->getHost(), central_domains()) ? config('rinvex.tenants.resolver')::resolve() : null);
     }
 
     /**
