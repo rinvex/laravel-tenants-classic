@@ -7,6 +7,7 @@ namespace Rinvex\Tenants\Traits;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Rinvex\Tenants\Scopes\TenantableScope;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -90,14 +91,8 @@ trait Tenantable
      */
     public static function bootTenantable()
     {
-        if (app()->has('request.tenant') && $tenant = app('request.tenant')) {
-            static::addGlobalScope('tenantable', function (Builder $builder) use ($tenant) {
-                $builder->whereHas('tenants', function (Builder $builder) use ($tenant) {
-                    $key = $tenant instanceof Model ? $tenant->getKeyName() : (is_int($tenant) ? 'id' : 'slug');
-                    $value = $tenant instanceof Model ? $tenant->{$key} : $tenant;
-                    $builder->where($key, $value);
-                });
-            });
+        if ($tenant = app('request.tenant')) {
+            static::addGlobalScope(new TenantableScope($tenant));
 
             static::saved(function (self $model) use ($tenant) {
                 $model->attachTenants($tenant);
