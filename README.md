@@ -33,7 +33,56 @@
 
 **Rinvex Tenants** is developed with the concept that every tenantable model can be attached to multiple tenants at the same time, so you don't need special column in your model database table to specify the tenant it belongs to, tenant relationships simply stored in a separate central table.
 
-To add tenants support to your eloquent models simply use `\Rinvex\Tenants\Traits\Tenantable` trait.
+### Scope Queries
+
+To scope your queries correctly, apply the `\Rinvex\Tenants\Traits\Tenantable` trait on primary models. This will ensure that all calls to your parent models are scoped to the current tenant, and that calls to their child relations are scoped through the parent relationships.
+
+```php
+namespace App\Models;
+
+use App\Models\Feature;
+use Rinvex\Tenants\Traits\Tenantable;
+use Illuminate\Database\Eloquent\Model;
+
+class Product extends Model
+{
+    use Tenantable;
+
+    public function features()
+    {
+        return $this->hasMany(Feature::class);
+    }
+}
+```
+
+#### Scope Child Model Queries
+
+If you have child models, like product features, and these features belongs to tenantable products via a relationship, you may need to scope these feature model queries as well. For that, you need to apply the `\Rinvex\Tenants\Traits\TenantableChild` trait on your child models, and define a new method `getRelationshipToTenantable` that returns a string of the parent relationship. Check the following example.
+
+```php
+namespace App\Models;
+
+use App\Models\Product;
+use Illuminate\Database\Eloquent\Model;
+use Rinvex\Tenants\Traits\TenantableChild;
+
+class Feature extends Model
+{
+    use TenantableChild;
+
+    public function getRelationshipToTenantable(): string
+    {
+        return 'product';
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+}
+```
+
+And this will automatically scope the all `App\Models\Feature::class` queries to the current tenant. Note that the limitation of this is that you need to be able to define a relationship to a primary model, so if you need to do this on deeper level of children hierarchy, like a `App\Models\Discount::class` model that belongs to `App\Models\Feature::class` which belongs to `App\Models\Product::class` which belongs to a Tenant `Rinvex\Tenants\Models\Tenant::class`, you need to define some strange relationship. Laravel supports HasOneThrough, but not BelongsToThrough, so you'd need to do some hacks around that.
 
 ### Manage your tenants
 
@@ -44,7 +93,8 @@ Nothing special here, just normal [Eloquent](https://laravel.com/docs/master/elo
 app('rinvex.tenants.tenant')->create([
     'name' => 'ACME Inc.',
     'slug' => 'acme',
-    'email' => 'info@acme.inc',
+    'domain' => 'acme.test',
+    'email' => 'info@acme.test',
     'language_code' => 'en',
     'country_code' => 'us',
 ]);
@@ -57,49 +107,87 @@ $tenant = app('rinvex.tenants.tenant')->find(1);
 > - Translatable out of the box using [`spatie/laravel-translatable`](https://github.com/spatie/laravel-translatable)
 > - Automatic Slugging using [`spatie/laravel-sluggable`](https://github.com/spatie/laravel-sluggable)
 
-### Activate Your Tenant
+### Automatic Tenants Registration
 
-**Rinvex Tenants** is stateless, which means you have to set the active tenant on every request, therefore it will only scope that specific request.
+Tenants are automatically registered into [Service Container](https://laravel.com/docs/master/container) very early in the request, through the service provider `register` method.
 
-Make sure to activate your tenants in such a way that it happens on every request, and before you need Models scoped, like in `boot` method of service provider, a middleware, or as part of a stateless authentication method like OAuth.
+That way you'll have access to the current active tenant before models are loaded, scopes are needed, or traits are booted. That's also earlier than routes registration, and middleware pipeline, so you can assure any resources that needs to be scoped, are correctly scoped.
 
-By default we set the active tenant through [Container Binding](https://laravel.com/docs/master/container#binding-basics):
+### Changing Active Tenant
 
-Example of setting active tenant on runtime:
+You can easily change current active tenant at any point of the request as follows:
 
 ```php
     $tenant = app('rinvex.tenants.tenant')->find(123);
-
-    // Inside service provider
-    $this->app->singleton('request.tenant', fn() => $tenant);
-
-    // OR anywhere else
-    app()->singleton('request.tenant', fn() => $tenant);
+    app()->bind('request.tenant', fn() => $tenant);
 ```
 
-You can pass either tenant id, slug, or instance. This package is smart enough to figure it out.
-
-**CAUTION: Note that you can only activate one tenant at a time, even if your resources belongs to multiple tenants, only one tenant could be active. You still have the ability to change the active tenant at any point of the request, but note that it will have scoping effect only on those models requested after that change, while any other models requested at an earlier stage of the request will be scoped with the previous tenant, or not scoped at all (according to your logic).**
-
-To deactivate your tenant and stop scoping by it, simply set the same container service binding to `null` as follows:
+And to deactivate your tenant and stop scoping by it, simply set the same container service binding to `null` as follows:
 
 ```php
-    // Inside service provider
-    $this->app->singleton('request.tenant', null);
-
-    // OR anywhere else
-    app()->singleton('request.tenant', null);
+    app()->bind('request.tenant', null);
 ```
 
-### Querying Tenant scoped Models
+> **Notes:**
+> - Only one tenant could be active at a time, even if your resources belongs to multiple tenants.
+> - You can change the active tenant at any point of the request, but that newly activated tenant will only scope models retrieved after that change, while any other models retrieved at an earlier stage of the request will be scoped with the previous tenant, or not scoped at all (according to your logic).
+> - If a resource belongs to multiple tenants, you can switch between tenants by to a different tenant by reinitializing the request. Example: since tenants are currently resolved by domains or subdomains, to switch tenants you'll need to redirect the user the new tenant domain/subdomain, and the currently active tenant will be switched as well as the request will be automatically scoped by the new tenant.
 
-After you've added tenants, all queries against a Model which uses `\Rinvex\Tenants\Traits\Tenantable` will be scoped automatically:
+### Default Tenant Resolvers
+
+**Rinvex Tenants** resolve currently active tenant using Resolver Classes. It comes with few default resolvers that you can use, or you can build your own custom resolver to support additional functionality.
+
+Default tenant resolver classes in config options:
 
 ```php
-// This will only include Models belonging to the active tenant
+    // Tenant Resolver Class:
+    // - \Rinvex\Tenants\Http\Resolvers\DomainTenantResolver::class
+    // - \Rinvex\Tenants\Http\Resolvers\SubdomainTenantResolver::class
+    // - \Rinvex\Tenants\Http\Resolvers\SubdomainOrDomainTenantResolver::class
+    'resolver' => \Rinvex\Tenants\Resolvers\SubdomainOrDomainTenantResolver::class,
+```
+
+The default tenant resolver used is `SubdomainOrDomainTenantResolver::class`, so this package automatically resolve currently active tenant using both domains and subdomains. You can change that via config options.
+
+### Multiple Central Domains
+
+Some applications may run on multiple alias domains, we call them central domains. **Rinvex Tenants** supports that, and you can add as many central domains as you want. Check the config option `rinvex.tenant.central_domains`.
+
+No need to list the default domain, it is automatically appended to the compiled list from `app.url` config.
+
+### Tenant Domains
+
+Tenants could be accessed via central subdomains (obviously subdomains on central domains), or via their own dedicated domains.
+
+For example if the default domain is `rinvex.com`, and tenant slug is `cortex` then central subdomain will be `cortex.rinvex.com`.
+
+Note that since this package supports multiple central domains, tenants will be accessible via all central subdomains, so if we have another alias central domain `rinvex.net`, you can expect `cortex` to be available on `cortex.rinvex.net` as well.
+
+Tenants can optionally have top level domains as well, something like `cortex-example.com`, which means it's now accessible through three different domains:
+- `cortex.rinvex.com`
+- `cortex.rinvex.net`
+- `cortex-example.com`
+
+### Session Domain
+
+Since **Rinvex Tenants** supports multiple central and tenant domains, it needs to change the default laravel session configuration on the fly, and that's actually what it does. It will dynamically change `session.domain` config option based on the current request host.
+
+### Global Helpers
+
+**Rinvex Tenants** comes with the following global helpers:
+
+- `central_domains()`: Returns an array of all central domains, which is basically the default app domain retrieved from `app.url`, appended to any extra alias domains retrieved from `rinvex.tenants.central_domains`
+- `tenant_domains()`: Returns an array of all tenant domains, which is basically array of two items, tenant subdomain and domain. The subdomain is a concatenation of tenant `slug` with default app domain.
+
+### Querying Tenant Scoped Models
+
+After you've added tenants, all queries against a tenantable Model will be scoped automatically:
+
+```php
+// This will only include Models belonging to the currently active tenant
 $tenantProducts = \App\Models\Product::all();
 
-// This will fail with a `ModelNotFoundForTenantException` if it belongs to the wrong tenant (if active tenant is 1 for example)
+// This will fail with a `ModelNotFoundForTenantException` if it belongs to the wrong tenant
 $product = \App\Models\Product::find(2);
 ```
 
@@ -110,11 +198,11 @@ If you need to query across all tenants, you can use `forAllTenants()` method:
 $allTenantProducts = \App\Models\Product::forAllTenants()->get();
 ```
 
-Under the hood, **Rinvex Tenants** uses Laravel's [anonymous global scopes](https://laravel.com/docs/master/eloquent#global-scopes), which means if you are scoping by active tenant, and you want to exclude one single query, you can do so:
+Under the hood, **Rinvex Tenants** uses Laravel's [Global Scopes](https://laravel.com/docs/master/eloquent#global-scopes), which means if you are scoping by active tenant, and you want to exclude one single query, you can do so:
 
 ```php
 // Will NOT be scoped, and will return results from ALL tenants, just for this query
-$allTenantProducts = \App\Models\Product::withoutGlobalScope('tenantable')->get();
+$allTenantProducts = \App\Models\Product::withoutTenants()->get();
 ```
 
 > **Notes:**
@@ -123,7 +211,7 @@ $allTenantProducts = \App\Models\Product::withoutGlobalScope('tenantable')->get(
 
 ### Manage your tenantable model
 
-The API is intutive and very straightfarwad, so let's give it a quick look:
+The API is intutive and very straightforward, so let's give it a quick look:
 
 ```php
 // Get instance of your model
