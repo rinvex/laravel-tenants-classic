@@ -22,6 +22,24 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Tenant Resolver Class
+    |--------------------------------------------------------------------------
+    |
+    | This package resolve currently active tenant using Resolver Classes.
+    | It comes with few default resolvers that you can use, or you can
+    | build your own custom resolver to support additional functions.
+    |
+    | Default Resolvers:
+    | - \Rinvex\Tenants\Http\Resolvers\DomainTenantResolver::class
+    | - \Rinvex\Tenants\Http\Resolvers\SubdomainTenantResolver::class
+    | - \Rinvex\Tenants\Http\Resolvers\SubdomainOrDomainTenantResolver::class
+    |
+    */
+
+    'resolver' => \Rinvex\Tenants\Resolvers\SubdomainOrDomainTenantResolver::class,
+
+    /*
+    |--------------------------------------------------------------------------
     | Central Domains
     |--------------------------------------------------------------------------
     |
