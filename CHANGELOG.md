@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v7.0.0] - 2021-08-18
+- Breaking Change: Refactor of tenant resolving logic
+- Add domain and subdomain tenant resolvers and exceptions
+- Dynamically change session domain config on the fly, if current requested host is not a central domain or a central subdomain
+- Resolve and register currently active tenant into service container
+- Add central_domains() & tenant_domains() global helpers
+- Add central domains config options to support additional alias domains
+- Add TenantableChild trait and TenantableChildScope for child models
+- Remove useless TenantNotSetException
+- Move global scope to TenantableScope class
+  - Scope queries to is_active tenants 
+  - Add support for withoutTenants
+- Add domain attribute to tenants
+- Update composer dependencies
+- Update documentation
+
 ## [v6.0.5] - 2021-05-24
 - Merge rules instead of resetting, to allow adequate model override
 - Update spatie/laravel-translatable composer package to v5.0.0
@@ -186,6 +202,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v0.0.1 - 2017-04-11
 - Tag first release
 
+[v7.0.0]: https://github.com/rinvex/laravel-tenants/compare/v6.0.5...v7.0.0
 [v6.0.5]: https://github.com/rinvex/laravel-tenants/compare/v6.0.4...v6.0.5
 [v6.0.4]: https://github.com/rinvex/laravel-tenants/compare/v6.0.3...v6.0.4
 [v6.0.3]: https://github.com/rinvex/laravel-tenants/compare/v6.0.2...v6.0.3
