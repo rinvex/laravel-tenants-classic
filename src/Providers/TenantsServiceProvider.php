@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rinvex\Tenants\Providers;
 
+use Illuminate\Support\Str;
 use Rinvex\Tenants\Models\Tenant;
 use Illuminate\Support\ServiceProvider;
 use Rinvex\Support\Traits\ConsoleTools;
@@ -44,6 +45,11 @@ class TenantsServiceProvider extends ServiceProvider
 
         // Resolve and register tenant into service container
         $this->app->singleton('request.tenant', fn () => ! in_array($this->app['request']->getHost(), central_domains()) ? config('rinvex.tenants.resolver')::resolve() : null);
+
+        // Dynamically change session domain config on the fly, if current requested host is not a central domain or a central subdomain
+        if (in_array($domain = $this->app->request->getHost(), array_merge(central_domains(), tenant_domains())) && ! Str::endsWith($domain, central_domains())) {
+            config()->set('session.domain', '.'.$domain);
+        }
     }
 
     /**
