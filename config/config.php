@@ -40,7 +40,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Central Domains
+    | Alias Domains
     |--------------------------------------------------------------------------
     |
     | If your application is accessible through multiple domain names,
@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'central_domains' => [
+    'alias_domains' => [
         'app.rinvex.test',
     ],
 

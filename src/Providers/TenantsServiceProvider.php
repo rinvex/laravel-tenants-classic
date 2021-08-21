@@ -54,11 +54,28 @@ class TenantsServiceProvider extends ServiceProvider
         $this->publishesMigrations('rinvex/laravel-tenants');
         ! $this->autoloadMigrations('rinvex/laravel-tenants') || $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
-        // Resolve and register tenant into service container
-        $this->app->singleton('request.tenant', fn () => ! in_array($this->app['request']->getHost(), central_domains()) ? config('rinvex.tenants.resolver')::resolve() : null);
+        // Resolve active tenant
+        $this->resolveActiveTenant();
+    }
 
-        // Dynamically change session domain config on the fly, if current requested host is not a central domain or a central subdomain
-        if (in_array($domain = $this->app->request->getHost(), array_merge(central_domains(), tenant_domains())) && ! Str::endsWith($domain, central_domains())) {
+    /**
+     * Resolve active tenant.
+     *
+     * @return void
+     */
+    public function resolveActiveTenant()
+    {
+        $centralDomains = central_domains();
+        $domain = $this->app['request']->getHost();
+
+        // Resolve and register tenant into service container
+        $this->app->singleton('request.tenant', fn () => ! in_array($domain, $centralDomains) ? config('rinvex.tenants.resolver')::resolve() : null);
+
+        // Dynamically change session domain config on the fly
+        if (in_array($domain, array_merge([optional($this->app['request.tenant'])->domain], config('rinvex.tenants.alias_domains')))) {
+            config()->set('session.domain', '.'.$domain);
+        } else if (Str::endsWith($domain, config('rinvex.tenants.alias_domains'))) {
+            $domain = collect(config('rinvex.tenants.alias_domains'))->first(fn ($alias) => Str::endsWith($domain, $alias));
             config()->set('session.domain', '.'.$domain);
         }
     }

@@ -149,11 +149,13 @@ Default tenant resolver classes in config options:
 
 The default tenant resolver used is `SubdomainOrDomainTenantResolver::class`, so this package automatically resolve currently active tenant using both domains and subdomains. You can change that via config options.
 
-### Multiple Central Domains
+### Central Domains
 
-Some applications may run on multiple alias domains, we call them central domains. **Rinvex Tenants** supports that, and you can add as many central domains as you want. Check the config option `rinvex.tenant.central_domains`.
+Some applications may run on multiple alias domains, and **Rinvex Tenants** supports that. You can add as many alias domains as you want. Check the config option `rinvex.tenants.alias_domains`. 
 
-No need to list the default domain, it is automatically appended to the compiled list from `app.url` config.
+Internally, we merge alias domains with the application default domain (which is parsed from default Laravel config option `app.url`) into one array, and we call it collectively central domains.
+
+No need to add the default domain to alias domains, it is automatically appended to the compiled list from `app.url` config. You can get them easily by calling a simple function, check the [Global Helpers](#global-helpers) for more details.
 
 ### Tenant Domains
 
@@ -176,8 +178,10 @@ Since **Rinvex Tenants** supports multiple central and tenant domains, it needs 
 
 **Rinvex Tenants** comes with the following global helpers:
 
-- `central_domains()`: Returns an array of all central domains, which is basically the default app domain retrieved from `app.url`, appended to any extra alias domains retrieved from `rinvex.tenants.central_domains`
+- `central_domains()`: Returns an array of all central domains, which is basically the default app domain retrieved from `app.url`, appended to any extra alias domains retrieved from `rinvex.tenants.alias_domains`
 - `tenant_domains()`: Returns an array of all tenant domains, which is basically array of two items, tenant subdomain and domain. The subdomain is a concatenation of tenant `slug` with default app domain.
+- `central_subdomains()`: Returns an array of all central subdomains of currently active tenant, which is basically tenant's slug appended to every central domain.
+- `central_domain()`: Returns the default application domain, parsed from the default Laravel config option `app.url`.
 
 ### Querying Tenant Scoped Models
 
