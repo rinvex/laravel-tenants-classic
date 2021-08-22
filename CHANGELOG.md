@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v7.1.0] - 2021-08-22
+- Drop PHP v7 support, and upgrade rinvex package dependencies to next major version
+- Update composer dependencies
+
 ## [v7.0.1] - 2021-08-21
 - Introduce central subdomains functionality and improve tenant resolution logic
 
@@ -205,6 +209,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v0.0.1 - 2017-04-11
 - Tag first release
 
+[v7.1.0]: https://github.com/rinvex/laravel-tenants/compare/v7.0.1...v7.1.0
 [v7.0.1]: https://github.com/rinvex/laravel-tenants/compare/v7.0.0...v7.0.1
 [v7.0.0]: https://github.com/rinvex/laravel-tenants/compare/v6.0.5...v7.0.0
 [v6.0.5]: https://github.com/rinvex/laravel-tenants/compare/v6.0.4...v6.0.5

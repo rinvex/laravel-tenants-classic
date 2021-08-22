@@ -74,7 +74,7 @@ class TenantsServiceProvider extends ServiceProvider
         // Dynamically change session domain config on the fly
         if (in_array($domain, array_merge([optional($this->app['request.tenant'])->domain], config('rinvex.tenants.alias_domains')))) {
             config()->set('session.domain', '.'.$domain);
-        } else if (Str::endsWith($domain, config('rinvex.tenants.alias_domains'))) {
+        } elseif (Str::endsWith($domain, config('rinvex.tenants.alias_domains'))) {
             $domain = collect(config('rinvex.tenants.alias_domains'))->first(fn ($alias) => Str::endsWith($domain, $alias));
             config()->set('session.domain', '.'.$domain);
         }
