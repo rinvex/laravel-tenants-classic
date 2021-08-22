@@ -46,8 +46,8 @@
         "illuminate/database": "^8.0.0 || ^9.0.0",
         "illuminate/support": "^8.0.0 || ^9.0.0",
         "propaganistas/laravel-phone": "^4.2.0",
-        "rinvex/countries": "^7.0.0",
-        "rinvex/languages": "^5.0.0",
+        "rinvex/countries": "^8.0.0",
+        "rinvex/languages": "^6.0.0",
         "rinvex/laravel-support": "^6.0.0",
         "spatie/laravel-sluggable": "^3.0.0",
         "spatie/laravel-translatable": "^5.0.0"
