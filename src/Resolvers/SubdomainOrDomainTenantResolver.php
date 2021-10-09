@@ -19,7 +19,7 @@ class SubdomainOrDomainTenantResolver implements TenantResolver
      */
     public static function resolve(): Tenant
     {
-        if (Str::endsWith(request()->getHost(), central_domains())) {
+        if (Str::endsWith(request()->getHost(), array_keys(config('app.domains')))) {
             return SubdomainTenantResolver::resolve();
         }
 

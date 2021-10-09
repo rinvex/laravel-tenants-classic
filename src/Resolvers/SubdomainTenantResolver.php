@@ -21,12 +21,13 @@ class SubdomainTenantResolver implements TenantResolver
      */
     public static function resolve(): Tenant
     {
+        $appDomains = array_keys(config('app.domains'));
         $segments = explode('.', $host = request()->getHost());
 
         // Check host if it matches criteria
         $isLocalhost = count($segments) === 1;
-        $isCentralDomain = in_array($host, central_domains(), true);
-        $isNotCentralSubdomain = ! Str::endsWith($host, central_domains());
+        $isCentralDomain = in_array($host, $appDomains, true);
+        $isNotCentralSubdomain = ! Str::endsWith($host, $appDomains);
         $isIpAddress = count(array_filter($segments, 'is_numeric')) === count($segments);
 
         // Throw an exception if the host is not a valid subdomain of central domains
