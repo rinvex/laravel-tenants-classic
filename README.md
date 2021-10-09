@@ -151,11 +151,22 @@ The default tenant resolver used is `SubdomainOrDomainTenantResolver::class`, so
 
 ### Central Domains
 
-Some applications may run on multiple alias domains, and **Rinvex Tenants** supports that. You can add as many alias domains as you want. Check the config option `rinvex.tenants.alias_domains`. 
+**Rinvex Tenants** supports running your application on multiple domains, we call them central domains. It also supports more sophisticated use cases, but that's out of this package's scope.
 
-Internally, we merge alias domains with the application default domain (which is parsed from default Laravel config option `app.url`) into one array, and we call it collectively central domains.
+For that reason, this package expects you to have the following config option in your `config/app.php`:
 
-No need to add the default domain to alias domains, it is automatically appended to the compiled list from `app.url` config. You can get them easily by calling a simple function, check the [Global Helpers](#global-helpers) for more details.
+```php
+    'domains' => [
+        'domain.net' => [],
+        'example.com' => [],
+    ],
+```
+
+### Default Domain
+
+The reason you need to add the above config option in the same format, is that it's meant to support more advanced use cases that's not covered by this package. If you need to check some of these use cases proceed to [Cortex Tenants](https://github.com/rinvex/cortex-tenants) which is an application module implementing accessareas concepts, and allows different domains to access different accessareas (i.e. frontarea, adminarea, managerarea, tenantarea ..etc). The baseline here is that you need to add the above config option to your `config/app.php` and specify all your application domains.
+
+You need to add the default domain to the domains list, since this package automatically overrides the default Laravel config option `app.url` with the matched domain, although you may need to write some application logic. Checkout the above mentioned [Cortex Tenants](https://github.com/rinvex/cortex-tenants) module for an example.
 
 ### Tenant Domains
 
@@ -165,23 +176,16 @@ For example if the default domain is `rinvex.com`, and tenant slug is `cortex` t
 
 Note that since this package supports multiple central domains, tenants will be accessible via all central subdomains, so if we have another alias central domain `rinvex.net`, you can expect `cortex` to be available on `cortex.rinvex.net` as well.
 
-Tenants can optionally have top level domains as well, something like `cortex-example.com`, which means it's now accessible through three different domains:
+Tenants can optionally have top level domains of their own too, something like `test-example.com`, which means it's now accessible through three different domains:
 - `cortex.rinvex.com`
 - `cortex.rinvex.net`
-- `cortex-example.com`
+- `test-example.com`
 
 ### Session Domain
 
 Since **Rinvex Tenants** supports multiple central and tenant domains, it needs to change the default laravel session configuration on the fly, and that's actually what it does. It will dynamically change `session.domain` config option based on the current request host.
 
-### Global Helpers
-
-**Rinvex Tenants** comes with the following global helpers:
-
-- `central_domains()`: Returns an array of all central domains, which is basically the default app domain retrieved from `app.url`, appended to any extra alias domains retrieved from `rinvex.tenants.alias_domains`
-- `tenant_domains()`: Returns an array of all tenant domains, which is basically array of two items, tenant subdomain and domain. The subdomain is a concatenation of tenant `slug` with default app domain.
-- `central_subdomains()`: Returns an array of all central subdomains of currently active tenant, which is basically tenant's slug appended to every central domain.
-- `central_domain()`: Returns the default application domain, parsed from the default Laravel config option `app.url`.
+> **Note:** Due to security reasons, accessing the same application through multiple top level domains (.rinvex.com & .rinvex.net) means the user will need to login for each different domain, as their session and cookies are tied to the top level domain. Example: if the user logged in to `cortex.rinvex.com` they will stay logged-in to the top level domain `rinvex.com` and all it's subdomains like `website.rinvex.com`, but they will not be logged in to `cortex.rinvex.net` even if both domains directs to the same application, they will need to login again there. This is a known limitation due to enforced security restrictions by the browser. We may create a workaround in the future, but it's a bit complicated, and involves third-party cookies and CORS, so feel free to send a PR if you have a creative solution. 
 
 ### Querying Tenant Scoped Models
 
