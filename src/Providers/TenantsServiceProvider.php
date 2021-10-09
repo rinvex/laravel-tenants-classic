@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Rinvex\Tenants\Providers;
 
-use Illuminate\Support\Str;
 use Rinvex\Tenants\Models\Tenant;
 use Illuminate\Support\ServiceProvider;
 use Rinvex\Support\Traits\ConsoleTools;
@@ -65,18 +64,7 @@ class TenantsServiceProvider extends ServiceProvider
      */
     public function resolveActiveTenant()
     {
-        $centralDomains = central_domains();
-        $domain = $this->app['request']->getHost();
-
         // Resolve and register tenant into service container
-        $this->app->singleton('request.tenant', fn () => ! in_array($domain, $centralDomains) ? config('rinvex.tenants.resolver')::resolve() : null);
-
-        // Dynamically change session domain config on the fly
-        if (in_array($domain, array_merge([optional($this->app['request.tenant'])->domain], config('rinvex.tenants.alias_domains')))) {
-            config()->set('session.domain', '.'.$domain);
-        } elseif (Str::endsWith($domain, config('rinvex.tenants.alias_domains'))) {
-            $domain = collect(config('rinvex.tenants.alias_domains'))->first(fn ($alias) => Str::endsWith($domain, $alias));
-            config()->set('session.domain', '.'.$domain);
-        }
+        $this->app->singleton('request.tenant', fn () => ! array_key_exists($this->app['request']->getHost(), config('app.domains')) ? config('rinvex.tenants.resolver')::resolve() : null);
     }
 }

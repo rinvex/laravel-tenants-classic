@@ -100,7 +100,8 @@ trait Tenantable
         }
 
         static::deleted(function (self $model) {
-            $model->tenants()->detach();
+            // Check if this is a soft delete or not by checking if `SoftDeletes::isForceDeleting` method exists
+            (method_exists($model, 'isForceDeleting') && ! $model->isForceDeleting()) || $model->tenants()->detach();
         });
     }
 
