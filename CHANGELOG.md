@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v7.2.1] - 2021-10-22
+- Refactor resolveActiveTenant to check if there's a db connection first, otherwise skip silently
+- Update .styleci.yml fixers
+
 ## [v7.2.0] - 2021-10-10
 - Update documentation
 - Move app.url & session.domain runtime override to modules & application layer
@@ -216,6 +220,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v0.0.1 - 2017-04-11
 - Tag first release
 
+[v7.2.1]: https://github.com/rinvex/laravel-tenants/compare/v7.2.0...v7.2.1
 [v7.2.0]: https://github.com/rinvex/laravel-tenants/compare/v7.1.0...v7.2.0
 [v7.1.0]: https://github.com/rinvex/laravel-tenants/compare/v7.0.1...v7.1.0
 [v7.0.1]: https://github.com/rinvex/laravel-tenants/compare/v7.0.0...v7.0.1
