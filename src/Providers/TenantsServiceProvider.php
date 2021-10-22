@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Rinvex\Tenants\Providers;
 
+use Exception;
 use Rinvex\Tenants\Models\Tenant;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Rinvex\Support\Traits\ConsoleTools;
 use Rinvex\Tenants\Console\Commands\MigrateCommand;
@@ -62,9 +65,23 @@ class TenantsServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function resolveActiveTenant()
+    protected function resolveActiveTenant()
     {
+        $tenant = null;
+
+        try {
+            // Just check if we have DB connection! This is to avoid
+            // exceptions on new projects before configuring database options
+            DB::connection()->getPdo();
+
+            if (! array_key_exists($this->app['request']->getHost(), config('app.domains')) && Schema::hasTable(config('rinvex.tenants.tables.tenants'))) {
+                $tenant = config('rinvex.tenants.resolver')::resolve();
+            }
+        } catch (Exception $e) {
+            // Be quite! Do not do or say anything!!
+        }
+
         // Resolve and register tenant into service container
-        $this->app->singleton('request.tenant', fn () => ! array_key_exists($this->app['request']->getHost(), config('app.domains')) ? config('rinvex.tenants.resolver')::resolve() : null);
+        $this->app->singleton('request.tenant', fn () => $tenant);
     }
 }
