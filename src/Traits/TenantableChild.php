@@ -13,7 +13,7 @@ trait TenantableChild
     public static function bootTenantableChild()
     {
         if (app('request.tenant')) {
-            static::addGlobalScope(new TenantableChildScope());
+            static::addGlobalScope('tenantable-child', new TenantableChildScope());
         }
     }
 }

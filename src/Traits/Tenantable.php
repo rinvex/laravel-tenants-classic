@@ -92,7 +92,7 @@ trait Tenantable
     public static function bootTenantable()
     {
         if ($tenant = app('request.tenant')) {
-            static::addGlobalScope(new TenantableScope($tenant));
+            static::addGlobalScope('tenantable', new TenantableScope($tenant));
 
             static::saved(function (self $model) use ($tenant) {
                 $model->attachTenants($tenant);
