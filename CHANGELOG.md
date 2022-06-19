@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v7.3.1] - 2022-06-20
+- Update composer dependencies spatie/laravel-translatable to ^6.0.0 from ^5.2.0
+- Add alias for tenantable global scopes
+- Require rfc & dns email validation rules
+
 ## [v7.3.0] - 2022-02-14
 - Update composer dependencies to Laravel v9
 - Add support for model HasFactory
@@ -224,6 +229,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v0.0.1 - 2017-04-11
 - Tag first release
 
+[v7.3.1]: https://github.com/rinvex/laravel-tenants/compare/v7.3.0...v7.3.1
 [v7.3.0]: https://github.com/rinvex/laravel-tenants/compare/v7.2.1...v7.3.0
 [v7.2.1]: https://github.com/rinvex/laravel-tenants/compare/v7.2.0...v7.2.1
 [v7.2.0]: https://github.com/rinvex/laravel-tenants/compare/v7.1.0...v7.2.0
