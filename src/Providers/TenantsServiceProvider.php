@@ -78,7 +78,7 @@ class TenantsServiceProvider extends ServiceProvider
                 $tenant = config('rinvex.tenants.resolver')::resolve();
             }
         } catch (Exception $e) {
-            // Be quite! Do not do or say anything!!
+            // Be quiet! Do not do or say anything!!
         }
 
         // Resolve and register tenant into service container
