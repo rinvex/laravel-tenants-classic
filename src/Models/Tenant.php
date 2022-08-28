@@ -159,11 +159,11 @@ class Tenant extends Model
     {
         $this->setTable(config('rinvex.tenants.tables.tenants'));
         $this->mergeRules([
-            'slug' => 'required|alpha_dash|max:150|unique:'.config('rinvex.tenants.tables.tenants').',slug',
-            'domain' => 'nullable|strip_tags|max:150|unique:'.config('rinvex.tenants.tables.tenants').',domain',
+            'slug' => 'required|alpha_dash|max:150|unique:'.config('rinvex.tenants.models.tenant').',slug',
+            'domain' => 'nullable|strip_tags|max:150|unique:'.config('rinvex.tenants.models.tenant').',domain',
             'name' => 'required|string|strip_tags|max:150',
             'description' => 'nullable|string|max:32768',
-            'email' => 'required|email:rfc,dns|min:3|max:128|unique:'.config('rinvex.tenants.tables.tenants').',email',
+            'email' => 'required|email:rfc,dns|min:3|max:128|unique:'.config('rinvex.tenants.models.tenant').',email',
             'website' => 'nullable|url|max:1500',
             'phone' => 'required|phone:AUTO',
             'country_code' => 'required|alpha|size:2|country',
