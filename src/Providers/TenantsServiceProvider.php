@@ -25,9 +25,9 @@ class TenantsServiceProvider extends ServiceProvider
      * @var array
      */
     protected $commands = [
-        MigrateCommand::class => 'command.rinvex.tenants.migrate',
-        PublishCommand::class => 'command.rinvex.tenants.publish',
-        RollbackCommand::class => 'command.rinvex.tenants.rollback',
+        MigrateCommand::class,
+        PublishCommand::class,
+        RollbackCommand::class,
     ];
 
     /**
@@ -44,7 +44,7 @@ class TenantsServiceProvider extends ServiceProvider
         ]);
 
         // Register console commands
-        $this->registerCommands($this->commands);
+        $this->commands($this->commands);
     }
 
     /**
