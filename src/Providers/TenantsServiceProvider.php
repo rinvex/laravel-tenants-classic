@@ -12,6 +12,7 @@ use Illuminate\Support\ServiceProvider;
 use Rinvex\Support\Traits\ConsoleTools;
 use Rinvex\Tenants\Console\Commands\MigrateCommand;
 use Rinvex\Tenants\Console\Commands\PublishCommand;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Rinvex\Tenants\Console\Commands\RollbackCommand;
 
 class TenantsServiceProvider extends ServiceProvider
@@ -58,6 +59,11 @@ class TenantsServiceProvider extends ServiceProvider
 
         // Resolve active tenant
         $this->resolveActiveTenant();
+        
+        // Map relations
+        Relation::morphMap([
+            'tenant' => config('rinvex.tenants.models.tenant'),
+        ]);
     }
 
     /**
