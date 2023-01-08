@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v8.0.0] - 2023-01-09
+- Add Relation::morphMap
+- Tweak artisan commands registration
+- Drop PHP v8.0 support and update composer dependencies
+- Utilize PHP 8.1 attributes feature for artisan commands
+
 ## [v7.3.1] - 2022-06-20
 - Update composer dependencies spatie/laravel-translatable to ^6.0.0 from ^5.2.0
 - Add alias for tenantable global scopes
@@ -229,6 +235,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v0.0.1 - 2017-04-11
 - Tag first release
 
+[v8.0.0]: https://github.com/rinvex/laravel-tenants/compare/v7.3.1...v8.0.0
 [v7.3.1]: https://github.com/rinvex/laravel-tenants/compare/v7.3.0...v7.3.1
 [v7.3.0]: https://github.com/rinvex/laravel-tenants/compare/v7.2.1...v7.3.0
 [v7.2.1]: https://github.com/rinvex/laravel-tenants/compare/v7.2.0...v7.2.1

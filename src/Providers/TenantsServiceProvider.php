@@ -12,6 +12,7 @@ use Illuminate\Support\ServiceProvider;
 use Rinvex\Support\Traits\ConsoleTools;
 use Rinvex\Tenants\Console\Commands\MigrateCommand;
 use Rinvex\Tenants\Console\Commands\PublishCommand;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Rinvex\Tenants\Console\Commands\RollbackCommand;
 
 class TenantsServiceProvider extends ServiceProvider
@@ -24,9 +25,9 @@ class TenantsServiceProvider extends ServiceProvider
      * @var array
      */
     protected $commands = [
-        MigrateCommand::class => 'command.rinvex.tenants.migrate',
-        PublishCommand::class => 'command.rinvex.tenants.publish',
-        RollbackCommand::class => 'command.rinvex.tenants.rollback',
+        MigrateCommand::class,
+        PublishCommand::class,
+        RollbackCommand::class,
     ];
 
     /**
@@ -43,7 +44,7 @@ class TenantsServiceProvider extends ServiceProvider
         ]);
 
         // Register console commands
-        $this->registerCommands($this->commands);
+        $this->commands($this->commands);
     }
 
     /**
@@ -58,6 +59,11 @@ class TenantsServiceProvider extends ServiceProvider
 
         // Resolve active tenant
         $this->resolveActiveTenant();
+        
+        // Map relations
+        Relation::morphMap([
+            'tenant' => config('rinvex.tenants.models.tenant'),
+        ]);
     }
 
     /**
@@ -78,7 +84,7 @@ class TenantsServiceProvider extends ServiceProvider
                 $tenant = config('rinvex.tenants.resolver')::resolve();
             }
         } catch (Exception $e) {
-            // Be quite! Do not do or say anything!!
+            // Be quiet! Do not do or say anything!!
         }
 
         // Resolve and register tenant into service container
