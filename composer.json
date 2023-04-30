@@ -45,7 +45,7 @@
         "illuminate/console": "^9.0.0 || ^10.0.0",
         "illuminate/database": "^9.0.0 || ^10.0.0",
         "illuminate/support": "^9.0.0 || ^10.0.0",
-        "propaganistas/laravel-phone": "^4.4.0",
+        "propaganistas/laravel-phone": "^5.0.0",
         "rinvex/countries": "^9.0.0",
         "rinvex/languages": "^7.0.0",
         "rinvex/laravel-support": "^7.0.0",
