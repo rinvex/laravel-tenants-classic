@@ -59,7 +59,7 @@ class TenantsServiceProvider extends ServiceProvider
 
         // Resolve active tenant
         $this->resolveActiveTenant();
-        
+
         // Map relations
         Relation::morphMap([
             'tenant' => config('rinvex.tenants.models.tenant'),
