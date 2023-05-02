@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property int                 $id
  * @property string              $slug
  * @property string              $domain
- * @property array               $title
+ * @property array               $name
  * @property array               $description
  * @property string              $email
  * @property string              $website
@@ -55,7 +55,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereLanguageCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereLaunchDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereTimezone($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant wherePostalCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Rinvex\Tenants\Models\Tenant whereSlug($value)
@@ -101,6 +101,8 @@ class Tenant extends Model
     protected $casts = [
         'slug' => 'string',
         'domain' => 'string',
+        'name' => 'string',
+        'description' => 'string',
         'email' => 'string',
         'website' => 'string',
         'phone' => 'string',
@@ -165,7 +167,7 @@ class Tenant extends Model
             'description' => 'nullable|string|max:32768',
             'email' => 'required|email:rfc,dns|min:3|max:128|unique:'.config('rinvex.tenants.models.tenant').',email',
             'website' => 'nullable|url|max:1500',
-            'phone' => 'required|phone:AUTO',
+            'phone' => 'nullable|phone:AUTO',
             'country_code' => 'required|alpha|size:2|country',
             'language_code' => 'required|alpha|size:2|language',
             'state' => 'nullable|string',
@@ -174,7 +176,7 @@ class Tenant extends Model
             'postal_code' => 'nullable|string',
             'launch_date' => 'nullable|date_format:Y-m-d',
             'timezone' => 'nullable|string|max:64|timezone',
-            'currency' => 'required|alpha|size:3',
+            'currency' => 'nullable|alpha|size:3|currency',
             'is_active' => 'sometimes|boolean',
         ]);
 

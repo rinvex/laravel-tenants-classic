@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v8.1.0] - 2023-05-02
+- 306f2b4: Add support for Laravel v11, and drop support for Laravel v9
+- f8a8e0c: Upgrade spatie/laravel-translatable to v6.5 from v6.0
+- 0417634: Upgrade spatie/laravel-sluggable to v3.4 from v3.3
+- 348c050: Update propaganistas/laravel-phone to v5.0 from v4.4
+- b531808: Update phpunit to v10.1 from v9.5
+- 0497f95: Fix tenant attributes
+
 ## [v8.0.0] - 2023-01-09
 - Add Relation::morphMap
 - Tweak artisan commands registration
@@ -235,6 +243,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v0.0.1 - 2017-04-11
 - Tag first release
 
+[v8.1.0]: https://github.com/rinvex/laravel-tenants/compare/v8.0.0...v8.1.0
 [v8.0.0]: https://github.com/rinvex/laravel-tenants/compare/v7.3.1...v8.0.0
 [v7.3.1]: https://github.com/rinvex/laravel-tenants/compare/v7.3.0...v7.3.1
 [v7.3.0]: https://github.com/rinvex/laravel-tenants/compare/v7.2.1...v7.3.0
