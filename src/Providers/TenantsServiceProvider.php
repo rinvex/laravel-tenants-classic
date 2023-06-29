@@ -52,14 +52,15 @@ class TenantsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Publish Resources
-        $this->publishesConfig('rinvex/laravel-tenants');
-        $this->publishesMigrations('rinvex/laravel-tenants');
-        ! $this->autoloadMigrations('rinvex/laravel-tenants') || $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
+        // Register paths to be published by the publish command.
+        $this->publishConfigFrom(__DIR__.'/../../config/config.php', 'rinvex/tenants');
+        $this->publishMigrationsFrom(__DIR__.'/../../database/migrations', 'rinvex/tenants');
+
+        ! $this->app['config']['rinvex.tenants.autoload_migrations'] || $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
         // Resolve active tenant
         $this->resolveActiveTenant();
-        
+
         // Map relations
         Relation::morphMap([
             'tenant' => config('rinvex.tenants.models.tenant'),
