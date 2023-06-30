@@ -53,10 +53,10 @@ class TenantsServiceProvider extends ServiceProvider
     public function boot()
     {
         // Register paths to be published by the publish command.
-        $this->publishConfigFrom(__DIR__.'/../../config/config.php', 'rinvex/tenants');
-        $this->publishMigrationsFrom(__DIR__.'/../../database/migrations', 'rinvex/tenants');
+        $this->publishConfigFrom(realpath(__DIR__.'/../../config/config.php'), 'rinvex/tenants');
+        $this->publishMigrationsFrom(realpath(__DIR__.'/../../database/migrations'), 'rinvex/tenants');
 
-        ! $this->app['config']['rinvex.tenants.autoload_migrations'] || $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
+        ! $this->app['config']['rinvex.tenants.autoload_migrations'] || $this->loadMigrationsFrom(realpath(__DIR__.'/../../database/migrations'));
 
         // Resolve active tenant
         $this->resolveActiveTenant();
