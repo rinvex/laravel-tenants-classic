@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v8.1.2] - 2023-07-03
+- Update composer dependencies
+- Use canonicalized absolute pathnames for resources
+
 ## [v8.1.1] - 2023-06-29
 - Require missing composer dependency
 - Refactor resource loading and publishing
@@ -247,6 +251,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v0.0.1 - 2017-04-11
 - Tag first release
 
+[v8.1.2]: https://github.com/rinvex/laravel-tenants/compare/v8.1.1...v8.1.2
 [v8.1.1]: https://github.com/rinvex/laravel-tenants/compare/v8.1.0...v8.1.1
 [v8.1.0]: https://github.com/rinvex/laravel-tenants/compare/v8.0.0...v8.1.0
 [v8.0.0]: https://github.com/rinvex/laravel-tenants/compare/v7.3.1...v8.0.0
